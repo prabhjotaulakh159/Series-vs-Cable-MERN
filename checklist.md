@@ -21,6 +21,8 @@
 - what countries have the most popular movies
   - have a map with the countries (need another api for latitude and longitude)
 - what days of the week has the best performing shows
+- airtime between networks and streaming services, most popular
+
 
 ## what we might need
 
