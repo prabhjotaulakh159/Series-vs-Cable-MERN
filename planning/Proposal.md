@@ -33,10 +33,12 @@ Under each graph, we will show the top contestants for the criteria of that char
 
 ## Views
 
-See wireframe.pdf in the planning/ directory.  
+See [our wireframe pdf document](screenshots/wireframe.pdf) for details about the view.  
 The title, navbar and the general image are above the fold.  
 All graphs are below the fold in order to give them extra time to finish up loading before being displayed
 to the user.
+
+Note: The 'FILTER' boxes in the navbar will simply link to the three different graphs for easier navigation.
 
 ## Functionality
 
