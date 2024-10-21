@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.static('../client/dist'));
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   return res.status(400).json({ error: 'Not found' });
 });
 
