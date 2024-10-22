@@ -1,5 +1,5 @@
 import express from 'express';
-import * as series from 'controllers/series.controller.mjs';
+import * as series from '../controllers/series.controller.mjs';
 
 const router = express.Router();
 
