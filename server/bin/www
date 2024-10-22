@@ -15,4 +15,13 @@ try {
   console.error(`Failed to read file: ${error.message}`);
 }
 
+process.on('SIGINT', () => {
+  console.debug('SIGINT signal received: closing HTTP server');
+  if (server) {
+    server.close(() => {
+      console.debug('HTTP server closed');
+    });
+  }
+});
+
 export {TOKEN};
