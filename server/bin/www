@@ -1,13 +1,15 @@
 import app from '../api.mjs';
-import {fetchToken} from '../data-init.mjs';
+import {fetchToken, fetchAllSeries} from '../data-init.mjs';
 
 const port = 3000;
 let TOKEN;
 let server;
+let series; /** @todo: remove this temp var */ 
 
 try {
   TOKEN = await fetchToken();
-  console.log(TOKEN);
+  series = await fetchAllSeries();
+  console.log(series);
   server = app.listen(port, () => {
     console.log(`Example app app listening at http://localhost:${port}`);
   });    
