@@ -1,3 +1,18 @@
-import app from '../app.mjs';
+import app from '../api.mjs';
+import {fetchToken} from '../data-init.mjs';
 
-app.listen(3000, () => console.log('Server started !!'));
+const port = 3000;
+let TOKEN;
+let server;
+
+try {
+  TOKEN = await fetchToken();
+  console.log(TOKEN);
+  server = app.listen(port, () => {
+    console.log(`Example app app listening at http://localhost:${port}`);
+  });    
+} catch (error) {
+  console.error(`Failed to read file: ${error.message}`);
+}
+
+export {TOKEN};
