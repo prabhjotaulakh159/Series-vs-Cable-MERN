@@ -9,7 +9,6 @@ let series; /** @todo: remove this temp var */
 try {
   TOKEN = await fetchToken();
   series = await fetchAllSeries();
-  console.log(series);
   server = app.listen(port, () => {
     console.log(`Example app app listening at http://localhost:${port}`);
   });    
