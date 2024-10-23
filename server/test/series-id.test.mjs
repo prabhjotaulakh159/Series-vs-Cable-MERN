@@ -76,7 +76,7 @@ describe('Testing the /api/series{id} endpoint', ()=>{
 
     expect(response.status).to.equal(400);
 
-    assert.isObject(body)
+    assert.isObject(body);
 
     expect(body).to.have.property('message');
 
