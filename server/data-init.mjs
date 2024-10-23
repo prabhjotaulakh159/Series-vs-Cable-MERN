@@ -84,7 +84,7 @@ async function fetchAllSeries() {
       'genres': getGenres(show),
       'company': show.originalNetwork.parentCompany.name || show.originalNetwork.name,
       'artwork': show.image,
-      'year': show.firstAired.split('-')[0]
+      'year': Number(show.firstAired.split('-')[0])
     };
   });
 
