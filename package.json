@@ -9,5 +9,8 @@
   },
   "author": "Prabhjot Aulakh, Adam Winter, Bianca Rossetti",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "streaming-vs-cable": "file:"
+  }
 }
