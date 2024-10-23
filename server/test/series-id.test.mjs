@@ -37,6 +37,8 @@ describe('Testing the /api/series{id} endpoint', ()=>{
     const body = response.body;
     const series = body[0];
 
+    assert.isNotNull(series);
+
     expect(series).to.have.property('id');  
     expect(series).to.have.property('name');    
     expect(series).to.have.property('genre');    
