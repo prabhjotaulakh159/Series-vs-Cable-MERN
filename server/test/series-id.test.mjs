@@ -51,7 +51,7 @@ describe('Testing the /api/series{id} endpoint', ()=>{
     assert.typeOf(series.name, 'string');
     assert.typeOf(series.genre, 'string');
     assert.typeOf(series.artwork, 'string');
-    assert.typeOf(series.companyID, 'number');
+    assert.typeOf(series.companyId, 'number');
     assert.typeOf(series.score, 'number');
     assert.typeOf(series.numberOfSeasons, 'number');
 
