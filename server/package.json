@@ -18,7 +18,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongodb": "^6.9.0",
-    "server": "file:"
-  }
+    "mongodb": "^6.9.0"
+  },
+  "type": "module"
 }
