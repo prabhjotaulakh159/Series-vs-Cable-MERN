@@ -10,13 +10,14 @@ const assert = chai.assert;
 
 /*
 {
-  id : int,
-  name : string,
-  genre: string,
-  artwork : string,
-  companyID: int,
-  score: int,
-  numberOfSeasons: int,
+  'id': int,
+  'name': string,
+  'score': int,
+  'numberOfSeasons': int,
+  'genres': list,
+  'company': string,
+  'artwork': string,
+  'year': int
 }
 */
 
@@ -38,19 +39,21 @@ describe('Test getting series with and without query parameters', () => {
 
     expect(series).to.have.property('id');  
     expect(series).to.have.property('name');    
-    expect(series).to.have.property('genre');    
-    expect(series).to.have.property('artwork');    
-    expect(series).to.have.property('companyID');    
     expect(series).to.have.property('score');    
     expect(series).to.have.property('numberOfSeasons');    
+    expect(series).to.have.property('genres');
+    expect(series).to.have.property('company');    
+    expect(series).to.have.property('artwork');    
+    expect(series).to.have.property('year');    
 
-    assert.typeOf(series.id, 'number');
-    assert.typeOf(series.name, 'string');
-    assert.typeOf(series.genre, 'string');
-    assert.typeOf(series.artwork, 'string');
-    assert.typeOf(series.companyID, 'number');
-    assert.typeOf(series.score, 'number');
-    assert.typeOf(series.numberOfSeasons, 'number');
+    assert.typeOf(body.id, 'number');
+    assert.typeOf(body.name, 'string');
+    assert.typeOf(body.score, 'number');
+    assert.typeOf(body.numberOfSeasons, 'number');
+    assert.typeOf(body.genres, 'array');
+    assert.typeOf(body.company, 'string');
+    assert.typeOf(body.artWork, 'string');
+    assert.typeOf(body.year, 'number');
   });
 
   it('Should return an error with status 400 because name query parameter is empty ', async () => {
