@@ -33,7 +33,7 @@ describe('Testing the /api/series{id} endpoint', ()=>{
   });
 
   it('check body of response has valid data types', async ()=>{
-    const response = await request(app).get('/api/series/73593');
+    const response = await request(app).get('/api/series/70327');
     const body = response.body;
     const series = body[0];
 
