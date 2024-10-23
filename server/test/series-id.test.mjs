@@ -24,7 +24,7 @@ describe('Testing the /api/series{id} endpoint', ()=>{
     const response = await request(app).get('/api/series/73593');
 
     assert(response.statusCode).to.equal(200);
-    assert.isArray(response.body);
+    assert.isObject(response.body);
   
     const body = response.body;
   
