@@ -6,6 +6,6 @@ const seriesRouter = express.Router();
 
 seriesRouter.use(validateSeriesQueryParameters);
 
-seriesRouter.get('series/', getSeriesWithQueryParameters);
+seriesRouter.get('/series', getSeriesWithQueryParameters);
 
 export default seriesRouter;

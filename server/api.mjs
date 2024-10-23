@@ -13,7 +13,7 @@ app.use((req, res, next) => {
   next(error);
 });
 
-app.use((error, req, res) => {
+app.use((error, req, res, next) => {
   return res.status(error.status).json({ message: error.message });
 });
 

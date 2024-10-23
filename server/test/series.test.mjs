@@ -23,7 +23,7 @@ const assert = chai.assert;
 
 describe('Test getting series with and without query parameters', () => {
   it('Should return an array with a status of 200', async () => {
-    const response = await request(app).get('/api/series/');
+    const response = await request(app).get('/api/series');
     
     expect(response.status).to.be.equal(200);
 
@@ -62,6 +62,7 @@ describe('Test getting series with and without query parameters', () => {
 
     assert.isObject(body);
 
+    expect(response.status).to.be.equal(400);
     expect(body).to.have.property('message');
 
     assert.strictEqual(body.message, 'Name cannot be empty');
@@ -75,6 +76,7 @@ describe('Test getting series with and without query parameters', () => {
       assert.isObject(body);
 
       expect(body).to.have.property('message');
+      expect(response.status).to.be.equal(400);
 
       assert.strictEqual(body.message, 'Year must be between 1980 and 2024');
     });
@@ -87,6 +89,7 @@ describe('Test getting series with and without query parameters', () => {
       assert.isObject(body);
 
       expect(body).to.have.property('message');
+      expect(response.status).to.be.equal(400);
 
       assert.strictEqual(body.message, 'Year must be between 1980 and 2024');
     });
@@ -99,6 +102,7 @@ describe('Test getting series with and without query parameters', () => {
       assert.isObject(body);
 
       expect(body).to.have.property('message');
+      expect(response.status).to.be.equal(400);
 
       assert.strictEqual(body.message, 'Year must be between 1980 and 2024');
     });
@@ -111,6 +115,7 @@ describe('Test getting series with and without query parameters', () => {
       assert.isObject(body);
 
       expect(body).to.have.property('message');
+      expect(response.status).to.be.equal(400);
 
       assert.strictEqual(body.message, 'Type must be either cable or streaming');
     });
@@ -123,6 +128,7 @@ describe('Test getting series with and without query parameters', () => {
       assert.isObject(body);
 
       expect(body).to.have.property('message');
+      expect(response.status).to.be.equal(400);
 
       assert.strictEqual(body.message, 'Type must be either cable or streaming');
     });
