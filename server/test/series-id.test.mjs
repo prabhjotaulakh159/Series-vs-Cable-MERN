@@ -57,3 +57,16 @@ describe('Testing the /api/series{id} endpoint', ()=>{
 
   });
 
+  it('should return a 400 error if an series with the id isn\'t found', async()=>{
+    const response = await request(app).get('/api/series/0');
+    const body = response.body;
+
+    expect(response.status).to.equal(400);
+
+    assert.isObject(body);
+
+    expect(body).to.have.property('message');
+
+    assert.strictEqual(body.message, 'No series found with this id');
+  });
+});
