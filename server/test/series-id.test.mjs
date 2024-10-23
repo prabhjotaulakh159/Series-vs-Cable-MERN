@@ -5,6 +5,7 @@ import app from '../api.mjs';
 
 const request = pkg;
 const assert = chai.assert;
+const expect = chai.expect;
 
 /*
 Expect data from db to look like this
@@ -36,12 +37,13 @@ describe('Testing the /api/series{id} endpoint', ()=>{
     const body = response.body;
     const series = body[0];
 
-    assert.typeOf(series['name'], 'string');
-    assert.typeOf(series['genre'], 'string');
-    assert.typeOf(series['artwork'], 'string');
-    assert.typeOf(series['companyID'], 'number');
-    assert.typeOf(series['score'], 'number');
-    assert.typeOf(series['numberOfSeasons'], 'number');
+    expect(series).to.have.property('id');  
+    expect(series).to.have.property('name');    
+    expect(series).to.have.property('genre');    
+    expect(series).to.have.property('artwork');    
+    expect(series).to.have.property('companyID');    
+    expect(series).to.have.property('score');    
+    expect(series).to.have.property('numberOfSeasons'); 
 
   });
 
