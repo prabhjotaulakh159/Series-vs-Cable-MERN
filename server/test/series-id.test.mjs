@@ -69,4 +69,17 @@ describe('Testing the /api/series{id} endpoint', ()=>{
 
     assert.strictEqual(body.message, 'No series found with this id');
   });
+
+  it('should return a 400 error if the passed id isn\'t an integer', async()=>{
+    const response = await request(app).get('/api/series/abc');
+    const body = response.body;
+
+    expect(response.status).to.equal(400);
+
+    assert.isObject(body)
+
+    expect(body).to.have.property('message');
+
+    assert.strictEqual(body.message, 'id must be an integer');
+  });
 });
