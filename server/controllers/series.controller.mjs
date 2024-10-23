@@ -1,3 +1,3 @@
-export function getSeriesById(){
+export function getSeriesById(req, res){
 
 }
