@@ -82,7 +82,8 @@ async function fetchAllSeries() {
       'score': show.score,
       'numberOfSeasons': getNumberOfSeasons(show),
       'genres': getGenres(show),
-      'company': show.originalNetwork.parentCompany.name || show.originalNetwork.name,
+      'companyId': show.originalNetwork.parentCompany.id || show.originalNetwork.id,
+      'companyType': getShowCompanyType(show),
       'artwork': show.image,
       'year': Number(show.firstAired.split('-')[0])
     };
@@ -124,6 +125,16 @@ function isCableOrStreaming(show) {
   return originalNetwork && 
   (originalNetwork[0].name.toLowerCase().includes('cable') 
   || originalNetwork[0].name.toLowerCase().includes('svod'));
+}
+
+/**
+ * 
+ * @param {JSON} show - the show to check
+ * @returns {string} - represents the company type of the show
+ */
+function getShowCompanyType(show) {
+  const originalNetwork = show.originalNetwork ? show.originalNetwork.tagOptions : undefined; 
+  return originalNetwork[0].name.toLowerCase().includes('cable') ? 'cable' : 'streaming';
 }
 
 export {fetchToken, fetchAllSeries};
