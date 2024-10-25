@@ -20,7 +20,7 @@ Expect data from db to look like this
 */
 
 describe('Testing the /api/series{id} endpoint', ()=>{
-  it('should respond to /series/1 ', async ()=>{
+  it('should respond to /series/73593 ', async ()=>{
     const response = await request(app).get('/api/series/73593');
 
     assert(response.statusCode).to.equal(200);
