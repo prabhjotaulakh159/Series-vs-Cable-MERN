@@ -15,7 +15,8 @@ const assert = chai.assert;
   'score': int,
   'numberOfSeasons': int,
   'genres': list,
-  'company': string,
+  'companyId': int,
+  'companyType': string
   'artwork': string,
   'year': int
 }
@@ -42,7 +43,8 @@ describe('Test getting series with and without query parameters', () => {
     expect(series).to.have.property('score');    
     expect(series).to.have.property('numberOfSeasons');    
     expect(series).to.have.property('genres');
-    expect(series).to.have.property('company');    
+    expect(series).to.have.property('companyId');
+    expect(series).to.have.property('companyType');    
     expect(series).to.have.property('artwork');    
     expect(series).to.have.property('year');    
 
@@ -51,13 +53,14 @@ describe('Test getting series with and without query parameters', () => {
     assert.typeOf(body.score, 'number');
     assert.typeOf(body.numberOfSeasons, 'number');
     assert.typeOf(body.genres, 'array');
-    assert.typeOf(body.company, 'string');
+    assert.typeOf(body.companyId, 'number');
+    assert.typeOf(body.companyType, 'string');
     assert.typeOf(body.artWork, 'string');
     assert.typeOf(body.year, 'number');
   });
 
   it('Should return an error with status 400 because name query parameter is empty ', async () => {
-    const response = await request(app).get(`/api/series?name=''`);
+    const response = await request(app).get(`/api/series?name=`);
     const body = response.body;
 
     assert.isObject(body);

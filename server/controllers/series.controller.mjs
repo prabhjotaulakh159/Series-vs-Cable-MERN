@@ -1,34 +1,39 @@
 function validateSeriesQueryParameters(req, res, next) {
   try {
-    if (req.query.year) {
-      if (isNaN(req.query.year)) {
-        throw new Error('Year must be between 1980 and 2024');
-      } 
-      const year = Number(req.query.year);
-      if (year < 1980 || year > 2024) { 
-        throw new Error('Year must be between 1980 and 2024');
-      }
-      req.year = year;
+    if ('year' in req.query) {
+      validateYear(req.query.year);
+      req.year = req.query.year;
     }
-    if (req.query.name) {
-      if (req.query.name.length === 0) {
-        throw new Error('Name cannot be empty');
-      }
+    if ('name' in req.query) {
+      validateName(req.query.name);
       req.name = req.query.name;
     }
-    if (req.query.type) {
-      if (req.query.type.length === 0) {
-        throw new Error('Type must be either cable or streaming');
-      }
-      if (!['cable', 'streaming'].includes(req.query.type)) {
-        throw new Error('Type must be either cable or streaming');
-      }
+    if ('type' in req.query) {
+      validateType(req.query.type);
       req.type = req.query.type;
     }
     next();
   } catch (error) {
     error.status = 400;
     next(error);
+  }
+}
+
+function validateYear(year) {
+  if (isNaN(year) || Number(year) < 1980 || Number(year) > 2024) {
+    throw new Error('Year must be between 1980 and 2024');
+  } 
+}
+
+function validateName(name) {
+  if (!name || name?.trim() === '') {
+    throw new Error('Name cannot be empty');
+  }
+}
+
+function validateType(type) {
+  if (!type || type?.trim() === '' || !['cable', 'streaming'].includes(type)) {
+    throw new Error('Type must be either cable or streaming');
   }
 }
 
