@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import seriesRouter from './routers/series.router.mjs';
 
