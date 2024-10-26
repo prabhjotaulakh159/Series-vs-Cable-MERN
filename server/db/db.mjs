@@ -3,6 +3,11 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 
 const dbUrl = process.env.ATLAS_URI;
 let instance = null;
+
+/** 
+ * Code taken from the following lab:
+ * https://dawsoncollege.gitlab.io/520JS/520-Web/exercises/09_2_mongo_express.html 
+ */
 class DB {
   constructor(){
     //instance is the singleton, defined in outer scope
