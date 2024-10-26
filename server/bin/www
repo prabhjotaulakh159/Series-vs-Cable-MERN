@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+import app from '../api.mjs';
+import {db} from '../db/db.mjs';
+// import {fetchToken, fetchAllSeries} from '../data-init.mjs';
+
+let TOKEN;
+let server;
+// let series; /** @todo: remove this temp var */ 
+
+const port = process.env.PORT || 3000;
+
+(async () => {
+  try {
+    await db.connect('webprojectdb', 'series');
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}!`);
+    });
+  } catch (e) {
+    console.error('could not connect');
+    console.dir(e);
+    process.exit();
+  }
+})();
+
+process.on('SIGINT', () => {
+  console.debug('SIGINT signal received: closing HTTP server');
+  if (server) {
+    server.close(() => {
+      console.debug('HTTP server closed');
+    });
+  }
+});
+
+export {TOKEN};
