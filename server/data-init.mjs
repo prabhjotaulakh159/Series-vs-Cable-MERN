@@ -38,11 +38,11 @@ async function fetchToken() {
  * 
  * @returns {JSON} - represents the filtered series
  */
-async function fetchAllSeries() {
+async function fetchAllSeries(token) {
   const response = await fetch('https://api4.thetvdb.com/v4/series', {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${TOKEN}`
+      'Authorization': `Bearer ${token}`
     }
   });
 
