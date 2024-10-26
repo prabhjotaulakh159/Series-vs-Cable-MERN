@@ -64,7 +64,7 @@ async function fetchAllSeries(token) {
     series.map(show => fetch(`https://api4.thetvdb.com/v4/series/${show.id}/extended?short=true`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${TOKEN}`
+        'Authorization': `Bearer ${token}`
       }
     }))
   );
