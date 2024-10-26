@@ -1,5 +1,4 @@
 import API_KEY from './api.key.mjs';
-import {TOKEN} from './bin/www';
 
 const MIN_AIR_DATE = new Date('1990-01-01');
 const countries = ['can', 'usa', 'gbr'];
@@ -38,11 +37,11 @@ async function fetchToken() {
  * 
  * @returns {JSON} - represents the filtered series
  */
-async function fetchAllSeries() {
+async function fetchAllSeries(token) {
   const response = await fetch('https://api4.thetvdb.com/v4/series', {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${TOKEN}`
+      'Authorization': `Bearer ${token}`
     }
   });
 
@@ -64,7 +63,7 @@ async function fetchAllSeries() {
     series.map(show => fetch(`https://api4.thetvdb.com/v4/series/${show.id}/extended?short=true`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${TOKEN}`
+        'Authorization': `Bearer ${token}`
       }
     }))
   );
