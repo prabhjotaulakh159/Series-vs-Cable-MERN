@@ -58,8 +58,8 @@ function validateId(req, res, next){
 }
 
 function getSeriesById(req, res){
-  // will be removed later
-  return req, res;
+  res.status(200);
+  res.send({});
 }
 
 export {
