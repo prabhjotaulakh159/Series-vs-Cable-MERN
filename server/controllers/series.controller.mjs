@@ -42,6 +42,21 @@ function getSeriesWithQueryParameters(req, res) {
   res.send([]);
 }
 
+function validateId(req, res, next){
+  try{
+    if(isNaN(req.params.id) === true){
+      throw new Error(`id must be a number`);
+    }
+    if(Number(req.params.id) < 0){
+      throw new Error('id cannot be less than 0');
+    }
+    next();
+  }catch(error){
+    error.status = 400;
+    next(error);
+  }
+}
+
 function getSeriesById(req, res){
   // will be removed later
   return req, res;
@@ -50,5 +65,6 @@ function getSeriesById(req, res){
 export {
   validateSeriesQueryParameters,
   getSeriesWithQueryParameters,
+  validateId,
   getSeriesById
 };
