@@ -21,6 +21,8 @@ class DB {
     return instance;
   }
 
+
+  /* Connects to the db using the db name and collection name */
   async connect(dbname, collName) {
     if (instance.db){
       return;
@@ -34,23 +36,18 @@ class DB {
     instance.collection = await instance.db.collection(collName);
   }
 
+  /* Closes the db connection */
   async close() {
     await instance.mongoClient.close();
     instance = null;
   }
 
+  /* Retrieves all series from the database */
   async readAll() {
     return await instance.collection.find().toArray();
   }
 
-  async createMany(quotes) {
-    return await instance.collection.insertMany(quotes);
-  }
-
-  async create(quote) {
-    return await instance.collection.insertOne(quote);
-  }
-
+  /* opens a connection to the db using the db name and collection name */
   async open(dbname, collName) {
     try {
       await instance.connect(dbname, collName);
