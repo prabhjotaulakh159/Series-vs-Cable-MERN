@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 (async () => {
   try {
     await db.connect('webprojectdb', 'series');
-    app.listen(port, () => {
+    server = app.listen(port, () => {
       console.log(`Server listening on port ${port}!`);
     });
   } catch (e) {
@@ -22,12 +22,20 @@ const port = process.env.PORT || 3000;
   }
 })();
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
   console.debug('SIGINT signal received: closing HTTP server');
-  if (server) {
-    server.close(() => {
-      console.debug('HTTP server closed');
-    });
+  try {
+    await db.close();
+    console.debug('Database connection closed on SIGINT');
+    if (server) {
+      server.close(() => {
+        console.debug('HTTP server closed');
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    console.dir(error);
+    process.exit();
   }
 });
 
