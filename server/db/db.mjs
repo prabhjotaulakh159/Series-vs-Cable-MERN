@@ -32,12 +32,10 @@ class DB {
     if (instance.db){
       return;
     }
-    console.debug(instance);
     await instance.client.connect();
     instance.db = await instance.client.db(dbname);
     // Send a ping to confirm a successful connection
     await instance.client.db(dbname).command({ ping: 1 });
-    console.debug('Successfully connected to MongoDB database ' + dbname);
     instance.collection = await instance.db.collection(collName);
   }
 
