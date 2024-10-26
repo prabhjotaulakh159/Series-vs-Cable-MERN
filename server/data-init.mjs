@@ -1,5 +1,4 @@
 import API_KEY from './api.key.mjs';
-import {TOKEN} from './bin/www';
 
 const MIN_AIR_DATE = new Date('1990-01-01');
 const countries = ['can', 'usa', 'gbr'];
