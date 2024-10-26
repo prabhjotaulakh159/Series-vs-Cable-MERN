@@ -20,16 +20,13 @@ Expect data from db to look like this
 */
 
 describe('Testing the /api/series{id} endpoint', ()=>{
-  it('should respond to /series/73593 ', async ()=>{
+  it('should return an object with status code of 200', async ()=>{
+    
     const response = await request(app).get('/api/series/73593');
+    
+    expect(response.status).to.be.equal(200);
 
-    assert(response.statusCode).to.equal(200);
     assert.isObject(response.body);
-  
-    const body = response.body;
-  
-    assert.isNotNull(body);
-  
   });
 
   it('check body of response has valid data types', async ()=>{
@@ -57,11 +54,11 @@ describe('Testing the /api/series{id} endpoint', ()=>{
 
   });
 
-  it('should return a 400 error if an series with the id isn\'t found', async()=>{
+  it('should return a 400 error if a series with the id isn\'t found', async()=>{
     const response = await request(app).get('/api/series/0');
     const body = response.body;
 
-    expect(response.status).to.equal(400);
+    expect(response.status).to.be.equal(400);
 
     assert.isObject(body);
 
@@ -70,16 +67,16 @@ describe('Testing the /api/series{id} endpoint', ()=>{
     assert.strictEqual(body.message, 'No series found with this id');
   });
 
-  it('should return a 400 error if the passed id isn\'t an integer', async()=>{
+  it('should return a 400 error if the passed id isn\'t a number', async()=>{
     const response = await request(app).get('/api/series/abc');
     const body = response.body;
 
-    expect(response.status).to.equal(400);
+    expect(response.status).to.be.equal(400);
 
     assert.isObject(body);
 
     expect(body).to.have.property('message');
 
-    assert.strictEqual(body.message, 'id must be an integer');
+    assert.strictEqual(body.message, 'id must be a number');
   });
 });
