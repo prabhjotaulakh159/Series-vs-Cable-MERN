@@ -1,8 +1,9 @@
 import express from 'express';
-import * as series from '../controllers/series.controller.mjs';
+import {validateId, getSeriesById} from '../controllers/series.controller.mjs';
 
-const router = express.Router();
+const seriesIdRouter = express.Router({mergeParams: true});
 
-router.get('/series/:id', series.getSeriesById);
+seriesIdRouter.use(validateId);
+seriesIdRouter.get('/', getSeriesById);
 
-export default router;
+export default seriesIdRouter;
