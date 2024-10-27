@@ -63,7 +63,8 @@ async function getSeriesWithQueryParameters(req, res, next) {
   try {
     const series = await db.getFilteredSeries(req.query.name, 
       req.query.year, req.query.type);   
-    return res.send(series);
+    res.status(200);
+    res.send(series);
   } catch (error) {
     error.status = 500;
     next(error);
