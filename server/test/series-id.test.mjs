@@ -58,11 +58,11 @@ describe('Testing the /api/series{id} endpoint', ()=>{
 
   });
 
-  it('should return a 400 error if a series with the id isn\'t found', async()=>{
+  it('should return a 404 error if a series with the id isn\'t found', async()=>{
     const response = await request(app).get('/api/series/0');
     const body = response.body;
 
-    expect(response.status).to.be.equal(400);
+    expect(response.status).to.be.equal(404);
 
     assert.isObject(body);
 
