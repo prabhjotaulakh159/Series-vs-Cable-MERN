@@ -71,6 +71,10 @@ async function getSeriesWithQueryParameters(req, res, next) {
   }
 }
 
+/**
+ * validates the id paramater
+ * checks that it is a number and it isnt below 0
+ */
 function validateId(req, res, next){
   try{
     if(isNaN(req.params.id) === true){
@@ -86,7 +90,10 @@ function validateId(req, res, next){
   }
 }
 
-function getSeriesById(req, res){
+/**
+ * Gets series with a specific id from the database
+ */
+async function getSeriesById(req, res){
   res.status(200);
   res.send({});
 }
