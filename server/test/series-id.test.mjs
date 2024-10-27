@@ -107,6 +107,19 @@ describe('Testing the /api/series{id} endpoint', ()=>{
     assert.strictEqual(body.message, 'id must be a number');
   });
 
+  it('should return a 400 error if the id is less than 0', async()=>{
+    const response = await request(app).get('/api/series/-100');
+    const body = response.body;
+
+    expect(response.status).to.be.equal(400);
+
+    assert.isObject(body);
+
+    expect(body).to.have.property('message');
+
+    assert.strictEqual(body.message, 'id cannot be less than 0');
+  });
+
   after(() => {
     stubGetSeriesById.restore();
   });
