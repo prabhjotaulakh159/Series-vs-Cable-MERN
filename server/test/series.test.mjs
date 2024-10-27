@@ -1,7 +1,15 @@
 import * as chai from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, before, after } from 'mocha';
 import pkg from 'supertest'; 
 import app from '../api.mjs';
+import { db } from '../db/db.mjs';
+import * as sinon from 'sinon';
+
+// https://dawsoncollege.gitlab.io/520JS/520-Web/exercises/09_2_mongo_express.html
+
+
+// stub the db function associated with my route
+const stubGetgetFilteredSeries = sinon.stub(db, 'getFilteredSeries');
 
 const request  = pkg;
 
@@ -23,6 +31,37 @@ const assert = chai.assert;
 */
 
 describe('Test getting series with and without query parameters', () => {
+  before(() => {
+    // these are real examples from the database i copied over
+    stubGetgetFilteredSeries.resolves([
+      {
+        '_id': '671c67438e349e8a74cefd39',
+        'id': 70327,
+        'name': 'Buffy the Vampire Slayer',
+        'score': 491166,
+        'numberOfSeasons': 8,
+        'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+        'companyId': 2178,
+        'companyType': 'cable',
+        'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+        'year': 1997
+      },
+      {
+        '_id': '671c67438e349e8a74cefd3a',
+        'id': 70328,
+        'name': 'The Young and the Restless',
+        'score': 34583,
+        'numberOfSeasons': 36,
+        'genres': ['Soap', 'Drama', 'Romance'],
+        'companyId': 56,
+        'companyType': 'cable',
+        'artwork': 'https://artworks.thetvdb.com/banners/v4/series/70328/posters/62996ec6e5ab4.jpg',
+        'year': 1973
+      }
+      
+    ]);
+  });
+
   it('Should return an array with a status of 200', async () => {
     const response = await request(app).get('/api/series');
     
@@ -48,15 +87,15 @@ describe('Test getting series with and without query parameters', () => {
     expect(series).to.have.property('artwork');    
     expect(series).to.have.property('year');    
 
-    assert.typeOf(body.id, 'number');
-    assert.typeOf(body.name, 'string');
-    assert.typeOf(body.score, 'number');
-    assert.typeOf(body.numberOfSeasons, 'number');
-    assert.typeOf(body.genres, 'array');
-    assert.typeOf(body.companyId, 'number');
-    assert.typeOf(body.companyType, 'string');
-    assert.typeOf(body.artWork, 'string');
-    assert.typeOf(body.year, 'number');
+    assert.typeOf(series.id, 'number');
+    assert.typeOf(series.name, 'string');
+    assert.typeOf(series.score, 'number');
+    assert.typeOf(series.numberOfSeasons, 'number');
+    assert.typeOf(series.genres, 'array');
+    assert.typeOf(series.companyId, 'number');
+    assert.typeOf(series.companyType, 'string');
+    assert.typeOf(series.artwork, 'string');
+    assert.typeOf(series.year, 'number');
   });
 
   it('Should return an error with status 400 because name query parameter is empty ', async () => {
@@ -135,4 +174,8 @@ describe('Test getting series with and without query parameters', () => {
 
       assert.strictEqual(body.message, 'Type must be either cable or streaming');
     });
+
+  after(() => {
+    stubGetgetFilteredSeries.restore();
+  });
 });

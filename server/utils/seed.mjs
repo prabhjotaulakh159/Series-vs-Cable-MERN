@@ -9,7 +9,7 @@ let series;
     series = await fetchAllSeries(token);
     await db.connect('webprojectdb', 'series');
     const num = await db.createMany(series);
-    console.log(`Inserted ${num} series`);
+    console.debug(`Inserted ${num} series`);
   } catch (e) {
     console.error('could not seed');
     console.dir(e);

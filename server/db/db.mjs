@@ -32,24 +32,51 @@ class DB {
     if (instance.db){
       return;
     }
-    console.log(instance);
     await instance.client.connect();
     instance.db = await instance.client.db(dbname);
     // Send a ping to confirm a successful connection
     await instance.client.db(dbname).command({ ping: 1 });
-    console.log('Successfully connected to MongoDB database ' + dbname);
     instance.collection = await instance.db.collection(collName);
   }
 
   /* Closes the db connection */
   async close() {
-    await instance.mongoClient.close();
+    await instance.client.close();
     instance = null;
   }
 
   /* Retrieves all series from the database */
   async readAll() {
     return await instance.collection.find().toArray();
+  }
+
+  /**
+   * Retrives series based on name, year and type
+   * @param {String} name - Name of series to filter with
+   * @param {String} year - Year of series to find
+   * @param {String} type - Type of series (cable, streaming)
+   * @return An array of series based on the filters
+   */
+  async getFilteredSeries(name, year, type) {
+    const query = {};
+    if (name) {
+      // https://stackoverflow.com/questions/10610131/checking-if-a-field-contains-a-string
+      // i stands for case-insensitivity 
+      query.name = { $regex : name, $options : 'i' }; 
+    }
+    if (year) {
+      query.year = Number(year);
+    }
+    if (type) {
+      query.type = type;
+    }
+    // the find method takes an object { name: name, year: year, type: type }
+    // however, we only add those keys if we actually want them, meaning 
+    // they are truthy from the request query parameters. If only name is 
+    // required, the object in find will simply be { name: name }, and it 
+    // filter only by name
+    const seriesFiltered = await instance.collection.find(query).toArray();
+    return seriesFiltered;
   }
 
   /* opens a connection to the db using the db name and collection name */
