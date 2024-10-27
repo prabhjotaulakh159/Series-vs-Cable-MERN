@@ -1,7 +1,11 @@
 import * as chai from 'chai';
-import {it, describe} from 'mocha';
+import {it, describe, before, after} from 'mocha';
 import pkg from 'supertest';
 import app from '../api.mjs';
+import { db } from '../db/db.mjs';
+import * as sinon from 'sinon';
+
+const stubGetSeriesById = sinon.stub(db, 'getSeriesById');
 
 const request = pkg;
 const assert = chai.assert;
@@ -20,9 +24,26 @@ Expect data from db to look like this
 */
 
 describe('Testing the /api/series{id} endpoint', ()=>{
+  before(()=>{
+    stubGetSeriesById.resolves(
+      {
+        '_id': '671c67438e349e8a74cefd3a',
+        'id': 70328,
+        'name': 'The Young and the Restless',
+        'score': 34583,
+        'numberOfSeasons': 36,
+        'genres': ['Soap', 'Drama', 'Romance'],
+        'companyId': 56,
+        'companyType': 'cable',
+        'artwork': 'https://artworks.thetvdb.com/banners/v4/series/70328/posters/62996ec6e5ab4.jpg',
+        'year': 1973
+      }
+    );
+  });
+
   it('should return an object with status code of 200', async ()=>{
     
-    const response = await request(app).get('/api/series/73593');
+    const response = await request(app).get('/api/series/70328');
     
     expect(response.status).to.be.equal(200);
 
@@ -82,5 +103,9 @@ describe('Testing the /api/series{id} endpoint', ()=>{
     expect(body).to.have.property('message');
 
     assert.strictEqual(body.message, 'id must be a number');
+  });
+
+  after(() => {
+    stubGetSeriesById.restore();
   });
 });
