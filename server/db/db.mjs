@@ -65,7 +65,7 @@ class DB {
       query.name = { $regex : name, $options : 'i' }; 
     }
     if (year) {
-      query.year = year;
+      query.year = Number(year);
     }
     if (type) {
       query.type = type;

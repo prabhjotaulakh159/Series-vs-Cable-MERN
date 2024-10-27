@@ -65,7 +65,7 @@ async function getSeriesWithQueryParameters(req, res, next) {
       req.query.year, req.query.type);   
     return res.send(series);
   } catch (error) {
-    error.status(500);
+    error.status = 500;
     next(error);
   }
 }
