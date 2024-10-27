@@ -30,27 +30,31 @@ describe('Testing the /api/series{id} endpoint', ()=>{
   });
 
   it('check body of response has valid data types', async ()=>{
-    const response = await request(app).get('/api/series/70327');
+    const response = await request(app).get('/api/series/70328');
     const body = response.body;
-    const series = body[0];
+    const series = body;
 
     assert.isNotNull(series);
 
     expect(series).to.have.property('id');  
     expect(series).to.have.property('name');    
-    expect(series).to.have.property('genre');    
-    expect(series).to.have.property('artwork');    
-    expect(series).to.have.property('companyID');    
     expect(series).to.have.property('score');    
     expect(series).to.have.property('numberOfSeasons'); 
+    expect(series).to.have.property('genres');    
+    expect(series).to.have.property('companyId');    
+    expect(series).to.have.property('companyType');    
+    expect(series).to.have.property('artwork');    
+    expect(series).to.have.property('year');    
 
     assert.typeOf(series.id, 'number');
     assert.typeOf(series.name, 'string');
-    assert.typeOf(series.genre, 'string');
-    assert.typeOf(series.artwork, 'string');
-    assert.typeOf(series.companyId, 'number');
     assert.typeOf(series.score, 'number');
     assert.typeOf(series.numberOfSeasons, 'number');
+    assert.typeOf(series.genres, 'array');
+    assert.typeOf(series.companyId, 'number');
+    assert.typeOf(series.companyType, 'string');
+    assert.typeOf(series.artwork, 'string');
+    assert.typeOf(series.year, 'number');
 
   });
 
