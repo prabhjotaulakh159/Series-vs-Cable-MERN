@@ -1,3 +1,5 @@
+import { db } from '../db/db.mjs';
+
 /**
  * Validates the year, name and type query parameters
  */
@@ -5,15 +7,12 @@ function validateSeriesQueryParameters(req, res, next) {
   try {
     if ('year' in req.query) {
       validateYear(req.query.year);
-      req.year = req.query.year;
     }
     if ('name' in req.query) {
       validateName(req.query.name);
-      req.name = req.query.name;
     }
     if ('type' in req.query) {
       validateType(req.query.type);
-      req.type = req.query.type;
     }
     next();
   } catch (error) {
@@ -60,9 +59,15 @@ function validateType(type) {
 /**
  * Fetches series from the database depending on the query parameters
  */
-function getSeriesWithQueryParameters(req, res) {
-  res.status(200);
-  res.send([]);
+async function getSeriesWithQueryParameters(req, res, next) {
+  try {
+    const series = await db.getFilteredSeries(req.query.name, 
+      req.query.year, req.query.type);   
+    return res.send(series);
+  } catch (error) {
+    error.status(500);
+    next(error);
+  }
 }
 
 function validateId(req, res, next){

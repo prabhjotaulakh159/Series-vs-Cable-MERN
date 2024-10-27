@@ -50,6 +50,30 @@ class DB {
     return await instance.collection.find().toArray();
   }
 
+  /**
+   * Retrives series based on name, year and type
+   * @param {String} name - Name of series to filter with
+   * @param {String} year - Year of series to find
+   * @param {String} type - Type of series (cable, streaming)
+   * @return An array of series based on the filters
+   */
+  async getFilteredSeries(name, year, type) {
+    const query = {};
+    if (name) {
+      // https://stackoverflow.com/questions/10610131/checking-if-a-field-contains-a-string
+      // i stands for case-insensitivity 
+      query.name = { $regex : name, $options : 'i' }; 
+    }
+    if (year) {
+      query.year = year;
+    }
+    if (type) {
+      query.type = type;
+    }
+    const seriesFiltered = await instance.collection.find(query).toArray();
+    return seriesFiltered;
+  }
+
   /* opens a connection to the db using the db name and collection name */
   async open(dbname, collName) {
     try {
