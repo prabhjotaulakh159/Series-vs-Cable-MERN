@@ -80,6 +80,8 @@ describe('Testing the /api/series{id} endpoint', ()=>{
   });
 
   it('should return a 404 error if a series with the id isn\'t found', async()=>{
+
+    stubGetSeriesById.resolves(null);
     const response = await request(app).get('/api/series/0');
     const body = response.body;
 
