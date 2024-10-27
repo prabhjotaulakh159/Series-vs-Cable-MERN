@@ -93,9 +93,21 @@ function validateId(req, res, next){
 /**
  * Gets series with a specific id from the database
  */
-async function getSeriesById(req, res){
-  res.status(200);
-  res.send({});
+async function getSeriesById(req, res, next){
+  try{
+    const series = await db.getSeriesById(req.params.id);
+    if(!series){
+      const error = new Error('No series found with this id');
+      error.status = 404;
+      next(error);
+    }else{
+      res.status(200);
+      res.send(series);
+    }
+  }catch(error){
+    error.status = 500;
+    next(error);
+  }
 }
 
 export {
