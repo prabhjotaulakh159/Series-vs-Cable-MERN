@@ -87,15 +87,15 @@ describe('Test getting series with and without query parameters', () => {
     expect(series).to.have.property('artwork');    
     expect(series).to.have.property('year');    
 
-    assert.typeOf(body.id, 'number');
-    assert.typeOf(body.name, 'string');
-    assert.typeOf(body.score, 'number');
-    assert.typeOf(body.numberOfSeasons, 'number');
-    assert.typeOf(body.genres, 'array');
-    assert.typeOf(body.companyId, 'number');
-    assert.typeOf(body.companyType, 'string');
-    assert.typeOf(body.artWork, 'string');
-    assert.typeOf(body.year, 'number');
+    assert.typeOf(series.id, 'number');
+    assert.typeOf(series.name, 'string');
+    assert.typeOf(series.score, 'number');
+    assert.typeOf(series.numberOfSeasons, 'number');
+    assert.typeOf(series.genres, 'array');
+    assert.typeOf(series.companyId, 'number');
+    assert.typeOf(series.companyType, 'string');
+    assert.typeOf(series.artwork, 'string');
+    assert.typeOf(series.year, 'number');
   });
 
   it('Should return an error with status 400 because name query parameter is empty ', async () => {
@@ -175,7 +175,7 @@ describe('Test getting series with and without query parameters', () => {
       assert.strictEqual(body.message, 'Type must be either cable or streaming');
     });
 
-    after(() => {
-      stubGetgetFilteredSeries.restore();
-    });
+  after(() => {
+    stubGetgetFilteredSeries.restore();
+  });
 });
