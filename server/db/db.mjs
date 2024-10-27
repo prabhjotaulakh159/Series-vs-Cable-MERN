@@ -70,6 +70,11 @@ class DB {
     if (type) {
       query.type = type;
     }
+    // the find method takes an object { name: name, year: year, type: type }
+    // however, we only add those keys if we actually want them, meaning 
+    // they are truthy from the request query parameters. If only name is 
+    // required, the object in find will simply be { name: name }, and it 
+    // filter only by name
     const seriesFiltered = await instance.collection.find(query).toArray();
     return seriesFiltered;
   }
