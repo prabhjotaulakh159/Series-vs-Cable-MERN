@@ -8,9 +8,9 @@ import {validateCompanyQueryParameters, getCompaniesWithQueryParameters,
 const companiesRouter = express.Router();
 
 companiesRouter.use('/', validateCompanyQueryParameters);
-companiesRouter.get('/companies', getCompaniesWithQueryParameters);
+companiesRouter.get('/', getCompaniesWithQueryParameters);
 
-companiesRouter.use('/:id', validateCompanyId);
+companiesRouter.get('/:id', validateCompanyId);
 companiesRouter.get('/:id', getCompanyById);
 
 export default companiesRouter;
