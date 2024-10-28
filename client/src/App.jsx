@@ -1,6 +1,9 @@
 import './App.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
 
 function App() {
   const [series, setSeries] = useState([]);
@@ -22,13 +25,20 @@ function App() {
       } catch (error) {
         setError(error.message);
       } finally {
-        setLoading(false);
+        // simulate a long loading time with a timeout
+        setTimeout(() => {
+          setLoading(false);
+        }, 3000);
       }
-    })();    
+    })();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Skeleton count={20}/>;
+  }
+
+  if (error) {
+    return <h1>{error}</h1>;
   }
 
   return (
