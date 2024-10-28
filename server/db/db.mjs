@@ -50,6 +50,16 @@ class DB {
     return await instance.collection.find().toArray();
   }
 
+  /* Inserts {series} in the database  */
+  async createMany(series) {
+    return await instance.collection.insertMany(series);
+  }
+
+  /* Deletes all series from the database */
+  async deleteMany(query) {
+    return await instance.collection.deleteMany(query);
+  }
+
   /**
    * Retrives series based on name, year and type
    * @param {String} name - Name of series to filter with
@@ -77,17 +87,6 @@ class DB {
     // filter only by name
     const seriesFiltered = await instance.collection.find(query).toArray();
     return seriesFiltered;
-  }
-
-  /**
-   * retrieves series based on an id
-   * @param {Number} id - The id of the series
-   * @return An object representing the id of the series to find
-   */
-  async getSeriesById(id){
-    const query = {id:Number(id)};
-    const series = await instance.collection.findOne(query);
-    return series;
   }
 
   /* opens a connection to the db using the db name and collection name */
