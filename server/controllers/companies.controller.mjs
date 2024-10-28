@@ -17,14 +17,13 @@ function isValidType(type) {
   (type.toLowerCase().includes('cable') || type.toLowerCase().includes('streaming')));
 }
 
-function getCompaniesWithQueryParameters(req, res, next) {
+async function getCompaniesWithQueryParameters(req, res, next) {
   const type = req.query.type;
   return res.status(200).send();
   // retrieve companies and filter by type if needed
 }
 
 function validateCompanyId(req, res, next) {
-
   try {
     const id = Number(req.params['number']);
     if (!id) {
@@ -38,7 +37,7 @@ function validateCompanyId(req, res, next) {
   }
 }
 
-function getCompanyById(req, res, next) {
+async function getCompanyById(req, res, next) {
   const id = req.params.id;
   return res.status(200).send();
   // retrieve company by id here
