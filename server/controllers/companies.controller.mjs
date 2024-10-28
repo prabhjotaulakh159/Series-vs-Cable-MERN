@@ -6,6 +6,7 @@ function validateCompanyQueryParameters(req, res, next) {
     if ('type' in req.query && !isValidType(req.query.type)) {
       throw new Error('Not a valid type');
     }
+    next();
   } catch (error) {
     error.status = 400;
     next(error);
