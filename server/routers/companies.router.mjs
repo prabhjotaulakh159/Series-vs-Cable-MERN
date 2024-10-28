@@ -1,7 +1,7 @@
 import express from 'express';
-import { validateCompanyQueryParameters, getCompaniesWithQueryParameters, 
-  getCompanyById, validateCompanyId } 
-  from '../controllers/series.controller.mjs';
+import {validateCompanyQueryParameters, getCompaniesWithQueryParameters, 
+  getCompanyById, validateCompanyId}
+  from '../controllers/companies.controller.mjs';
 
 /* /api/companies router */
 
