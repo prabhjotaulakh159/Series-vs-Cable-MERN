@@ -2,15 +2,12 @@
 import { db } from '../db/db.mjs';
 
 function validateCompanyQueryParameters(req, res, next) {
-  try {
-    if ('type' in req.query && !isValidType(req.query.type)) {
-      throw new Error('Not a valid type');
-    }
-    next();
-  } catch (error) {
+  if ('type' in req.query && !isValidType(req.query.type)) {
+    const error =  new Error('Not a valid type');
     error.status = 400;
     next(error);
   }
+  next();
 }
 
 function isValidType(type) {
@@ -25,17 +22,14 @@ async function getCompaniesWithQueryParameters(req, res, next) {
 }
 
 function validateCompanyId(req, res, next) {
-  try {
-    const id = Number(req.params['id']);
-    if (!id) {
-      throw new Error('Id must be an integer');
-    }
-    req.params.number = id;
-    next();
-  } catch (error) {
+  const id = Number(req.params['id']);
+  if (!id) {
+    const error =  new Error('Id must be an integer');
     error.status = 400;
     next(error);
   }
+  req.params.number = id;
+  next();
 }
 
 async function getCompanyById(req, res, next) {
