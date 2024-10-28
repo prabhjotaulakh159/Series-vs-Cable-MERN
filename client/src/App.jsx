@@ -9,6 +9,8 @@ function App() {
   const [series, setSeries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selected, setSelected] = useState(undefined);
+  const [loadingSelected, setLoadingSelected] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -26,12 +28,26 @@ function App() {
         setError(error.message);
       } finally {
         // simulate a long loading time with a timeout
-        setTimeout(() => {
-          setLoading(false);
-        }, 3000);
+        setTimeout(() => setLoading(false), 3000);
       }
     })();
   }, []);
+
+  async function fetchIndividualSeries(id) {
+    try {
+      setLoadingSelected(true);
+      const response = await fetch(`/api/series/${id}`);
+      if (!response.ok) {
+        throw new Error('Response did not return 200');
+      }
+      const data = await response.json();
+      setSelected(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setTimeout(() => setLoadingSelected(false), 3000);
+    }
+  }
 
   if (loading) {
     return <Skeleton width={'25%'} count={50}/>;
@@ -43,9 +59,16 @@ function App() {
 
   return (
     <div>
+      <h1>Currently selected series: 
+        {loadingSelected ? <Skeleton width={'25%'}/> : selected?.id}
+      </h1>
+      <h1>All series: </h1>
       <ul>
         {series?.slice(0, 50).map((show, key) => {
-          return <li key={key}>ID: {show.id}, name: {show.name}, score: {show.score}, 
+          return <li 
+            onClick={() => fetchIndividualSeries(show.id)} 
+            key={key}
+          >ID: {show.id}, name: {show.name}, score: {show.score}, 
             seasons: {show.numberOfSeasons}, genres: {show.genres}</li>;
         })}
       </ul>
