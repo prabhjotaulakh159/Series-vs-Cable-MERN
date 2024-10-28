@@ -34,7 +34,7 @@ function App() {
   }, []);
 
   if (loading) {
-    return <Skeleton count={20}/>;
+    return <Skeleton width={'25%'} count={50}/>;
   }
 
   if (error) {
@@ -42,12 +42,14 @@ function App() {
   }
 
   return (
-    <ul>
-      {series?.slice(0, 50).map((show, key) => {
-        return <li key={key}>ID: {show.id}, name: {show.name}, score: {show.score}, 
-          seasons: {show.numberOfSeasons}, genres: {show.genres}</li>;
-      })}
-    </ul>
+    <div>
+      <ul>
+        {series?.slice(0, 50).map((show, key) => {
+          return <li key={key}>ID: {show.id}, name: {show.name}, score: {show.score}, 
+            seasons: {show.numberOfSeasons}, genres: {show.genres}</li>;
+        })}
+      </ul>
+    </div>
   );
 }
 export default App;
