@@ -26,7 +26,7 @@ async function getCompaniesWithQueryParameters(req, res, next) {
 
 function validateCompanyId(req, res, next) {
   try {
-    const id = Number(req.params['number']);
+    const id = Number(req.params['id']);
     if (!id) {
       throw new Error('Id must be an integer');
     }
