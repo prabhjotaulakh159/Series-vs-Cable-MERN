@@ -79,6 +79,17 @@ class DB {
     return seriesFiltered;
   }
 
+  /**
+   * retrieves series based on an id
+   * @param {Number} id - The id of the series
+   * @return An object representing the id of the series to find
+   */
+  async getSeriesById(id){
+    const query = {id:Number(id)};
+    const series = await instance.collection.findOne(query);
+    return series;
+  }
+
   /* opens a connection to the db using the db name and collection name */
   async open(dbname, collName) {
     try {
