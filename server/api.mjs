@@ -10,7 +10,7 @@ app.use(express.static('../client/dist'));
 
 app.use('/api/companies', companiesRouter);
 app.use('/api/series/:id', seriesIdRouter);
-app.use('/api', seriesRouter);
+app.use('/api/series', seriesRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Route not found');
