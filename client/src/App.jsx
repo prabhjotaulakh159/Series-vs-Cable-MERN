@@ -32,7 +32,12 @@ function App() {
   }
 
   return (
-    <div>Hello World: {series.length}</div>
+    <ul>
+      {series?.slice(0, 50).map((show, key) => {
+        return <li key={key}>ID: {show.id}, name: {show.name}, score: {show.score}, 
+          seasons: {show.numberOfSeasons}, genres: {show.genres}</li>;
+      })}
+    </ul>
   );
 }
 export default App;
