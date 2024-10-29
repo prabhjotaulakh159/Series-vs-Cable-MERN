@@ -27,10 +27,10 @@ async function fetchToken() {
 }
 
 async function fetchAllCompanies(series, token) {
-  const companyIds = new Set(series.map(show => show.companyId));
-
+  const companyIdsSet = new Set(series.map(show => show.companyId));
+  const companyIds = [...companyIdsSet];
   const response = await Promise.all(companyIds.map(companyId => 
-    fetch(`https://api4.thetvdb.com/v4/companies/${companyId}`, {
+    fetch(`https://api4.thetvdb.com/v4/companies/${Number(companyId)}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -38,24 +38,25 @@ async function fetchAllCompanies(series, token) {
     })
   ));
 
-  if (!response.ok) {
-    throw new Error(`Not 2xx response, ${response.status}`, 
-      {cause: response});
-  }
+  const json = await Promise.all(response.map(response => 
+    response.json()
+  ));
 
-  const json = await response.json();
-  const companies = json.data;
+  const companies = json.map(company => company.data);
 
   const companyScoresAndTypes = getCompanyScoresAndTypes(companyIds, series);
 
-  companies.map(company => {
+
+  const filteredCompanies = companies.map(company => {
     return {
       'id': company.id,
       'name': company.name,
       'averageScore': companyScoresAndTypes.get(company.id).averageScore,
-      'type': companyScoresAndTypes.get(company.id).averageScore
+      'type': companyScoresAndTypes.get(company.id).type
     };
   });
+
+  return filteredCompanies;
 }
 
 function getCompanyScoresAndTypes(companyIds, series) {
@@ -66,6 +67,7 @@ function getCompanyScoresAndTypes(companyIds, series) {
       'type': getCompanyType(id, series)
     });
   });
+  return companyMap;
 }
 
 function calculateCompanyScore(id, series) {
@@ -83,7 +85,7 @@ function calculateCompanyScore(id, series) {
 }
 
 function getCompanyType(id, series) {
-  for (const show in series) {
+  for (const show of series) {
     if (show.companyId === id) {
       return show.companyType;
     }

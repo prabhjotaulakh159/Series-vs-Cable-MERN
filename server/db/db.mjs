@@ -22,13 +22,14 @@ class DB {
       });
       this.db = null;
       this.seriesCollection = null;
+      this.companiesCollection = null;
     }
     return instance;
   }
 
 
   /* Connects to the db using the db name and collection name */
-  async connect(dbname, collName) {
+  async connect(dbname) {
     if (instance.db){
       return;
     }
@@ -36,7 +37,8 @@ class DB {
     instance.db = await instance.client.db(dbname);
     // Send a ping to confirm a successful connection
     await instance.client.db(dbname).command({ ping: 1 });
-    instance.seriesCollection = await instance.db.collection(collName);
+    instance.seriesCollection = await instance.db.collection('series');
+    instance.companiesCollection = await instance.db.collection('companies');
   }
 
   /* Closes the db connection */
@@ -72,7 +74,10 @@ class DB {
 
   /* Deletes all companies from the database */
   async deleteManyCompanies(query) {
-    return await instance.companiesCollection.deleteMany(query);
+    if (!instance.companiesCollection) {
+      return await instance.companiesCollection.deleteMany(query);
+    }
+    return;
   }
   
   /**
