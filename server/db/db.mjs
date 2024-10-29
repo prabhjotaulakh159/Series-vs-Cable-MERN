@@ -85,7 +85,7 @@ class DB {
     // they are truthy from the request query parameters. If only name is 
     // required, the object in find will simply be { name: name }, and it 
     // filter only by name
-    const seriesFiltered = await instance.collection.find(query).toArray();
+    const seriesFiltered = await instance.collection.find(query).project({_id:0}).toArray();
     return seriesFiltered;
   }
 
@@ -97,6 +97,7 @@ class DB {
   async getSeriesById(id){
     const query = {id:Number(id)};
     const series = await instance.collection.findOne(query);
+    delete series._id;
     return series;
   }
 
