@@ -52,8 +52,8 @@ async function fetchAllCompanies(series, token) {
     return {
       'id': company.id,
       'name': company.name,
-      'averageScore': '',
-      'type': ''
+      'averageScore': companyScoresAndTypes.get(company.id).averageScore,
+      'type': companyScoresAndTypes.get(company.id).averageScore
     };
   });
 }
@@ -200,4 +200,4 @@ function getShowCompanyType(show) {
   return originalNetwork[0].name.toLowerCase().includes('cable') ? 'cable' : 'streaming';
 }
 
-export {fetchToken, fetchAllSeries};
+export {fetchToken, fetchAllSeries, fetchAllCompanies};
