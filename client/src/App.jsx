@@ -15,6 +15,27 @@ function App() {
   const [yAxisShowsPerYear, setYAxisShowsPerYear] = useState([]);
   const [showPlot, setShowPlot] = useState(false);
 
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try { 
+        const response = await fetch('/api/series');
+        if (!response.ok) {
+          throw new Error('Response did not return 200');
+        }
+        const data = await response.json();
+        setSeries(prev => {
+          return [...prev, ...data];
+        });
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        // simulate a long loading time with a timeout
+        setTimeout(() => setLoading(false), 3000);
+      }
+    })();
+  }, []); 
+
   // using the intersection observer API to 'lazy load' the graph only when it's needed
   // not part of phase 1, but could be useful for later phases for performance
   // We can use the following code as a reference for phase 3 (performance)
@@ -22,14 +43,20 @@ function App() {
   // https://dev.to/producthackers/intersection-observer-using-react-49ko
   // here's how to use it:
   // keep a reference to the plot using the useRef hook
+  // the plotRef is used further down in a div
   const plotRef = useRef(null); 
   useEffect(() => {
+    if (series.length === 0) {
+      return;
+    }
     // instantiate a new observer to observe our plot
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
 
       // if the plot is entering the view port
       if (entry.isIntersecting) {
+
+        console.log('entering the viewport');
 
         // we start computing the x and y axis
         const years = [];
@@ -51,40 +78,22 @@ function App() {
         
         // stop observing
         observer.disconnect(); 
-      }
-
-      // make it observe the plot
-      if (plotRef.current) {
-        observer.observe(plotRef.current);
-      }
+      }      
     }, 
     {
       root: null,
-      rootMargin: '0px',
-      threshold: 1.0
+      // start triggering when 200px above the plot
+      rootMargin: '200px', 
+      threshold: 0.1
     });
-  }, [series]);
+    // make it observe the plot
+    if (plotRef.current) {
+      console.log('observing !!');
+      observer.observe(plotRef.current);
+    }
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try { 
-        const response = await fetch('/api/series');
-        if (!response.ok) {
-          throw new Error('Response did not return 200');
-        }
-        const data = await response.json();
-        setSeries(prev => {
-          return [...prev, ...data];
-        });
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        // simulate a long loading time with a timeout
-        setTimeout(() => setLoading(false), 3000);
-      }
-    })();
-  }, []);
+    return () => observer.disconnect();
+  }, [series]);
 
 
   async function fetchIndividualSeries(id) {
@@ -118,7 +127,7 @@ function App() {
       </h1>
       <h1>All series: </h1>
       <ul>
-        {series?.slice(0, 50).map((show, key) => {
+        {series?.slice(0, 100).map((show, key) => {
           return <li 
             onClick={() => fetchIndividualSeries(show.id)} 
             key={key}
@@ -127,19 +136,24 @@ function App() {
         })}
       </ul>
       {/* https://plotly.com/javascript/react/ */}
-      <Plot
-        data={[
-          {
-            x: xAxisYears,
-            y: yAxisShowsPerYear,
-            type: 'scatter',
-            mode: 'lines+markers',
-            marker: {color: 'red'},
-          },
-          {type: 'bar', x: xAxisYears, y: yAxisShowsPerYear},
-        ]}
-        layout={ {width: 2000, height: 1000, title: 'A Fancy Plot'} }
-      />
+      <div ref={plotRef} style={{minHeight: '600px'}} >
+        {showPlot && <h1>hello world</h1> }
+      </div>
+      {/* { 
+        showPlot && <Plot
+          ref={plotRef} 
+          data={[
+            {
+              x: xAxisYears,
+              y: yAxisShowsPerYear,
+              type: 'scatter',
+              mode: 'lines+markers',
+              marker: {color: 'red'},
+            },
+            {type: 'bar', x: xAxisYears, y: yAxisShowsPerYear},
+          ]}
+          layout={ {width: 2000, height: 1000, title: 'A Fancy Plot'} }
+        /> } */}
     </div>
   );
 }
