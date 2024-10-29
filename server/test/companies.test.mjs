@@ -64,6 +64,8 @@ describe('GET /api/companies/:id', () => {
   it('should have the proper keys for the company object', async () => {
     const response = await request(app).get('/api/companies/1');
     const body = response.body;
+    
+    expect(response.status).to.equal(200);
 
     expect(body).to.not.be.null;
     expect(body).to.be.an('object');
@@ -82,6 +84,18 @@ describe('GET /api/companies/:id', () => {
     expect(body.name).to.be.equal('Test Name');
     expect(body.averageScore).to.be.equal(89);
     expect(body.type).to.be.equal('cable');
+  });
+
+  it('Should return 404 if a company is not found', async () => {
+    stubGetCompanyById.resolves(null);
+    const response = await request(app).get('/api/companies/4');
+    const body = response.body;
+
+    expect(response.status).to.be.equal(404);
+    expect(body).to.not.be.null;
+    expect(body).to.be.an('object');
+    expect(body).to.have.property('message');
+    expect(body.message).to.deep.equal('Company ID not found');
   });
 
   after(() => stubGetCompanyById.restore());
