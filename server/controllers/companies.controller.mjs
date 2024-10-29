@@ -11,8 +11,8 @@ function validateCompanyQueryParameters(req, res, next) {
 }
 
 function isValidType(type) {
-  return (typeof type !== 'string' ||
-  (type.toLowerCase().includes('cable') || type.toLowerCase().includes('streaming')));
+  return typeof type !== 'string' || 
+    (type.toLowerCase().includes('cable') || type.toLowerCase().includes('streaming'));
 }
 
 async function getCompaniesWithQueryParameters(req, res, next) {
