@@ -8,8 +8,8 @@ let series;
     const token = await fetchToken();
     series = await fetchAllSeries(token);
     await db.connect('webprojectdb', 'series');
-    await db.deleteMany({});
-    const num = await db.createMany(series);
+    await db.deleteManySeries({});
+    const num = await db.createManySeries(series);
     console.debug(`Inserted ${num} series`);
   } catch (e) {
     console.error('could not seed');
