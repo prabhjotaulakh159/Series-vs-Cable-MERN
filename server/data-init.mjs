@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import API_KEY from './api.key.mjs';
 import pLimit from 'p-limit';
 
@@ -101,6 +102,8 @@ function getCompanyType(id, series) {
  * - its country is either Great Britain, Canada, or USA (see countries list for codes)
  * - its company is either a cable or streaming service
  * - its release date is from 1990-01-01 and onwards 
+ * 
+ * P-limit: https://doziestar.medium.com/serving-tasks-efficiently-understanding-p-limit-in-javascript-fb524a35b846
  * 
  * @returns {JSON} - represents the filtered series
  */
