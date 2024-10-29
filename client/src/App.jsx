@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import Plot from 'react-plotly.js';
 
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
         setSeries(prev => {
           return [prev, ...data];
         });
+        const xAxisYear = series?.
+          map(show => show.year).
+          filter(year => year !== 0).
+          sort((a, b) => a - b);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -32,6 +37,8 @@ function App() {
       }
     })();
   }, []);
+
+  
 
   async function fetchIndividualSeries(id) {
     try {
