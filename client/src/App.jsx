@@ -1,6 +1,5 @@
 import './App.css';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Plot from 'react-plotly.js';
@@ -12,6 +11,59 @@ function App() {
   const [error, setError] = useState('');
   const [selected, setSelected] = useState(undefined);
   const [loadingSelected, setLoadingSelected] = useState(false);
+  const [xAxisYears, setXAxisYears] = useState([]);
+  const [yAxisShowsPerYear, setYAxisShowsPerYear] = useState([]);
+  const [showPlot, setShowPlot] = useState(false);
+
+  // using the intersection observer API to 'lazy load' the graph only when it's needed
+  // not part of phase 1, but could be useful for later phases for performance
+  // We can use the following code as a reference for phase 3 (performance)
+  // Source for how to use the API in react:
+  // https://dev.to/producthackers/intersection-observer-using-react-49ko
+  // here's how to use it:
+  // keep a reference to the plot using the useRef hook
+  const plotRef = useRef(null); 
+  useEffect(() => {
+    // instantiate a new observer to observe our plot
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+
+      // if the plot is entering the view port
+      if (entry.isIntersecting) {
+
+        // we start computing the x and y axis
+        const years = [];
+        series?.forEach(show => {
+          if (show.year !== 0 && !years.includes(show.year)) {
+            years.push(show.year);
+          }
+        });
+        years.sort((a, b) => a - b);
+        const showsPerYear = years.map(year => {
+          const showsForThatYear = series.filter(show => show.year === year).length;
+          return showsForThatYear;
+        });
+
+        // we then set the approproate state
+        setXAxisYears(prev => [...prev, ...years]);
+        setYAxisShowsPerYear(prev => [...prev, ...showsPerYear]);
+        setShowPlot(true);
+        
+        // stop observing
+        observer.disconnect(); 
+      }
+
+      // make it observe the plot
+      if (plotRef.current) {
+        observer.observe(plotRef.current);
+      }
+    }, 
+    {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1.0
+    });
+  }, [series]);
 
   useEffect(() => {
     (async () => {
@@ -33,19 +85,7 @@ function App() {
       }
     })();
   }, []);
-  
-  const xAxisYears = [];
-  series?.forEach(show => {
-    if (show.year !== 0 && !xAxisYears.includes(show.year)) {
-      xAxisYears.push(show.year);
-    }
-  });
-  xAxisYears.sort((a, b) => a - b);
 
-  const yAxisShowsPerYear = xAxisYears.map(year => {
-    const showsForThatYear = series.filter(show => show.year === year).length;
-    return showsForThatYear;
-  });
 
   async function fetchIndividualSeries(id) {
     try {
