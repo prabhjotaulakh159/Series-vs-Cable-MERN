@@ -7,6 +7,7 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == 'staging'
 
 default:
   cache:  # Cache modules in between jobs for the same branch if package-lock.json file changes
@@ -55,3 +56,15 @@ build-frontend:
     when: on_success
     paths:
       - client/build
+
+test-server:
+  stage: test
+  script:
+    - cd server && npm run test
+  only:
+    refs:
+      - main
+      - master
+      - staging
+  allow_failure: false
+  
