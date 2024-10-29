@@ -1,6 +1,6 @@
 import API_KEY from './api.key.mjs';
 
-const MIN_AIR_DATE = new Date('1990-01-01');
+const MIN_AIR_DATE = new Date('2010-01-01');
 const countries = ['can', 'usa', 'gbr'];
 
 /**
@@ -104,25 +104,26 @@ function getCompanyType(id, series) {
  * @returns {JSON} - represents the filtered series
  */
 async function fetchAllSeries(token) {
-  const response = await fetch('https://api4.thetvdb.com/v4/series', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
-  });
+  const requests = [...Array(319).keys()].map(page => 
+    fetch(`https://api4.thetvdb.com/v4/series?page=${page}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+  );
 
-  if (!response.ok) {
-    throw new Error(`Not 2xx response, ${response.status}`, 
-      {cause: response});
-  }
+  const responses = await Promise.all(requests);
 
-  const json = await response.json();
-  const series = json.data;
+  const json = await Promise.all(responses.map(response => 
+    response.json()
+  ));
+  let series = json.flatMap(page => page.data);
 
-  series.filter(show => { 
+  series = series.filter(show => { 
     const airDate = new Date(show.firstAired);
     return countries.includes(show.originalCountry) && 
-    airDate >= MIN_AIR_DATE;
+    airDate >= MIN_AIR_DATE && isCableOrStreaming(show);
   });
 
   const extendedSeriesResponses = await Promise.all(
@@ -138,9 +139,9 @@ async function fetchAllSeries(token) {
     response.json()
   ));
 
-  const filteredSeries = extendedSeries.map(series => series.data).filter(show => {
-    return isCableOrStreaming(show);
-  }).map(show => {
+  console.log(extendedSeries);
+
+  const filteredSeries = extendedSeries.map(series => series.data).map(show => {
     return {
       'id': show.id,
       'name': show.name,
