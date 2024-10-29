@@ -59,6 +59,21 @@ class DB {
   async deleteManySeries(query) {
     return await instance.seriesCollection.deleteMany(query);
   }
+
+  /* Retrieves all companies from the database */
+  async readAllCompanies() {
+    return await instance.companiesCollection.find().toArray();
+  }
+
+  /* Inserts {companies} in the database  */
+  async createManyCompanies(companies) {
+    return await instance.companiesCollection.insertMany(companies);
+  }
+
+  /* Deletes all companies from the database */
+  async deleteManyCompanies(query) {
+    return await instance.companiesCollection.deleteMany(query);
+  }
   
   /**
    * Retrives series based on name, year and type
