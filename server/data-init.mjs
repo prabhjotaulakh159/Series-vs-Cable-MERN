@@ -28,6 +28,15 @@ async function fetchToken() {
   return json.data.token;
 }
 
+/**
+ * Retrieves all the companies from the TB DB based on the series given. 
+ * It will filter the companies to only include the fields we need and create a
+ * new list of company objects.
+ * 
+ * @param {Array} series - represents the series whose companies we want to fetch
+ * @param {String} token - represents token needed to authorize fetch
+ * @returns 
+ */
 async function fetchAllCompanies(series, token) {
   const companyIdsSet = new Set(series.map(show => show.companyId));
   const companyIds = [...companyIdsSet];
