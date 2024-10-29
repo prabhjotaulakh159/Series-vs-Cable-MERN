@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, after, before } from 'mocha';
 import pkg from 'supertest'; 
 import app from '../api.mjs';
 import { db } from '../db/db.mjs';
@@ -14,6 +14,15 @@ const request  = pkg;
 const expect = chai.expect;
 
 describe('GET /api/companies', () => {
+  before(() => {
+    stubGetCompanyById.resolves({
+      id: 1,
+      name: 'Test Name',
+      averageScore: 89,
+      type: 'cable'
+    });
+  });
+
   it('should return 400 for incorrect type', async () => {
     const response = await request(app).get('/api/companies?type=something');
     expect(response.body).to.deep.equal(
@@ -47,15 +56,14 @@ describe('GET /api/companies/:id', () => {
   });
 
   it('should return 200 for valid id type', async () => {
-    stubGetCompanyById.resolves({
-      id: 1,
-      name: 'Test Name',
-      averageScore: 89,
-      type: 'cable'
-    });
-
     const response = await request(app).get('/api/companies/1');
     expect(response.status).to.equal(200);
+    chai.assert.isObject(response.body);
   });
 
+  it('should have the proper keys for the company object', async () => {
+    const response = await request(app).get('/api/companies/1');
+  });
+
+  after(() => stubGetCompanyById.restore());
 });
