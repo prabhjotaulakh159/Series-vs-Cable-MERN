@@ -11,8 +11,8 @@ function validateCompanyQueryParameters(req, res, next) {
 }
 
 function isValidType(type) {
-  return (typeof type !== 'string' ||
-  (type.toLowerCase().includes('cable') || type.toLowerCase().includes('streaming')));
+  return typeof type !== 'string' || 
+    (type.toLowerCase().includes('cable') || type.toLowerCase().includes('streaming'));
 }
 
 async function getCompaniesWithQueryParameters(req, res, next) {
@@ -28,14 +28,24 @@ function validateCompanyId(req, res, next) {
     error.status = 400;
     next(error);
   }
-  req.params.number = id;
   next();
 }
 
 async function getCompanyById(req, res, next) {
-  const id = req.params.id;
-  return res.status(200).send();
-  // retrieve company by id here
+  try {
+    const id = req.params.id;
+    const company = await db.getCompanyById(id);
+    if (!company) {
+      const error = new Error('Company ID not found');
+      error.status = 404;
+      next(error);
+    } else {
+      return res.status(200).json(company);
+    }
+  } catch (error) {
+    error.status = 500;
+    next(error);
+  }
 }
 
 
