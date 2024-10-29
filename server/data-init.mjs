@@ -26,6 +26,70 @@ async function fetchToken() {
   return json.data.token;
 }
 
+async function fetchAllCompanies(series, token) {
+  const companyIds = new Set(series.map(show => show.companyId));
+
+  const response = await Promise.all(companyIds.map(companyId => 
+    fetch(`https://api4.thetvdb.com/v4/companies/${companyId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+  ));
+
+  if (!response.ok) {
+    throw new Error(`Not 2xx response, ${response.status}`, 
+      {cause: response});
+  }
+
+  const json = await response.json();
+  const companies = json.data;
+
+  const companyScoresAndTypes = getCompanyScoresAndTypes(companyIds, series);
+
+  companies.map(company => {
+    return {
+      'id': company.id,
+      'name': company.name,
+      'averageScore': '',
+      'type': ''
+    };
+  });
+}
+
+function getCompanyScoresAndTypes(companyIds, series) {
+  const companyMap = new Map();
+  companyIds.forEach(id => {
+    companyMap.set(id, {
+      'averageScore': calculateCompanyScore(id, series),
+      'type': getCompanyType(id, series)
+    });
+  });
+}
+
+function calculateCompanyScore(id, series) {
+  const scores = [];
+  series.filter(show => show.companyId === id).forEach(show => {
+    scores.push(show.score);
+  });
+
+  const sum = scores.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0,
+  );
+
+  return sum / scores.length;
+}
+
+function getCompanyType(id, series) {
+  for (const show in series) {
+    if (show.companyId === id) {
+      return show.companyType;
+    }
+  }
+}
+
 /**
  * This function fetches all series (and their extended endpoints)
  * and filters this information to include the needed JSON for our app.
