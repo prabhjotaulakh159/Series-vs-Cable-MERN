@@ -1,4 +1,5 @@
 import API_KEY from './api.key.mjs';
+import pLimit from 'p-limit';
 
 const MIN_AIR_DATE = new Date('2010-01-01');
 const countries = ['can', 'usa', 'gbr'];
@@ -126,18 +127,20 @@ async function fetchAllSeries(token) {
     airDate >= MIN_AIR_DATE;
   });
 
-  const extendedSeriesResponses = await Promise.all(
-    series.map(show => fetch(`https://api4.thetvdb.com/v4/series/${show.id}/extended?short=true`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    }))
+  const limit = pLimit(50);
+
+  const extendedRequests = series.map(show => 
+    limit(() => 
+      fetch(`https://api4.thetvdb.com/v4/series/${show.id}/extended?short=true`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(response => response.json())
+    )
   );
 
-  const extendedSeries = await Promise.all(extendedSeriesResponses.map(response => 
-    response.json()
-  ));
+  const extendedSeries = await Promise.all(extendedRequests);
 
   const filteredSeries = extendedSeries.map(series => series.data).filter(show => 
     isCableOrStreaming(show)
