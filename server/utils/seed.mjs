@@ -8,6 +8,7 @@ let series;
     const token = await fetchToken();
     series = await fetchAllSeries(token);
     await db.connect('webprojectdb', 'series');
+    await db.deleteMany({});
     const num = await db.createMany(series);
     console.debug(`Inserted ${num} series`);
   } catch (e) {

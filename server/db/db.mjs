@@ -50,6 +50,16 @@ class DB {
     return await instance.collection.find().toArray();
   }
 
+  /* Inserts {series} in the database  */
+  async createMany(series) {
+    return await instance.collection.insertMany(series);
+  }
+
+  /* Deletes all series from the database */
+  async deleteMany(query) {
+    return await instance.collection.deleteMany(query);
+  }
+  
   /**
    * Retrives series based on name, year and type
    * @param {String} name - Name of series to filter with

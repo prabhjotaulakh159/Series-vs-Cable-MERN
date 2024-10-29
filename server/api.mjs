@@ -2,13 +2,15 @@
 import express from 'express';
 import seriesRouter from './routers/series.router.mjs';
 import seriesIdRouter from './routers/series-id.router.mjs';
+import companiesRouter from './routers/companies.router.mjs';
 
 const app = express();
 
 app.use(express.static('../client/dist'));
 
-app.use('/api', seriesRouter);
+app.use('/api/companies', companiesRouter);
 app.use('/api/series/:id', seriesIdRouter);
+app.use('/api/series', seriesRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Route not found');
