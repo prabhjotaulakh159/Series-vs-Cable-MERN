@@ -25,10 +25,6 @@ function App() {
         setSeries(prev => {
           return [prev, ...data];
         });
-        const xAxisYear = series?.
-          map(show => show.year).
-          filter(year => year !== 0).
-          sort((a, b) => a - b);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -38,7 +34,15 @@ function App() {
     })();
   }, []);
 
-  
+  const xAxisYear = series?.
+    map(show => show.year).
+    filter(year => year !== 0).
+    sort((a, b) => a - b);
+
+  const yAxisShowsPerYear = xAxisYear.map(year => {
+    const showsForThatYear = series.filter(show => show.year === year).length;
+    return showsForThatYear;
+  });
 
   async function fetchIndividualSeries(id) {
     try {
