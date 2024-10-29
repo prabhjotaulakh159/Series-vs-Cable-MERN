@@ -36,7 +36,7 @@ export default [
       // ADDITIONAL RULES
       'react/prop-types': 'off',
       ////////// Possible Errors //////////
-      'no-console': ['warn', { 'allow': ['error'] }],
+      'no-console': ['warn', { 'allow': ['error', 'debug'] }],
       'one-var': ['warn', 'never'],
       'no-undef': 'warn',
       'prefer-const': 'warn',
