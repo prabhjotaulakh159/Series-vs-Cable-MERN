@@ -102,7 +102,7 @@ async function getSeriesById(req, res, next){
       next(error);
     }else{
       res.status(200);
-      res.send(series);
+      return res.json(series);
     }
   }catch(error){
     error.status = 500;
