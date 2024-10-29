@@ -100,6 +100,16 @@ class DB {
     return series;
   }
 
+  /**
+   * Gets a company by ID
+   * @param { Number } id - ID of company to fetch
+   */
+  async getCompanyById(id) {
+    const query = { id: Number(id) };
+    const company = await instance.collection.findOne(query);
+    return company;
+  }
+
   /* opens a connection to the db using the db name and collection name */
   async open(dbname, collName) {
     try {
