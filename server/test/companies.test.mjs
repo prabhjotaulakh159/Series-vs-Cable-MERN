@@ -63,6 +63,25 @@ describe('GET /api/companies/:id', () => {
 
   it('should have the proper keys for the company object', async () => {
     const response = await request(app).get('/api/companies/1');
+    const body = response.body;
+
+    expect(body).to.not.be.null;
+    expect(body).to.be.an('object');
+
+    expect(body).to.have.property('id');
+    expect(body).to.have.property('name');
+    expect(body).to.have.property('averageScore');
+    expect(body).to.have.property('type');
+
+    expect(body.id).to.be.a('number');
+    expect(body.name).to.be.a('string');
+    expect(body.averageScore).to.be.a('number');
+    expect(body.type).to.be.a('string');
+
+    expect(body.id).to.be.equal(1);    
+    expect(body.name).to.be.equal('Test Name');
+    expect(body.averageScore).to.be.equal(89);
+    expect(body.type).to.be.equal('cable');
   });
 
   after(() => stubGetCompanyById.restore());
