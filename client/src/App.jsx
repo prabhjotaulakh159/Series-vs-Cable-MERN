@@ -23,7 +23,7 @@ function App() {
         }
         const data = await response.json();
         setSeries(prev => {
-          return [prev, ...data];
+          return [...prev, ...data];
         });
       } catch (error) {
         setError(error.message);
@@ -33,13 +33,16 @@ function App() {
       }
     })();
   }, []);
+  
+  const xAxisYears = [];
+  series?.forEach(show => {
+    if (show.year !== 0 && !xAxisYears.includes(show.year)) {
+      xAxisYears.push(show.year);
+    }
+  });
+  xAxisYears.sort((a, b) => a - b);
 
-  const xAxisYear = series?.
-    map(show => show.year).
-    filter(year => year !== 0).
-    sort((a, b) => a - b);
-
-  const yAxisShowsPerYear = xAxisYear.map(year => {
+  const yAxisShowsPerYear = xAxisYears.map(year => {
     const showsForThatYear = series.filter(show => show.year === year).length;
     return showsForThatYear;
   });
@@ -83,6 +86,20 @@ function App() {
             seasons: {show.numberOfSeasons}, genres: {show.genres}</li>;
         })}
       </ul>
+      {/* https://plotly.com/javascript/react/ */}
+      <Plot
+        data={[
+          {
+            x: xAxisYears,
+            y: yAxisShowsPerYear,
+            type: 'scatter',
+            mode: 'lines+markers',
+            marker: {color: 'red'},
+          },
+          {type: 'bar', x: xAxisYears, y: yAxisShowsPerYear},
+        ]}
+        layout={ {width: 2000, height: 1000, title: 'A Fancy Plot'} }
+      />
     </div>
   );
 }
