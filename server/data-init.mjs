@@ -35,7 +35,7 @@ async function fetchToken() {
  * 
  * @param {Array} series - represents the series whose companies we want to fetch
  * @param {String} token - represents token needed to authorize fetch
- * @returns 
+ * @returns - array of filtered companies to insert in the db
  */
 async function fetchAllCompanies(series, token) {
   const companyIdsSet = new Set(series.map(show => show.companyId));
@@ -70,6 +70,14 @@ async function fetchAllCompanies(series, token) {
   return filteredCompanies;
 }
 
+/**
+ * Returns a map of key-value pairs, in which the keys are the company ids,
+ * and the values are an object containing the company's average series score 
+ * and company type
+ * @param {Array} companyIds 
+ * @param {Array} series 
+ * @returns 
+ */
 function getCompanyScoresAndTypes(companyIds, series) {
   const companyMap = new Map();
   companyIds.forEach(id => {
@@ -81,6 +89,12 @@ function getCompanyScoresAndTypes(companyIds, series) {
   return companyMap;
 }
 
+/**
+ * Returns the average score of all series within a company
+ * @param {Number} id - id of the company whose series we want
+ * @param {Array} series - all series in the db
+ * @returns 
+ */
 function calculateCompanyScore(id, series) {
   const scores = [];
   series.filter(show => show.companyId === id).forEach(show => {
@@ -95,6 +109,14 @@ function calculateCompanyScore(id, series) {
   return sum / scores.length;
 }
 
+/**
+ * Returns the company's type, which is deduced by the series object in which we've
+ * already determined whether it falls under streaming or cable
+ * 
+ * @param {Number} id - represents the company id whose type we are looking for
+ * @param {Array} series - represents the series with the companies
+ * @returns - the company type (cable || streaming)
+ */
 function getCompanyType(id, series) {
   for (const show of series) {
     if (show.companyId === id) {
