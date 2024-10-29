@@ -107,6 +107,7 @@ class DB {
   async getCompanyById(id) {
     const query = { id: Number(id) };
     const company = await instance.collection.findOne(query);
+    delete company._id;
     return company;
   }
 
