@@ -123,7 +123,7 @@ async function fetchAllSeries(token) {
   series = series.filter(show => { 
     const airDate = new Date(show.firstAired);
     return countries.includes(show.originalCountry) && 
-    airDate >= MIN_AIR_DATE && isCableOrStreaming(show);
+    airDate >= MIN_AIR_DATE;
   });
 
   const extendedSeriesResponses = await Promise.all(
@@ -139,9 +139,9 @@ async function fetchAllSeries(token) {
     response.json()
   ));
 
-  console.log(extendedSeries);
-
-  const filteredSeries = extendedSeries.map(series => series.data).map(show => {
+  const filteredSeries = extendedSeries.map(series => series.data).filter(show => 
+    isCableOrStreaming(show)
+  ).map(show => {
     return {
       'id': show.id,
       'name': show.name,

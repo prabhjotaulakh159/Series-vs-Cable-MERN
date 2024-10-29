@@ -8,7 +8,6 @@ import {db} from '../db/db.mjs';
     const token = await fetchToken();
     const series = await fetchAllSeries(token);
     const companies = await fetchAllCompanies(series, token);
-    
     // insert series in the db
     await db.connect('webprojectdb', 'series');
     await db.deleteManySeries({});
