@@ -1,11 +1,19 @@
 import express from 'express';
-import { validateSeriesQueryParameters, getSeriesWithQueryParameters } 
-  from '../controllers/series.controller.mjs';
+import 
+{ 
+  validateSeriesQueryParameters, 
+  getSeriesWithQueryParameters, 
+  validateId,
+  getSeriesById 
+} from '../controllers/series.controller.mjs';
 
 const seriesRouter = express.Router();
+// const seriesIdRouter = express.Router({mergeParams: true});
 
-seriesRouter.use(validateSeriesQueryParameters);
+seriesRouter.use('/:id', validateId);
+seriesRouter.get('/:id', getSeriesById);
 
+seriesRouter.use('/', validateSeriesQueryParameters);
 seriesRouter.get('/', getSeriesWithQueryParameters);
 
 export default seriesRouter;
