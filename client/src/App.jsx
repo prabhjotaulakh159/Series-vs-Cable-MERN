@@ -24,31 +24,25 @@ function App() {
           throw new Error('Response did not return 200');
         }
         const data = await response.json();
-        setSeries(prev => {
-          return [...prev, ...data];
-        });
+        setSeries(data);
       } catch (error) {
         setError(error.message);
       } finally {
-        // simulate a long loading time with a timeout
-        setTimeout(() => setLoading(false), 3000);
+        setLoading(false);
       }
     })();
   }, []); 
 
   // using the intersection observer API to 'lazy load' the graph only when it's needed
-  // not part of phase 1, but could be useful for later phases for performance
   // We can use the following code as a reference for phase 3 (performance)
   // Source for how to use the API in react:
   // https://dev.to/producthackers/intersection-observer-using-react-49ko
+  // ----
   // here's how to use it:
-  // keep a reference to the plot using the useRef hook
-  // the plotRef is used further down in a div
+  // keep a reference to the plot we want to lazy load using the useRef hook
+  // the plotRef variable is used further down in a div containing the <Plot/>
   const plotRef = useRef(null); 
   useEffect(() => {
-    if (series.length === 0) {
-      return;
-    }
     // instantiate a new observer to observe our plot
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
@@ -56,42 +50,41 @@ function App() {
       // if the plot is entering the view port
       if (entry.isIntersecting) {
 
-        console.log('entering the viewport');
+        console.debug('entering the viewport');
 
         // we start computing the x and y axis
-        const years = [];
-        series?.forEach(show => {
-          if (show.year !== 0 && !years.includes(show.year)) {
-            years.push(show.year);
-          }
-        });
-        years.sort((a, b) => a - b);
-        const showsPerYear = years.map(year => {
+        const onlyYears = series.map(show => show.year).filter(year => year);
+        const uniqueYears = Array.from(new Set(onlyYears));
+        const sortedYears = uniqueYears.sort((a, b) => a - b);
+        const showsPerYear = sortedYears.map(year => {
           const showsForThatYear = series.filter(show => show.year === year).length;
           return showsForThatYear;
         });
 
         // we then set the approproate state
-        setXAxisYears(prev => [...prev, ...years]);
-        setYAxisShowsPerYear(prev => [...prev, ...showsPerYear]);
+        setXAxisYears(sortedYears);
+        setYAxisShowsPerYear(showsPerYear);
         setShowPlot(true);
         
         // stop observing
         observer.disconnect(); 
       }      
     }, 
+    // these are some options for the observer
     {
       root: null,
-      // start triggering when 200px above the plot
+      // start computing the plot when 200px above the plot
       rootMargin: '200px', 
       threshold: 0.1
     });
+
     // make it observe the plot
     if (plotRef.current) {
-      console.log('observing !!');
+      console.debug('observing !!');
       observer.observe(plotRef.current);
     }
 
+    // stop observing when leaving the component
     return () => observer.disconnect();
   }, [series]);
 
@@ -108,7 +101,7 @@ function App() {
     } catch (error) {
       setError(error.message);
     } finally {
-      setTimeout(() => setLoadingSelected(false), 3000);
+      setLoadingSelected(false);
     }
   }
 
@@ -136,24 +129,24 @@ function App() {
         })}
       </ul>
       {/* https://plotly.com/javascript/react/ */}
-      <div ref={plotRef} style={{minHeight: '600px'}} >
-        {showPlot && <h1>hello world</h1> }
+      {/* Notice the plotRef reference, this is what our observer is observing */}
+      <div ref={plotRef} >
+        { 
+          showPlot && <Plot
+            data={[
+              {
+                x: xAxisYears,
+                y: yAxisShowsPerYear,
+                type: 'scatter',
+                mode: 'lines+markers',
+                marker: {color: 'red'},
+              },
+              {type: 'bar', x: xAxisYears, y: yAxisShowsPerYear},
+            ]}
+            layout={ {width: 2000, height: 1000, title: 'A Fancy Plot'} }
+          /> 
+        }
       </div>
-      {/* { 
-        showPlot && <Plot
-          ref={plotRef} 
-          data={[
-            {
-              x: xAxisYears,
-              y: yAxisShowsPerYear,
-              type: 'scatter',
-              mode: 'lines+markers',
-              marker: {color: 'red'},
-            },
-            {type: 'bar', x: xAxisYears, y: yAxisShowsPerYear},
-          ]}
-          layout={ {width: 2000, height: 1000, title: 'A Fancy Plot'} }
-        /> } */}
     </div>
   );
 }
