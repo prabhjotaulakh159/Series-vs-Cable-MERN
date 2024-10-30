@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Plot from 'react-plotly.js';
-
+import SeriesList from './SeriesList';
 
 function App() {
   const [series, setSeries] = useState([]);
@@ -119,15 +119,7 @@ function App() {
         {loadingSelected ? <Skeleton width={'25%'}/> : selected?.id}
       </h1>
       <h1>All series: </h1>
-      <ul>
-        {series?.slice(0, 100).map((show, key) => {
-          return <li 
-            onClick={() => fetchIndividualSeries(show.id)} 
-            key={key}
-          >ID: {show.id}, name: {show.name}, score: {show.score}, 
-            seasons: {show.numberOfSeasons}, genres: {show.genres}</li>;
-        })}
-      </ul>
+      <SeriesList series={series} fetchIndividualSeries={fetchIndividualSeries}/>
       {/* https://plotly.com/javascript/react/ */}
       {/* Notice the plotRef reference, this is what our observer is observing */}
       <div ref={plotRef} >
