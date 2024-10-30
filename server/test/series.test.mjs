@@ -44,7 +44,7 @@ describe('Test getting series with and without query parameters', () => {
         'companyId': 2178,
         'companyType': 'cable',
         'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
-        'year': 1997
+        'year': 2014
       },
       {
         '_id': '671c67438e349e8a74cefd3a',
@@ -56,7 +56,7 @@ describe('Test getting series with and without query parameters', () => {
         'companyId': 56,
         'companyType': 'cable',
         'artwork': 'https://artworks.thetvdb.com/banners/v4/series/70328/posters/62996ec6e5ab4.jpg',
-        'year': 1973
+        'year': 2024
       }
       
     ]);
@@ -120,7 +120,7 @@ describe('Test getting series with and without query parameters', () => {
       expect(body).to.have.property('message');
       expect(response.status).to.be.equal(400);
 
-      assert.strictEqual(body.message, 'Year must be between 1980 and 2024');
+      assert.strictEqual(body.message, 'Year must be between 2010 and 2024');
     });
 
   it('Should return an error with status 400 because year query parameter is above 2024', 
@@ -133,7 +133,7 @@ describe('Test getting series with and without query parameters', () => {
       expect(body).to.have.property('message');
       expect(response.status).to.be.equal(400);
 
-      assert.strictEqual(body.message, 'Year must be between 1980 and 2024');
+      assert.strictEqual(body.message, 'Year must be between 2010 and 2024');
     });
 
   it('Should return an error with status 400 because year query parameter is empty', 
@@ -146,7 +146,7 @@ describe('Test getting series with and without query parameters', () => {
       expect(body).to.have.property('message');
       expect(response.status).to.be.equal(400);
 
-      assert.strictEqual(body.message, 'Year must be between 1980 and 2024');
+      assert.strictEqual(body.message, 'Year must be between 2010 and 2024');
     });
   
   it('Should return an error with status 400 because type query parameter is empty', 
