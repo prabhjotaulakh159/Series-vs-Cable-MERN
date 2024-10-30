@@ -1,6 +1,8 @@
+/* eslint-disable max-len */
 import API_KEY from './api.key.mjs';
+import pLimit from 'p-limit';
 
-const MIN_AIR_DATE = new Date('1990-01-01');
+const MIN_AIR_DATE = new Date('2010-01-01');
 const countries = ['can', 'usa', 'gbr'];
 
 /**
@@ -27,6 +29,103 @@ async function fetchToken() {
 }
 
 /**
+ * Retrieves all the companies from the TB DB based on the series given. 
+ * It will filter the companies to only include the fields we need and create a
+ * new list of company objects.
+ * 
+ * @param {Array} series - represents the series whose companies we want to fetch
+ * @param {String} token - represents token needed to authorize fetch
+ * @returns - array of filtered companies to insert in the db
+ */
+async function fetchAllCompanies(series, token) {
+  const companyIdsSet = new Set(series.map(show => show.companyId));
+  const companyIds = [...companyIdsSet];
+  const response = await Promise.all(companyIds.map(companyId => 
+    fetch(`https://api4.thetvdb.com/v4/companies/${Number(companyId)}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+  ));
+
+  const json = await Promise.all(response.map(response => 
+    response.json()
+  ));
+
+  const companies = json.map(company => company.data);
+
+  const companyScoresAndTypes = getCompanyScoresAndTypes(companyIds, series);
+
+
+  const filteredCompanies = companies.map(company => {
+    return {
+      'id': company.id,
+      'name': company.name,
+      'averageScore': companyScoresAndTypes.get(company.id).averageScore,
+      'type': companyScoresAndTypes.get(company.id).type
+    };
+  });
+
+  return filteredCompanies;
+}
+
+/**
+ * Returns a map of key-value pairs, in which the keys are the company ids,
+ * and the values are an object containing the company's average series score 
+ * and company type
+ * @param {Array} companyIds 
+ * @param {Array} series 
+ * @returns 
+ */
+function getCompanyScoresAndTypes(companyIds, series) {
+  const companyMap = new Map();
+  companyIds.forEach(id => {
+    companyMap.set(id, {
+      'averageScore': calculateCompanyScore(id, series),
+      'type': getCompanyType(id, series)
+    });
+  });
+  return companyMap;
+}
+
+/**
+ * Returns the average score of all series within a company
+ * @param {Number} id - id of the company whose series we want
+ * @param {Array} series - all series in the db
+ * @returns 
+ */
+function calculateCompanyScore(id, series) {
+  const scores = [];
+  series.filter(show => show.companyId === id).forEach(show => {
+    scores.push(show.score);
+  });
+
+  const sum = scores.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0,
+  );
+
+  return sum / scores.length;
+}
+
+/**
+ * Returns the company's type, which is deduced by the series object in which we've
+ * already determined whether it falls under streaming or cable
+ * 
+ * @param {Number} id - represents the company id whose type we are looking for
+ * @param {Array} series - represents the series with the companies
+ * @returns - the company type (cable || streaming)
+ */
+function getCompanyType(id, series) {
+  for (const show of series) {
+    if (show.companyId === id) {
+      return show.companyType;
+    }
+  }
+}
+
+/**
  * This function fetches all series (and their extended endpoints)
  * and filters this information to include the needed JSON for our app.
  * 
@@ -35,46 +134,51 @@ async function fetchToken() {
  * - its company is either a cable or streaming service
  * - its release date is from 1990-01-01 and onwards 
  * 
+ * P-limit: https://doziestar.medium.com/serving-tasks-efficiently-understanding-p-limit-in-javascript-fb524a35b846
+ * 
  * @returns {JSON} - represents the filtered series
  */
 async function fetchAllSeries(token) {
-  const response = await fetch('https://api4.thetvdb.com/v4/series', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
-  });
+  const requests = [...Array(319).keys()].map(page => 
+    fetch(`https://api4.thetvdb.com/v4/series?page=${page}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+  );
 
-  if (!response.ok) {
-    throw new Error(`Not 2xx response, ${response.status}`, 
-      {cause: response});
-  }
+  const responses = await Promise.all(requests);
 
-  const json = await response.json();
-  const series = json.data;
+  const json = await Promise.all(responses.map(response => 
+    response.json()
+  ));
+  let series = json.flatMap(page => page.data);
 
-  series.filter(show => { 
+  series = series.filter(show => { 
     const airDate = new Date(show.firstAired);
     return countries.includes(show.originalCountry) && 
     airDate >= MIN_AIR_DATE;
   });
 
-  const extendedSeriesResponses = await Promise.all(
-    series.map(show => fetch(`https://api4.thetvdb.com/v4/series/${show.id}/extended?short=true`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    }))
+  const limit = pLimit(50);
+
+  const extendedRequests = series.map(show => 
+    limit(() => 
+      fetch(`https://api4.thetvdb.com/v4/series/${show.id}/extended?short=true`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(response => response.json())
+    )
   );
 
-  const extendedSeries = await Promise.all(extendedSeriesResponses.map(response => 
-    response.json()
-  ));
+  const extendedSeries = await Promise.all(extendedRequests);
 
-  const filteredSeries = extendedSeries.map(series => series.data).filter(show => {
-    return isCableOrStreaming(show);
-  }).map(show => {
+  const filteredSeries = extendedSeries.map(series => series.data).filter(show => 
+    isCableOrStreaming(show)
+  ).map(show => {
     return {
       'id': show.id,
       'name': show.name,
@@ -136,4 +240,4 @@ function getShowCompanyType(show) {
   return originalNetwork[0].name.toLowerCase().includes('cable') ? 'cable' : 'streaming';
 }
 
-export {fetchToken, fetchAllSeries};
+export {fetchToken, fetchAllSeries, fetchAllCompanies};

@@ -21,14 +21,15 @@ class DB {
         }
       });
       this.db = null;
-      this.collection = null;
+      this.seriesCollection = null;
+      this.companiesCollection = null;
     }
     return instance;
   }
 
 
   /* Connects to the db using the db name and collection name */
-  async connect(dbname, collName) {
+  async connect(dbname) {
     if (instance.db){
       return;
     }
@@ -36,7 +37,8 @@ class DB {
     instance.db = await instance.client.db(dbname);
     // Send a ping to confirm a successful connection
     await instance.client.db(dbname).command({ ping: 1 });
-    instance.collection = await instance.db.collection(collName);
+    instance.seriesCollection = await instance.db.collection('series');
+    instance.companiesCollection = await instance.db.collection('companies');
   }
 
   /* Closes the db connection */
@@ -46,18 +48,36 @@ class DB {
   }
 
   /* Retrieves all series from the database */
-  async readAll() {
-    return await instance.collection.find().toArray();
+  async readAllSeries() {
+    return await instance.seriesCollection.find().toArray();
   }
 
   /* Inserts {series} in the database  */
-  async createMany(series) {
-    return await instance.collection.insertMany(series);
+  async createManySeries(series) {
+    return await instance.seriesCollection.insertMany(series);
   }
 
   /* Deletes all series from the database */
-  async deleteMany(query) {
-    return await instance.collection.deleteMany(query);
+  async deleteManySeries(query) {
+    return await instance.seriesCollection.deleteMany(query);
+  }
+
+  /* Retrieves all companies from the database */
+  async readAllCompanies() {
+    return await instance.companiesCollection.find().toArray();
+  }
+
+  /* Inserts {companies} in the database  */
+  async createManyCompanies(companies) {
+    return await instance.companiesCollection.insertMany(companies);
+  }
+
+  /* Deletes all companies from the database */
+  async deleteManyCompanies(query) {
+    if (!instance.companiesCollection) {
+      return await instance.companiesCollection.deleteMany(query);
+    }
+    return;
   }
   
   /**
@@ -85,7 +105,7 @@ class DB {
     // they are truthy from the request query parameters. If only name is 
     // required, the object in find will simply be { name: name }, and it 
     // filter only by name
-    const seriesFiltered = await instance.collection.find(query).project({_id:0}).toArray();
+    const seriesFiltered = await instance.seriesCollection.find(query).project({_id:0}).toArray();
     return seriesFiltered;
   }
 
@@ -96,7 +116,7 @@ class DB {
    */
   async getSeriesById(id){
     const query = {id:Number(id)};
-    const series = await instance.collection.findOne(query);
+    const series = await instance.seriesCollection.findOne(query);
     delete series._id;
     return series;
   }
