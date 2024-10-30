@@ -14,15 +14,6 @@ const request  = pkg;
 const expect = chai.expect;
 
 describe('GET /api/companies', () => {
-  before(() => {
-    stubGetCompanyById.resolves({
-      id: 1,
-      name: 'Test Name',
-      averageScore: 89,
-      type: 'cable'
-    });
-  });
-
   it('should return 400 for incorrect type', async () => {
     const response = await request(app).get('/api/companies?type=something');
     expect(response.body).to.deep.equal(
@@ -47,6 +38,15 @@ describe('GET /api/companies', () => {
 });
 
 describe('GET /api/companies/:id', () => {
+  before(() => {
+    stubGetCompanyById.resolves({
+      id: 1,
+      name: 'Test Name',
+      averageScore: 89,
+      type: 'cable'
+    });
+  });
+  
   it('should return 400 for incorrect id type', async () => {
     const response = await request(app).get('/api/companies/notanid');
     expect(response.body).to.deep.equal(
