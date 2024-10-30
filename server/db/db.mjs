@@ -13,13 +13,6 @@ class DB {
     //instance is the singleton, defined in outer scope
     if (!instance){
       instance = this;
-      this.client = new MongoClient(dbUrl, {
-        serverApi: {
-          version: ServerApiVersion.v1,
-          strict: true,
-          deprecationErrors: true,
-        }
-      });
       this.db = null;
       this.seriesCollection = null;
       this.companiesCollection = null;
@@ -30,6 +23,13 @@ class DB {
 
   /* Connects to the db using the db name and collection name */
   async connect(dbname) {
+    this.client = new MongoClient(dbUrl, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      }
+    });
     if (instance.db){
       return;
     }

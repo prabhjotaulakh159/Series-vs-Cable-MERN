@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { db } from '../db/db.mjs';
 
+/**
+ * Validates that the company's query parameter 'type' is 
+ * either streaming or cable.
+ * Will return a 400 if the type given is invalid.
+ */
 function validateCompanyQueryParameters(req, res, next) {
   if ('type' in req.query && !isValidType(req.query.type)) {
     const error =  new Error('Not a valid type');
@@ -10,17 +15,33 @@ function validateCompanyQueryParameters(req, res, next) {
   next();
 }
 
+/**
+ * Checks whether the type given is valid or not
+ * @param {String} type - type input by the user 
+ * @returns - boolean representing whether it is a valid type
+ */
 function isValidType(type) {
   return typeof type !== 'string' || 
     (type.toLowerCase().includes('cable') || type.toLowerCase().includes('streaming'));
 }
 
+/**
+ * Retrieves the companies given the query parameters 
+ * from the database and returns them in JSON format
+ * 
+ * @returns - JSON representing the companies retrieved, or an error message
+ */
 async function getCompaniesWithQueryParameters(req, res, next) {
   const type = req.query.type;
+  // TODO: retrieve companies and filter by type if needed
+
   return res.status(200).send();
-  // retrieve companies and filter by type if needed
 }
 
+/**
+ * Validates whether the company id parameter is
+ * a number
+ */
 function validateCompanyId(req, res, next) {
   const id = Number(req.params['id']);
   if (!id) {
@@ -31,6 +52,12 @@ function validateCompanyId(req, res, next) {
   next();
 }
 
+/**
+ * Retrieves the company whose ID matches the given ID
+ * Will return a 404 if the company does not exist
+ * 
+ * @returns - JSON representing the company retrieved, or an error message
+ */
 async function getCompanyById(req, res, next) {
   try {
     const id = req.params.id;

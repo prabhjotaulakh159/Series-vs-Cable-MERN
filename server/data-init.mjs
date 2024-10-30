@@ -54,9 +54,7 @@ async function fetchAllCompanies(series, token) {
   ));
 
   const companies = json.map(company => company.data);
-
   const companyScoresAndTypes = getCompanyScoresAndTypes(companyIds, series);
-
 
   const filteredCompanies = companies.map(company => {
     return {

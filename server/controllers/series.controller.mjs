@@ -27,10 +27,10 @@ function validateSeriesQueryParameters(req, res, next) {
  * @throws { Error } - If the validation fails
  */
 function validateYear(year) {
-  const MIN_DATE = 1980;
+  const MIN_DATE = 2010;
   const MAX_DATE = 2024;
   if (isNaN(year) || Number(year) < MIN_DATE || Number(year) > MAX_DATE) {
-    throw new Error('Year must be between 1980 and 2024');
+    throw new Error('Year must be between 2010 and 2024');
   } 
 }
 
