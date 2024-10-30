@@ -17,8 +17,9 @@ function isValidType(type) {
 
 async function getCompaniesWithQueryParameters(req, res, next) {
   const type = req.query.type;
+  // TODO: retrieve companies and filter by type if needed
+  
   return res.status(200).send();
-  // retrieve companies and filter by type if needed
 }
 
 function validateCompanyId(req, res, next) {
