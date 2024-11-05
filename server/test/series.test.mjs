@@ -4,6 +4,7 @@ import pkg from 'supertest';
 import app from '../api.mjs';
 import { db } from '../db/db.mjs';
 import * as sinon from 'sinon';
+import e from 'express';
 
 // https://dawsoncollege.gitlab.io/520JS/520-Web/exercises/09_2_mongo_express.html
 
@@ -274,7 +275,7 @@ describe('Test getting series with and without query parameters', () => {
           'numberOfSeasons': 8,
           'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
           'companyId': 2178,
-          'companyType': 'cable',
+          'companyType': 'streaming',
           'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
           'year': 2024
         },
@@ -287,6 +288,29 @@ describe('Test getting series with and without query parameters', () => {
       expect(body[0]['name']).to.be.equal('The Office');
       expect(body[1]['name']).to.be.equal('Inside the office of mr.office');
       expect(body[2]['name']).to.be.equal('Officer, arrest him !');
+    });
+
+  it('Should return an array of series with the word \'office\' inside from streaming companies', 
+    async () => {
+      stubGetgetFilteredSeries.resolves([
+        {
+          'id': 38563,
+          'name': 'Officer, arrest him !',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'streaming',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2024
+        },
+      ]);
+      const response = await request(app).get('/api/series?name=office?type=streaming');
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.an('array');
+      expect(response.body.length).to.be.equal(1);
+      expect(response.body[0]['name']).to.be.equal('Officer, arrest him !');
+      expect(response.body[0]['companyType']).to.be.equal('streaming');
     });
 
   after(() => {
