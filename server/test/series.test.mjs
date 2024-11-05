@@ -242,6 +242,53 @@ describe('Test getting series with and without query parameters', () => {
     expect(body[1]['companyType']).to.be.equal('cable');
   });
 
+  it('Should return an array of series whose name have the word \'office\' inside it', 
+    async () => {
+      stubGetgetFilteredSeries.resolves([
+        {
+          'id': 70327,
+          'name': 'The Office',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2014
+        },
+        {
+          'id': 452362,
+          'name': 'Inside the office of mr.office',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2024
+        },
+        {
+          'id': 38563,
+          'name': 'Officer, arrest him !',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2024
+        },
+      ]);
+      const response = await request(app).get('/api/series?name=office');
+      const body = response.body;
+      expect(response.status).to.be.equal(200);
+      expect(body).to.be.an('array');
+      expect(body.length).to.be.equal(3);
+      expect(body[0]['name']).to.be.equal('The Office');
+      expect(body[1]['name']).to.be.equal('Inside the office of mr.office');
+      expect(body[2]['name']).to.be.equal('Officer, arrest him !');
+    });
+
   after(() => {
     stubGetgetFilteredSeries.restore();
   });
