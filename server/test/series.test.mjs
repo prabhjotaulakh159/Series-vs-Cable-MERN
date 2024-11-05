@@ -4,7 +4,6 @@ import pkg from 'supertest';
 import app from '../api.mjs';
 import { db } from '../db/db.mjs';
 import * as sinon from 'sinon';
-import e from 'express';
 
 // https://dawsoncollege.gitlab.io/520JS/520-Web/exercises/09_2_mongo_express.html
 
@@ -312,7 +311,67 @@ describe('Test getting series with and without query parameters', () => {
       expect(response.body[0]['name']).to.be.equal('Officer, arrest him !');
       expect(response.body[0]['companyType']).to.be.equal('streaming');
     });
-
+  
+  it('Should return an array of series with the word \'office\' inside from cable companies', 
+    async () => {
+      stubGetgetFilteredSeries.resolves([
+        {
+          'id': 70327,
+          'name': 'The Office',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2014
+        },
+        {
+          'id': 452362,
+          'name': 'Inside the office of mr.office',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2024
+        },
+      ]);
+      const response = await request(app).get('/api/series?name=office?type=streaming');
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.an('array');
+      expect(response.body.length).to.be.equal(2);
+      expect(response.body[0]['name']).to.be.equal('The Office');
+      expect(response.body[0]['companyType']).to.be.equal('cable');
+      expect(response.body[1]['name']).to.be.equal('Inside the office of mr.office');
+      expect(response.body[1]['companyType']).to.be.equal('cable');
+    });
+    
+  it('Should return an array of series with the word office, only cable and in the year 2024', 
+    async () => {
+      stubGetgetFilteredSeries.resolves([
+        {
+          'id': 452362,
+          'name': 'Inside the office of mr.office',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2024
+        },
+      ]);
+      const response = await request(app).get('/api/series?name=office?type=streaming');
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.an('array');
+      expect(response.body.length).to.be.equal(1);
+      expect(response.body[0]['name']).to.be.equal('Inside the office of mr.office');
+      expect(response.body[0]['companyType']).to.be.equal('cable');
+      expect(response.body[0]['year']).to.be.equal(2024);
+    });
+    
   after(() => {
     stubGetgetFilteredSeries.restore();
   });
