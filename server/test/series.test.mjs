@@ -108,9 +108,9 @@ describe('Test getting series with and without query parameters', () => {
     assert.strictEqual(body.message, 'Name cannot be empty');
   });
 
-  it('Should return an error with status 400 because year query parameter is below 1980', 
+  it('Should return an error with status 400 because year query parameter is below 2010', 
     async () => {
-      const response = await request(app).get(`/api/series?year=1979`);
+      const response = await request(app).get(`/api/series?year=2009`);
       const body = response.body;
 
       assert.isObject(body);
@@ -304,7 +304,7 @@ describe('Test getting series with and without query parameters', () => {
           'year': 2024
         },
       ]);
-      const response = await request(app).get('/api/series?name=office?type=streaming');
+      const response = await request(app).get('/api/series?name=office&type=streaming');
       expect(response.status).to.be.equal(200);
       expect(response.body).to.be.an('array');
       expect(response.body.length).to.be.equal(1);
@@ -371,7 +371,43 @@ describe('Test getting series with and without query parameters', () => {
       expect(response.body[0]['companyType']).to.be.equal('cable');
       expect(response.body[0]['year']).to.be.equal(2024);
     });
-    
+  
+  it('Should return an array of series in the year 2011 who are from streaming companies', 
+    async () => {
+      stubGetgetFilteredSeries.resolves([
+        {
+          'id': 452362,
+          'name': 'John Joh McGee',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'streaming',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2011
+        },
+        {
+          'id': 38563,
+          'name': 'I hate apples',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'streaming',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2011
+        },
+      ]);
+      const response = await request(app).get('/api/series?year=2011&type=streaming');
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.an('array');
+      expect(response.body.length).to.be.equal(2);
+      expect(response.body[0]['year']).to.be.equal(2011);
+      expect(response.body[0]['companyType']).to.be.equal('streaming');
+      expect(response.body[1]['year']).to.be.equal(2011);
+      expect(response.body[1]['companyType']).to.be.equal('streaming');
+    });
+
   after(() => {
     stubGetgetFilteredSeries.restore();
   });
