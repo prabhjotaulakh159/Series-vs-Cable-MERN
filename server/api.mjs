@@ -2,8 +2,12 @@
 import express from 'express';
 import seriesRouter from './routers/series.router.mjs';
 import companiesRouter from './routers/companies.router.mjs';
+import compression from 'compression';
 
 const app = express();
+app.use(compression());
+
+// add app.use compression
 
 app.use(express.static('../client/dist'));
 
