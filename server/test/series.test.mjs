@@ -35,7 +35,6 @@ describe('Test getting series with and without query parameters', () => {
     // these are real examples from the database i copied over
     stubGetgetFilteredSeries.resolves([
       {
-        '_id': '671c67438e349e8a74cefd39',
         'id': 70327,
         'name': 'Buffy the Vampire Slayer',
         'score': 491166,
@@ -47,7 +46,6 @@ describe('Test getting series with and without query parameters', () => {
         'year': 2014
       },
       {
-        '_id': '671c67438e349e8a74cefd3a',
         'id': 70328,
         'name': 'The Young and the Restless',
         'score': 34583,
@@ -173,6 +171,41 @@ describe('Test getting series with and without query parameters', () => {
       expect(response.status).to.be.equal(400);
 
       assert.strictEqual(body.message, 'Type must be either cable or streaming');
+    });
+
+  it('Should return an array of series in the year 2010', 
+    async () => {
+      stubGetgetFilteredSeries.resolves([
+        {
+          'id': 70327,
+          'name': 'Buffy the Vampire Slayer',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2010
+        },
+        {
+          'id': 70327,
+          'name': 'Buffy the Vampire Slayer',
+          'score': 491166,
+          'numberOfSeasons': 8,
+          'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+          'companyId': 2178,
+          'companyType': 'cable',
+          'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+          'year': 2010
+        },
+      ]);
+      const response = await request(app).get('/api/series?year=2010');
+      const body = response.body;
+      expect(response.status).to.be.equal(200);
+      expect(body).to.be.an('array');
+      expect(body.length).to.be.equal(2);
+      expect(body[0]['year']).to.be.equal(2010);
+      expect(body[1]['year']).to.be.equal(2010);
     });
 
   after(() => {
