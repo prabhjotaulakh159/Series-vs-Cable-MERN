@@ -208,6 +208,40 @@ describe('Test getting series with and without query parameters', () => {
       expect(body[1]['year']).to.be.equal(2010);
     });
 
+  it('Should return an array of series of only type cable', async () => {
+    stubGetgetFilteredSeries.resolves([
+      {
+        'id': 70327,
+        'name': 'Buffy the Vampire Slayer',
+        'score': 491166,
+        'numberOfSeasons': 8,
+        'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+        'companyId': 2178,
+        'companyType': 'cable',
+        'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+        'year': 2014
+      },
+      {
+        'id': 70327,
+        'name': 'Buffy the Vampire Slayer',
+        'score': 491166,
+        'numberOfSeasons': 8,
+        'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+        'companyId': 2178,
+        'companyType': 'cable',
+        'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+        'year': 2024
+      },
+    ]);
+    const response = await request(app).get('/api/series?type=cable');
+    const body = response.body;
+    expect(response.status).to.be.equal(200);
+    expect(body).to.be.an('array');
+    expect(body.length).to.be.equal(2);
+    expect(body[0]['companyType']).to.be.equal('cable');
+    expect(body[1]['companyType']).to.be.equal('cable');
+  });
+
   after(() => {
     stubGetgetFilteredSeries.restore();
   });
