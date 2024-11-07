@@ -6,6 +6,7 @@ import { db } from '../db/db.mjs';
 import * as sinon from 'sinon';
 
 const stubGetCompanyById = sinon.stub(db, 'getCompanyById');
+const stubGetFilteredCompanies = sinon.stub(db, 'getFilteredCompanies');
 
 // https://dawsoncollege.gitlab.io/520JS/520-Web/exercises/09_2_mongo_express.html
 
@@ -14,6 +15,59 @@ const request  = pkg;
 const expect = chai.expect;
 
 describe('GET /api/companies', () => {
+  before(() => {
+    stubGetFilteredCompanies.resolves([{
+      'id': 49209,
+      'name': 'History Hit',
+      'averageScore': 30,
+      'type': 'streaming'
+    },
+    {
+      'id': 48047,
+      'name': 'HGTV (UK)',
+      'averageScore': 45,
+      'type': 'cable'
+    },
+    {
+      'id': 49,
+      'name': 'Canal+',
+      'averageScore': 4,
+      'type': 'cable'
+    },
+    {
+      'id': 48230,
+      'name': 'Binge',
+      'averageScore': 25,
+      'type': 'streaming'
+    }]);
+
+    stubGetFilteredCompanies.withArgs('cable').resolves([{
+      'id': 48047,
+      'name': 'HGTV (UK)',
+      'averageScore': 45,
+      'type': 'cable'
+    },
+    {
+      'id': 49,
+      'name': 'Canal+',
+      'averageScore': 4,
+      'type': 'cable'
+    }]);
+
+    stubGetFilteredCompanies.withArgs('streaming').resolves([{
+      'id': 49209,
+      'name': 'History Hit',
+      'averageScore': 30,
+      'type': 'streaming'
+    },
+    {
+      'id': 48230,
+      'name': 'Binge',
+      'averageScore': 25,
+      'type': 'streaming'
+    }]);
+  });
+
   it('should return 400 for incorrect type', async () => {
     const response = await request(app).get('/api/companies?type=something');
     expect(response.body).to.deep.equal(
@@ -32,6 +86,63 @@ describe('GET /api/companies', () => {
 
   it('should return 200 for no type included', async () => {
     const response = await request(app).get('/api/companies');
+    expect(response.status).to.equal(200);
+  });
+
+  it('should return 200 for all companies', async () => {
+    const response = await request(app).get('/api/companies');
+    expect(response.body[0]).to.deep.equal(
+      {
+        'id': 49209,
+        'name': 'History Hit',
+        'averageScore': 30,
+        'type': 'streaming'
+      },
+    );
+
+    expect(response.body.length).to.equal(4);
+    expect(response.status).to.equal(200);
+  });
+
+  it('should return 200 for companies with type "cable"', async () => {
+    const response = await request(app).get('/api/companies?type=cable');
+    expect(response.body).to.deep.equal(
+      [{
+        'id': 48047,
+        'name': 'HGTV (UK)',
+        'averageScore': 45,
+        'type': 'cable'
+      },
+      {
+        'id': 49,
+        'name': 'Canal+',
+        'averageScore': 4,
+        'type': 'cable'
+      }]
+    );
+
+    expect(response.body.length).to.equal(2);
+    expect(response.status).to.equal(200);
+  });
+
+  it('should return 200 for companies with type "streaming"', async () => {
+    const response = await request(app).get('/api/companies?type=streaming');
+    expect(response.body).to.deep.equal(
+      [{
+        'id': 49209,
+        'name': 'History Hit',
+        'averageScore': 30,
+        'type': 'streaming'
+      },
+      {
+        'id': 48230,
+        'name': 'Binge',
+        'averageScore': 25,
+        'type': 'streaming'
+      }]
+    );
+
+    expect(response.body.length).to.equal(2);
     expect(response.status).to.equal(200);
   });
 

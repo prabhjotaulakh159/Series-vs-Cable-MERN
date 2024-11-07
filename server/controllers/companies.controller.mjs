@@ -37,7 +37,7 @@ async function getCompaniesWithQueryParameters(req, res, next) {
   const companies = await db.getFilteredCompanies(type);
 
   if (!companies) {
-    return res.status(202).json({error: 'No companies found!'});
+    return res.status(404).json({error: 'No companies found!'});
   }
 
   return res.status(200).json(companies);
