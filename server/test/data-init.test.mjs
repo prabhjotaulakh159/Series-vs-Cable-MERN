@@ -65,3 +65,179 @@ describe('Tests for fetching the token', () => {
     return expect(DataInit.fetchToken()).to.be.rejectedWith(Error, `Not 2xx response, 401`);
   });
 }); 
+
+describe('Test fetchAllSeries', () => {
+  let fetchedStubFunction;
+
+  beforeEach(() => {
+    // global is the nodejs global scope
+    // it has the fetch function inside it
+    fetchedStubFunction = sinon.stub(global, 'fetch');
+  });
+
+  afterEach(() => {
+    fetchedStubFunction.restore();
+  });
+
+  // I apologize in advance. - Prabhjot
+  it('Should return an array of series', async () => {
+    // mock response from not extended endpoint
+    const expectedResponseNotExtended = {
+      // pretend each response.json() returns the 1 series for each of the 319 pages
+      json: async () => {
+        return { 
+          'data': [
+            {
+              'id': 70908,
+              'name': 'The Fall and Rise of Reginald Perrin',
+              'slug': 'the-fall-and-rise-of-reginald-perrin',
+              'image': '/banners/posters/70908-1.jpg',
+              'nameTranslations': [
+                'eng',
+                'spa'
+              ],
+              'overviewTranslations': [
+                'eng'
+              ],
+              'aliases': [],
+              'firstAired': '2015-09-08',
+              'lastAired': '2015-01-24',
+              'nextAired': '',
+              'score': 245,
+              'status': {
+                'id': null,
+                'name': null,
+                'recordType': '',
+                'keepUpdated': false
+              },
+              'originalCountry': 'can',
+              'originalLanguage': 'eng',
+              'defaultSeasonType': 1,
+              'isOrderRandomized': false,
+              'lastUpdated': '2020-04-29 08:20:08',
+              'averageRuntime': 30,
+              'episodes': null,
+              'overview': 'Something overview',
+              'year': '1976'
+            }
+          ]
+        };
+      } 
+    };
+
+    // mock response from extended endpoint
+    const extendedResponse = {
+      // pretend each response.json() returns the same series each time for extended series call
+      // Normally, a response from extended series has a lot more fields, 
+      // but this mock response only has what we need for tesing purposes.
+      json: async () => {
+        return {
+          'status': 'success',
+          'data': {
+            'id': 84946,
+            'name': 'Treme',
+            'score': 26149,
+            'firstAired': '2010-04-11',
+            'genres': [
+              {
+                'id': 12,
+                'name': 'Drama',
+                'slug': 'drama'
+              }
+            ],
+            'originalNetwork': {
+              'id': 328,
+              'parentCompany': {
+                'id': null
+              },
+              'tagOptions': [
+                {
+                  'id': 494,
+                  'tag': 24,
+                  'tagName': 'Company Type',
+                  'name': 'Premium Cable',
+                  'helpText': 'Subscription based premium networks. Examples: HBO, Starz, Showtime'
+                }
+              ]
+            },
+            'image': 'https://artworks.thetvdb.com/banners/posters/84946-5.jpg',
+            'seasons': [
+              {
+                'id': 40350,
+                'type': {
+                  'id': 1,
+                  'name': 'Aired Order'
+                }
+              },
+              {
+                'id': 40351,
+                'type': {
+                  'id': 1,
+                  'name': 'Aired Order'
+                }
+              },
+              {
+                'id': 463743,
+                'type': {
+                  'id': 1,
+                  'name': 'Aired Order'
+                }
+              },
+              {
+                'id': 484551,
+                'type': {
+                  'id': 1,
+                  'name': 'Aired Order'
+                }
+              },
+              {
+                'id': 504385,
+                'type': {
+                  'id': 1,
+                  'name': 'Aired Order'
+                }
+              }
+            ]
+          }
+        };        
+      }
+    };
+
+    // the first 319 calls to fetch should return the first response.
+    // i got this number because inside the method, theres 319 pages
+    // that we are fetching. For simplicity, i am assuming 
+    // that each page only returns the 1 series i mentionned above.
+    for (let i = 0; i < 319; i++) {
+      fetchedStubFunction.onCall(i).resolves(expectedResponseNotExtended);
+    }
+
+    // for now, we are pretending there are only 319 series, aka 1 per page
+    // for each 319 series, we make another request. 
+    // hence, the next 319 calls should resolve to the extended series
+    for (let j = 319; j < 319 * 2; j++) {
+      fetchedStubFunction.onCall(j).resolves(extendedResponse);
+    }
+
+    const series = await DataInit.fetchAllSeries('some-token');
+
+    // we expect it to be an array
+    expect(series).to.be.an('array');
+
+    // we expect 319 calls (each page) + 319 calls (the single extended series per page) 
+    expect(fetchedStubFunction.callCount).to.be.equal(319 * 2);
+
+    // check if we got the valid keys
+    expect(series[0]).to.have.property('id');
+    expect(series[0]).to.have.property('name');
+    expect(series[0]).to.have.property('score');
+    expect(series[0]).to.have.property('numberOfSeasons');
+    expect(series[0]).to.have.property('genres');
+    expect(series[0]).to.have.property('companyId');
+    expect(series[0]).to.have.property('companyType');
+    expect(series[0]).to.have.property('year');
+
+    // although it doesnt check all the series, we can check if the fetch request,
+    // gets the expected fields, and uses them approprietly, and spits 
+    // out the result like the one above.
+  });
+});
