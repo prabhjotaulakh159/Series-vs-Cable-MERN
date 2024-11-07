@@ -32,7 +32,7 @@ function isValidType(type) {
  * @returns - JSON representing the companies retrieved, or an error message
  */
 async function getCompaniesWithQueryParameters(req, res, next) {
-  const type = req.query.type;
+  const type = req.query.type ? req.query.type.toLowerCase() : req.query.type;
 
   const companies = await db.getFilteredCompanies(type);
 

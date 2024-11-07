@@ -146,6 +146,28 @@ describe('GET /api/companies', () => {
     expect(response.status).to.equal(200);
   });
 
+  it('should return 200 for companies with type "streaming": not case sensitive', async () => {
+    const response = await request(app).get('/api/companies?type=STREaming');
+    expect(response.body).to.deep.equal(
+      [{
+        'id': 49209,
+        'name': 'History Hit',
+        'averageScore': 30,
+        'type': 'streaming'
+      },
+      {
+        'id': 48230,
+        'name': 'Binge',
+        'averageScore': 25,
+        'type': 'streaming'
+      }]
+    );
+
+    expect(response.body.length).to.equal(2);
+    expect(response.status).to.equal(200);
+  });
+
+
 });
 
 describe('GET /api/companies/:id', () => {
