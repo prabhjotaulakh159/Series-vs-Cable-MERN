@@ -24,7 +24,7 @@ export default [
     },
     rules: {
     ////////// Possible Errors //////////
-      'no-console': ['warn', { 'allow': ['error'] }],
+      'no-console': ['warn', { 'allow': ['error', 'debug', 'dir'] }],
       'one-var': ['warn', 'never'],
       'no-undef': 'warn',
       'prefer-const': 'warn',
