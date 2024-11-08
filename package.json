@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "cd server && node bin/www",
-    "build": "cd client && npm install && npm run build && cd ../server && npm install"
+    "build": "cd client && npm install && npm run build && cd ../server && npm install",
+    "check": "bundlesize"
   },
   "author": "Prabhjot Aulakh, Adam Winter, Bianca Rossetti",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "compression": "^1.7.5",
     "mongodb": "^6.10.0"
+  },
+  "devDependencies": {
+    "bundlesize2": "^0.0.31"
   }
 }
