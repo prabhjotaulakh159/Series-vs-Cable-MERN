@@ -167,6 +167,16 @@ describe('GET /api/companies', () => {
     expect(response.status).to.equal(200);
   });
 
+  it('should return 404 for empty company array', async () => {
+    stubGetFilteredCompanies.resolves([]);
+    const response = await request(app).get('/api/companies');
+    expect(response.body).to.deep.equal(
+      { message: 'No companies found!' }
+    );
+
+    expect(response.status).to.equal(404);
+  });
+
 
 });
 
