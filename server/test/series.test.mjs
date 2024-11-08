@@ -267,7 +267,7 @@ describe('Test getting series with and without query parameters', () => {
         'year': 2024
       },
     ]);
-    const response = await request(app).get('/api/series?type=cable');
+    const response = await request(app).get('/api/series?type=streaming');
     const body = response.body;
     expect(response.status).to.be.equal(200);
     expect(body).to.be.an('array');
