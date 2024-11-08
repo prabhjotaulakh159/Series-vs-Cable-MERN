@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Plot from 'react-plotly.js';
 import SeriesList from './SeriesList';
+import NavBar from './navigation/NavBar';
 
 function App() {
   const [series, setSeries] = useState([]);
@@ -115,6 +116,7 @@ function App() {
 
   return (
     <div>
+      <NavBar/>
       <h1>Currently selected series: 
         {loadingSelected ? <Skeleton width={'25%'}/> : selected?.id}
       </h1>
