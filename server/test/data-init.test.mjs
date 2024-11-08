@@ -241,3 +241,7 @@ describe('Test fetchAllSeries', () => {
     // out the result like the one above.
   });
 });
+
+describe('Test fetching all companies', () => {
+  
+});
