@@ -222,6 +222,7 @@ describe('Test fetchAllSeries', () => {
 
     // we expect it to be an array
     expect(series).to.be.an('array');
+    expect(series.length).to.be.equal(319);
 
     // we expect 319 calls (each page) + 319 calls (the single extended series per page) 
     expect(fetchedStubFunction.callCount).to.be.equal(319 * 2);
@@ -243,5 +244,192 @@ describe('Test fetchAllSeries', () => {
 });
 
 describe('Test fetching all companies', () => {
-  
+  let fetchedStubFunction;
+
+  beforeEach(() => {
+    // global is the nodejs global scope
+    // it has the fetch function inside it
+    fetchedStubFunction = sinon.stub(global, 'fetch');
+  });
+
+  afterEach(() => {
+    fetchedStubFunction.restore();
+  });
+
+  it('Should return an array of companies', async () => {
+    // pass into the function cause we are using their companyId
+    // imagine we only have 3 series and 3 companies
+    const series = [
+      {
+        'id': 0,
+        'name': 'bob',
+        'score': 3,
+        'numberOfSeasons': 3,
+        'genres': ['john'],
+        'companyId': 1,
+        'companyType': 'cable',
+        'artwork': 'http://something',
+        'year': 2010
+      },
+      {
+        'id': 0,
+        'name': 'bob',
+        'score': 3,
+        'numberOfSeasons': 3,
+        'genres': ['john'],
+        'companyId': 2,
+        'companyType': 'cable',
+        'artwork': 'http://something',
+        'year': 2010
+      },
+      {
+        'id': 0,
+        'name': 'bob',
+        'score': 3,
+        'numberOfSeasons': 3,
+        'genres': ['john'],
+        'companyId': 3,
+        'companyType': 'cable',
+        'artwork': 'http://something',
+        'year': 2010
+      }
+    ];
+
+    // we should expect 3 fetch request for 3 series
+    // the first 3 API calls should resolve to 3 different companies
+    // since there are 3 different company ID's in the series array
+
+    // first call resolves to company with id 1
+    fetchedStubFunction.onCall(0).resolves({
+      json: async () => {
+        return {
+          'status': 'success',
+          'data': {
+            'id': 1,
+            'name': 'AAG TV',
+            'slug': 'aag-tv',
+            'nameTranslations': [
+              'eng'
+            ],
+            'overviewTranslations': [],
+            'aliases': [],
+            'country': 'pak',
+            'primaryCompanyType': 1,
+            'activeDate': null,
+            'inactiveDate': null,
+            'companyType': {
+              'companyTypeId': 1,
+              'companyTypeName': 'Network'
+            },
+            'parentCompany': {
+              'id': null,
+              'name': null,
+              'relation': {
+                'id': null,
+                'typeName': null
+              }
+            },
+            'tagOptions': null
+          }
+        };
+      }
+    });
+
+    // second call resolves to company with id 2
+    fetchedStubFunction.onCall(1).resolves({
+      json: async () => {
+        return {
+          'status': 'success',
+          'data': {
+            'id': 2,
+            'name': 'AAG TV',
+            'slug': 'aag-tv',
+            'nameTranslations': [
+              'eng'
+            ],
+            'overviewTranslations': [],
+            'aliases': [],
+            'country': 'pak',
+            'primaryCompanyType': 1,
+            'activeDate': null,
+            'inactiveDate': null,
+            'companyType': {
+              'companyTypeId': 1,
+              'companyTypeName': 'Network'
+            },
+            'parentCompany': {
+              'id': null,
+              'name': null,
+              'relation': {
+                'id': null,
+                'typeName': null
+              }
+            },
+            'tagOptions': null
+          }
+        };
+      }
+    });
+
+    // third call resolved to company with id 3
+    fetchedStubFunction.onCall(2).resolves({
+      json: async () => {
+        return {
+          'status': 'success',
+          'data': {
+            'id': 3,
+            'name': 'AAG TV',
+            'slug': 'aag-tv',
+            'nameTranslations': [
+              'eng'
+            ],
+            'overviewTranslations': [],
+            'aliases': [],
+            'country': 'pak',
+            'primaryCompanyType': 1,
+            'activeDate': null,
+            'inactiveDate': null,
+            'companyType': {
+              'companyTypeId': 1,
+              'companyTypeName': 'Network'
+            },
+            'parentCompany': {
+              'id': null,
+              'name': null,
+              'relation': {
+                'id': null,
+                'typeName': null
+              }
+            },
+            'tagOptions': null
+          }
+        };
+      }
+    });
+
+    // fetching comapnies
+    const companies = await DataInit.fetchAllCompanies(series, 'some-token');
+    
+    // we expect 3 API calls
+    expect(fetchedStubFunction.callCount).to.be.equal(3);
+
+    // we expect the API call URL to be made with 3 distinct ID's
+    expect(fetchedStubFunction.getCall(0).args[0]).
+      to.be.equal('https://api4.thetvdb.com/v4/companies/1');
+    expect(fetchedStubFunction.getCall(1).args[0]).
+      to.be.equal('https://api4.thetvdb.com/v4/companies/2');
+    expect(fetchedStubFunction.getCall(2).args[0]).
+      to.be.equal('https://api4.thetvdb.com/v4/companies/3');
+
+    // we expect an array of companies
+    expect(companies).to.be.an('array');
+    expect(companies.length).to.be.equal(3);
+
+    // check if companies is filtered properly
+    const firstCompany = companies[0];    
+    expect(firstCompany).to.have.property('id');
+    expect(firstCompany).to.have.property('name');
+    expect(firstCompany).to.have.property('averageScore');
+    expect(firstCompany).to.have.property('type');
+  });
 });
