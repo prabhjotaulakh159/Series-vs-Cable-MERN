@@ -4,6 +4,7 @@ function Graph({calculateAxies}) {
   const [graphXAxis, setXAxis] = useState([]);
   const [graphYAxis, setYAxis] = useState([]);
   const [showPlot, setShowPlot] = useState(false);
+  
   // using the intersection observer API to 'lazy load' the graph only when it's needed
   // We can use the following code as a reference for phase 3 (performance)
   // Source for how to use the API in react:
@@ -51,13 +52,13 @@ function Graph({calculateAxies}) {
 
     // stop observing when leaving the component
     return () => observer.disconnect();
-  }, []);
+  }, [calculateAxies]);
 
   /* https://plotly.com/javascript/react/ */
   /* Notice the plotRef reference, this is what our observer is observing */
   return (
     <div ref={plotRef} >
-      {showPlot && (
+      {showPlot && 
         <Suspense fallback={<div>Loading Plot...</div>}>
           <Plot
             data={[
@@ -73,7 +74,7 @@ function Graph({calculateAxies}) {
             layout={{ width: 2000, height: 1000, title: 'A Fancy Plot' }}
           />
         </Suspense>
-      )}
+      }
     </div>
   );
 }
