@@ -1,0 +1,37 @@
+nav {
+  display: flex;
+  align-items: center;
+  height: 5em;
+  background-color: cornflowerblue;
+  
+}
+nav *{
+  margin: 0 1.5em;
+}
+#mobileNav {
+  display: None;
+}
+
+#desktopNav {
+  display: flex;
+  justify-content: space-between;
+  flex: 4;
+  margin-left: 2em;
+}
+
+.navBar div {
+  background-color: aliceblue;
+  padding: 0.3em;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  #desktopNav {
+    display: None;
+  }
+  #mobileNav {
+    display: flex;
+    flex-direction: column;
+  }
+}
