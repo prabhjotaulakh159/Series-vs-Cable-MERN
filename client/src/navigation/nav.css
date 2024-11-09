@@ -25,6 +25,12 @@ nav *{
   border-radius: 10px;
   cursor: pointer;
 }
+.Logo {
+  flex: 0.5;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
 
 @media (max-width: 800px) {
   #desktopNav {
