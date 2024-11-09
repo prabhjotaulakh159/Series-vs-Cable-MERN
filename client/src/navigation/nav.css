@@ -39,5 +39,15 @@ nav *{
   #mobileNav {
     display: flex;
     flex-direction: column;
+    flex: 1;
+  }
+  nav * {
+    margin: unset;
+  }
+
+  #webpageTitle {
+    width: 10em;
+    flex: 2;
+    margin-left: 1em;
   }
 }
