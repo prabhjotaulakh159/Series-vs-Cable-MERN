@@ -53,6 +53,12 @@ nav * {
   cursor:pointer;
 }
 
+@media (max-width: 1000px){
+  nav * {
+    margin: 0 0.5em;
+  }
+}
+
 @media (max-width: 800px) {
   #desktopNav {
     display: None;
