@@ -1,8 +1,6 @@
 import './App.css';
 import Graph from './graphs/Graph.jsx';
 import { useState, useEffect, useCallback } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 /**
  * This function is a dumby function for now. in the future,
@@ -53,7 +51,7 @@ function App() {
   }, []); 
 
   if (loading) {
-    return <Skeleton width={'25%'} count={50}/>;
+    return <h1>Loading...</h1>;
   }
 
   if (error) {

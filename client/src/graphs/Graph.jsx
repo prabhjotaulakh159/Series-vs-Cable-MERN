@@ -1,4 +1,6 @@
 import {useEffect, useState, useRef, lazy, Suspense} from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function Graph({calculateAxies}) {
   const [graphXAxis, setXAxis] = useState([]);
@@ -59,7 +61,7 @@ function Graph({calculateAxies}) {
   return (
     <div ref={plotRef} >
       {showPlot && 
-        <Suspense fallback={<div>Loading Plot...</div>}>
+        <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1}/>}>
           <Plot
             data={[
               {
