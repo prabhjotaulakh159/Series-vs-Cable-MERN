@@ -1,5 +1,4 @@
-import {useEffect, useState, useRef} from 'react';
-import Plot from 'react-plotly.js';
+import {useEffect, useState, useRef, lazy, Suspense} from 'react';
 
 function Graph({calculateAxies}) {
   const [graphXAxis, setXAxis] = useState([]);
@@ -14,9 +13,8 @@ function Graph({calculateAxies}) {
   // keep a reference to the plot we want to lazy load using the useRef hook
   // the plotRef variable is used further down in a div containing the <Plot/>
   const plotRef = useRef(null); 
+  const Plot = lazy(() => import('react-plotly.js'));
   useEffect(() => {
-    // async function loadData() {}
-    // const { Plot } = await import('react-plotly.js');
     // instantiate a new observer to observe our plot
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
@@ -25,7 +23,7 @@ function Graph({calculateAxies}) {
       if (entry.isIntersecting) {
 
         console.debug('entering the viewport');
-        
+
         const {xAxis, yAxis} = calculateAxies();
 
         // we then set the approproate state
@@ -41,7 +39,7 @@ function Graph({calculateAxies}) {
     {
       root: null,
       // start computing the plot when 200px above the plot
-      rootMargin: '500px', 
+      rootMargin: '100px', 
       threshold: 0.1
     });
 
@@ -53,27 +51,29 @@ function Graph({calculateAxies}) {
 
     // stop observing when leaving the component
     return () => observer.disconnect();
-  });
+  }, []);
 
   /* https://plotly.com/javascript/react/ */
   /* Notice the plotRef reference, this is what our observer is observing */
   return (
     <div ref={plotRef} >
-      { 
-        showPlot && <Plot
-          data={[
-            {
-              x: graphXAxis,
-              y: graphYAxis,
-              type: 'scatter',
-              mode: 'lines+markers',
-              marker: {color: 'red'},
-            },
-            {type: 'bar', x: graphXAxis, y: graphYAxis},
-          ]}
-          layout={ {width: 2000, height: 1000, title: 'A Fancy Plot'} }
-        /> 
-      }
+      {showPlot && (
+        <Suspense fallback={<div>Loading Plot...</div>}>
+          <Plot
+            data={[
+              {
+                x: graphXAxis,
+                y: graphYAxis,
+                type: 'scatter',
+                mode: 'lines+markers',
+                marker: { color: 'red' },
+              },
+              { type: 'bar', x: graphXAxis, y: graphYAxis },
+            ]}
+            layout={{ width: 2000, height: 1000, title: 'A Fancy Plot' }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

@@ -1,8 +1,22 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import Graph from './graphs/Graph.jsx';
+import { useState, useEffect, useCallback } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SeriesList from './SeriesList';
+
+
+function calculateAllAxies(series) {
+  const onlyYears = series.map(show => show.year).filter(year => year);
+  const uniqueYears = Array.from(new Set(onlyYears));
+  const xAxis = uniqueYears.sort((a, b) => a - b);
+  const yAxis = xAxis.map(year => {
+    const showsForThatYear = series.filter(show => show.year === year).length;
+    return showsForThatYear;
+  });
+
+  return {xAxis, yAxis};
+}
 
 function App() {
   const [series, setSeries] = useState([]);
@@ -10,6 +24,10 @@ function App() {
   const [error, setError] = useState('');
   const [selected, setSelected] = useState(undefined);
   const [loadingSelected, setLoadingSelected] = useState(false);
+
+  const calculateAxies = useCallback((data) => {
+    return calculateAllAxies(data);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -61,6 +79,7 @@ function App() {
       </h1>
       <h1>All series: </h1>
       <SeriesList series={series} fetchIndividualSeries={fetchIndividualSeries}/>
+      <Graph calculateAxies={() => calculateAxies(series)}/>
     </div>
   );
 }
