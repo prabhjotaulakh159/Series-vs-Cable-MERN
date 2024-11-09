@@ -3,9 +3,8 @@ nav {
   align-items: center;
   height: 5em;
   background-color: cornflowerblue;
-  
 }
-nav *{
+nav * {
   margin: 0 1.5em;
 }
 #mobileNav {
@@ -32,6 +31,11 @@ nav *{
   justify-content: center;
 }
 
+.menu {
+  cursor: pointer;
+  position: absolute;
+}
+
 @media (max-width: 800px) {
   #desktopNav {
     display: None;
@@ -40,6 +44,11 @@ nav *{
     display: flex;
     flex-direction: column;
     flex: 1;
+  }
+  #menuDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   nav * {
     margin: unset;
