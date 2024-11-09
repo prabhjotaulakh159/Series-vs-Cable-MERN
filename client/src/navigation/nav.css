@@ -31,9 +31,26 @@ nav * {
   justify-content: center;
 }
 
-.menu {
+.burger {
   cursor: pointer;
   position: absolute;
+}
+
+.mobileNavMenu{
+  display: flex;
+  position: absolute;
+  background-color: cornflowerblue;
+  flex-direction: column;
+  top: 0px;
+  right: 5px;
+  border-radius: 10px;
+  padding: 2em;
+  box-shadow: -9px 11px 26px -3px rgba(0,0,0,0.75);
+}
+
+.closeMenu{
+  align-self:flex-end;
+  cursor:pointer;
 }
 
 @media (max-width: 800px) {
@@ -45,7 +62,7 @@ nav * {
     flex-direction: column;
     flex: 1;
   }
-  #menuDiv {
+  #burgerDiv {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,5 +75,9 @@ nav * {
     width: 10em;
     flex: 2;
     margin-left: 1em;
+  }
+
+  .filterBtn{
+    margin:1em;
   }
 }
