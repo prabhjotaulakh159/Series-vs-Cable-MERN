@@ -19,7 +19,7 @@ nav *{
   margin-left: 2em;
 }
 
-.navBar div {
+.filterBtn {
   background-color: aliceblue;
   padding: 0.3em;
   border-radius: 10px;
