@@ -7,7 +7,7 @@ function BarGraph({calculateAxies}) {
   const [data, setData] = useState([]);
   const plotRef = useRef(null); 
   const Plot = lazy(() => import('react-plotly.js'));
-  
+
   useEffect(() => {
     // instantiate a new observer to observe our plot
     const observer = new IntersectionObserver((entries) => {
@@ -68,7 +68,7 @@ function BarGraph({calculateAxies}) {
               title: 'Average show scores for top 10 contending companies',
               font: {size: 18}
             }}
-            displayModeBar={false}
+            config ={ {displayModeBar: false}}
           />
         </Suspense>
       }
