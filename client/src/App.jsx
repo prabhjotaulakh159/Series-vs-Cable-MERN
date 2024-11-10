@@ -5,6 +5,8 @@ import Graph from './graphs/Graph.jsx';
 import BarGraph from './graphs/BarGraph.jsx';
 import { useState, useEffect, useCallback } from 'react';
 
+const types = ['cable', 'streaming'];
+
 function getTopContendingCompanies(companies) {
   
   const topCompanies = Array.from(
