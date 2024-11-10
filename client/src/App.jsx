@@ -1,7 +1,7 @@
 import './App.css';
 import Graph from './graphs/Graph.jsx';
 import { useState, useEffect, useCallback } from 'react';
-import FloatingLogos from './components/FloatingLogos.jsx';
+import FloatingLogos from './floating-logos/FloatingLogos.jsx';
 
 /**
  * This function is a dumby function for now. in the future,
