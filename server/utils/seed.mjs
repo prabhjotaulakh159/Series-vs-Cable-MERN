@@ -13,7 +13,6 @@ import {db} from '../db/db.mjs';
     await db.deleteManySeries({});
     const numSeries = await db.createManySeries(series);
     console.debug(`Inserted ${numSeries} series`);
-
     // insert companies in the db
     await db.deleteManyCompanies({});
     const numCompanies = await db.createManyCompanies(companies);
