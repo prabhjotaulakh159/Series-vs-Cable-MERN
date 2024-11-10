@@ -63,7 +63,6 @@ function App() {
     <div>
       <h1>All series: </h1>
       <FloatingLogos/>
-      <Graph calculateAxies={() => calculateAxies(series)}/>
     </div>
   );
 }

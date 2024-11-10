@@ -11,6 +11,14 @@
     margin: 0 auto;
 }
 
+@media (max-width: 650px) {
+    #floating-logos-container {
+        flex-direction: column;
+        height: 100vh;
+        gap: 50px;
+    }
+}
+
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/animation */
 #floating-logos-container img {
     width: 60px;
