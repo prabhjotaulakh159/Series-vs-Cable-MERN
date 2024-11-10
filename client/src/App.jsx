@@ -8,15 +8,27 @@ import { useState, useEffect, useCallback } from 'react';
 const types = ['cable', 'streaming'];
 
 function getTopContendingCompanies(companies) {
-  
   const topCompanies = Array.from(
     new Set(companies.sort((a, b) => b.averageScore - a.averageScore))
   ).slice(0, 10);
 
-  const xAxis = topCompanies.map(company => company.name);
-  const yAxis = topCompanies.map(company => company.averageScore);
+  const data = types.map(type => {
+    const xAxis = topCompanies.filter(company => 
+      company.type === type
+    ).map(company => company.name);
+    const yAxis = topCompanies.filter(company => 
+      company.type === type
+    ).map(company => company.averageScore);
 
-  return {xAxis, yAxis};
+    return {
+      'type': type,
+      'xAxis': xAxis,
+      'yAxis': yAxis
+    };
+    
+  });
+
+  return data;
 }
 
 /**
