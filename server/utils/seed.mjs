@@ -9,13 +9,12 @@ import {db} from '../db/db.mjs';
     const series = await fetchAllSeries(token);
     const companies = await fetchAllCompanies(series, token);
     // insert series in the db
-    await db.connect('webprojectdb', 'series');
+    await db.connect('webprojectdb');
     await db.deleteManySeries({});
     const numSeries = await db.createManySeries(series);
     console.debug(`Inserted ${numSeries} series`);
 
     // insert companies in the db
-    await db.connect('webprojectdb', 'companies');
     await db.deleteManyCompanies({});
     const numCompanies = await db.createManyCompanies(companies);
     console.debug(`Inserted ${numCompanies} companies`);
