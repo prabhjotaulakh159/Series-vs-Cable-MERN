@@ -1,6 +1,7 @@
 import './App.css';
 import Graph from './graphs/Graph.jsx';
 import { useState, useEffect, useCallback } from 'react';
+import FloatingLogos from './components/FloatingLogos.jsx';
 
 /**
  * This function is a dumby function for now. in the future,
@@ -61,6 +62,7 @@ function App() {
   return (
     <div>
       <h1>All series: </h1>
+      <FloatingLogos/>
       <Graph calculateAxies={() => calculateAxies(series)}/>
     </div>
   );
