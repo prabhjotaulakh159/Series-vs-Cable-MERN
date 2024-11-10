@@ -6,13 +6,24 @@
     width: 100%;
     max-width: 1000px;
     flex-wrap: wrap;
-    border: 1px solid black;
     padding: 2rem;
     height: 400px;
     margin: 0 auto;
 }
 
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/animation */
 #floating-logos-container img {
     width: 60px;
     height: 60px;
+    animation: UpAndDown 3s ease-in-out infinite;
+}
+
+/* https://stackoverflow.com/questions/35990445/how-to-move-a-div-up-and-down-infinitely-in-css3 */
+@keyframes UpAndDown {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
 }
