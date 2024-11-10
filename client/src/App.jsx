@@ -2,7 +2,20 @@ import './App.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
 import Graph from './graphs/Graph.jsx';
+import BarGraph from './graphs/BarGraph.jsx';
 import { useState, useEffect, useCallback } from 'react';
+
+function getTopContendingCompanies(companies) {
+  
+  const topCompanies = Array.from(
+    new Set(companies.sort((a, b) => b.averageScore - a.averageScore))
+  ).slice(0, 10);
+
+  const xAxis = topCompanies.map(company => company.name);
+  const yAxis = topCompanies.map(company => company.averageScore);
+
+  return {xAxis, yAxis};
+}
 
 /**
  * This function is a dumby function for now. in the future,
@@ -27,11 +40,12 @@ function calculateAllAxies(series) {
 
 function App() {
   const [series, setSeries] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const calculateAxies = useCallback((data) => {
-    return calculateAllAxies(data);
+  const calculateAxies = useCallback((data, calculateAxiesFunction) => {
+    return calculateAxiesFunction(data);
   }, []);
 
   useEffect(() => {
@@ -44,6 +58,13 @@ function App() {
         }
         const data = await response.json();
         setSeries(data);
+
+        const responseCompanies = await fetch('/api/companies');
+        if (!responseCompanies.ok) {
+          throw new Error('Response did not return 200');
+        }
+        const companiesData = await responseCompanies.json();
+        setCompanies(companiesData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -64,7 +85,8 @@ function App() {
     <div>
       <NavBar/>
       <h1>All series: </h1>
-      <Graph calculateAxies={() => calculateAxies(series)}/>
+      <Graph calculateAxies={() => calculateAxies(series, calculateAllAxies)}/>
+      <BarGraph calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}/>
     </div>
   );
 }
