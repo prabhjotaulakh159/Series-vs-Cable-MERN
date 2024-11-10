@@ -1,4 +1,6 @@
 import './App.css';
+import 'react-loading-skeleton/dist/skeleton.css';
+import NavBar from './navigation/NavBar';
 import Graph from './graphs/Graph.jsx';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -60,6 +62,7 @@ function App() {
 
   return (
     <div>
+      <NavBar/>
       <h1>All series: </h1>
       <Graph calculateAxies={() => calculateAxies(series)}/>
     </div>
