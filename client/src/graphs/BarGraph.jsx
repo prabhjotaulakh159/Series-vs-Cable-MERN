@@ -5,17 +5,9 @@ import 'react-loading-skeleton/dist/skeleton.css';
 function BarGraph({calculateAxies}) {
   const [showPlot, setShowPlot] = useState(false);
   const [data, setData] = useState([]);
-  
-  // using the intersection observer API to 'lazy load' the graph only when it's needed
-  // We can use the following code as a reference for phase 3 (performance)
-  // Source for how to use the API in react:
-  // https://dev.to/producthackers/intersection-observer-using-react-49ko
-  // ----
-  // here's how to use it:
-  // keep a reference to the plot we want to lazy load using the useRef hook
-  // the plotRef variable is used further down in a div containing the <Plot/>
   const plotRef = useRef(null); 
   const Plot = lazy(() => import('react-plotly.js'));
+  
   useEffect(() => {
     // instantiate a new observer to observe our plot
     const observer = new IntersectionObserver((entries) => {
@@ -76,6 +68,7 @@ function BarGraph({calculateAxies}) {
               title: 'Average show scores for top 10 contending companies',
               font: {size: 18}
             }}
+            displayModeBar={false}
           />
         </Suspense>
       }
