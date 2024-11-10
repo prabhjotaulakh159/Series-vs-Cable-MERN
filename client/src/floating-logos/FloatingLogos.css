@@ -4,5 +4,15 @@
     justify-content: center;
     justify-content: space-evenly;
     width: 100%;
+    max-width: 1000px;
     flex-wrap: wrap;
+    border: 1px solid black;
+    padding: 2rem;
+    height: 400px;
+    margin: 0 auto;
+}
+
+#floating-logos-container img {
+    width: 60px;
+    height: 60px;
 }
