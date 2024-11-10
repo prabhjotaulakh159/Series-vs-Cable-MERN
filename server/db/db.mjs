@@ -122,6 +122,22 @@ class DB {
   }
 
   /**
+   * 
+   * @param {String} type - represents the company type we want to filter by
+   * @returns - the filtered companies by type
+   */
+  async getFilteredCompanies(type) {
+    const query = {};
+    if (type) {
+      query.type = type;
+    }
+
+    const filteredCompanies = 
+      await instance.companiesCollection.find(query).project({_id:0}).toArray();
+    return filteredCompanies;
+  }
+
+  /**
    * Gets a company by ID
    * @param { Number } id - ID of company to fetch
    */

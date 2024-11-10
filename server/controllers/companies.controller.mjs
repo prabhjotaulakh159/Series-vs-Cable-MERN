@@ -32,10 +32,17 @@ function isValidType(type) {
  * @returns - JSON representing the companies retrieved, or an error message
  */
 async function getCompaniesWithQueryParameters(req, res, next) {
-  const type = req.query.type;
-  // TODO: retrieve companies and filter by type if needed
+  const type = req.query.type ? req.query.type.toLowerCase() : req.query.type;
 
-  return res.status(200).send();
+  const companies = await db.getFilteredCompanies(type);
+
+  if (!companies || companies.length === 0) {
+    const error = new Error('No companies found!');
+    error.status = 404;
+    next(error);
+  }
+
+  return res.status(200).json(companies);
 }
 
 /**
