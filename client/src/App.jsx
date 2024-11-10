@@ -1,6 +1,6 @@
 import './App.css';
-import Graph from './graphs/Graph.jsx';
-import { useState, useEffect, useCallback } from 'react';
+//import Graph from './graphs/Graph.jsx';
+import { useState, useEffect } from 'react';
 import FloatingLogos from './floating-logos/FloatingLogos.jsx';
 
 /**
@@ -12,6 +12,7 @@ import FloatingLogos from './floating-logos/FloatingLogos.jsx';
  * @param {Array} series - list of all series 
  * @returns - an object representing the x axis and y axis plots
  */
+/*
 function calculateAllAxies(series) {
   const onlyYears = series.map(show => show.year).filter(year => year);
   const uniqueYears = Array.from(new Set(onlyYears));
@@ -23,15 +24,18 @@ function calculateAllAxies(series) {
 
   return {xAxis, yAxis};
 }
+*/
 
 function App() {
-  const [series, setSeries] = useState([]);
+  //const [series, setSeries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  /*
   const calculateAxies = useCallback((data) => {
     return calculateAllAxies(data);
   }, []);
+  */
 
   useEffect(() => {
     (async () => {
@@ -41,8 +45,8 @@ function App() {
         if (!response.ok) {
           throw new Error('Response did not return 200');
         }
-        const data = await response.json();
-        setSeries(data);
+        console.debug(await response.json());
+        //setSeries(data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -63,6 +67,9 @@ function App() {
     <div>
       <h1>All series: </h1>
       <FloatingLogos/>
+      {/**
+       * <Graph calculateAxies={() => calculateAxies(series)}/>
+       */}
     </div>
   );
 }
