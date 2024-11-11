@@ -1,0 +1,54 @@
+#floating-logos-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-evenly;
+    width: 100%;
+    max-width: 1000px;
+    flex-wrap: wrap;
+    padding: 2rem;
+    height: 400px;
+    margin: 0 auto;
+}
+
+@media (max-width: 650px) {
+    #floating-logos-container {
+        flex-direction: column;
+        height: 100vh;
+        gap: 50px;
+    }
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/animation */
+#floating-logos-container img {
+    width: 60px;
+    height: 60px;
+    animation: UpAndDown 3s ease-in-out infinite;
+}
+
+/* https://stackoverflow.com/questions/8294400/css-animations-with-delay-for-each-child-element */
+#floating-logos-container img:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+#floating-logos-container img:nth-child(3) {
+    animation-delay: 1s;
+}
+
+#floating-logos-container img:nth-child(4) {
+    animation-delay: 1.5s;
+}
+
+#floating-logos-container img:nth-child(5) {
+    animation-delay: 2s;
+}
+
+/* https://stackoverflow.com/questions/35990445/how-to-move-a-div-up-and-down-infinitely-in-css3 */
+@keyframes UpAndDown {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
