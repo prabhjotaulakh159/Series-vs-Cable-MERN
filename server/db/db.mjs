@@ -74,10 +74,7 @@ class DB {
 
   /* Deletes all companies from the database */
   async deleteManyCompanies(query) {
-    if (!instance.companiesCollection) {
-      return await instance.companiesCollection.deleteMany(query);
-    }
-    return;
+    return await instance.companiesCollection.deleteMany(query);
   }
   
   /**
