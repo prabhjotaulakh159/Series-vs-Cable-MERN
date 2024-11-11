@@ -73,7 +73,27 @@ function calculateCompanyScoresPerYear(series){
     streamingAverageScores.push(averageScore);
   });
 
-  return [{cableAverageScores, yAxis}, {streamingAverageScores, yAxis}];
+  const data = [
+    {
+      x: cableAverageScores,
+      y: yAxis,
+      type: 'scatter',
+      mode: 'lines+markers',
+      marker: {color: 'red'},
+      name: 'Cable services'
+    },
+    {
+      x: streamingAverageScores,
+      y: yAxis,
+      type: 'scatter',
+      mode: 'lines+markers',
+      marker: {color: 'red'},
+      name: 'Streaming services'
+    }
+    
+  ];
+    
+  return data;
   
 }
 
