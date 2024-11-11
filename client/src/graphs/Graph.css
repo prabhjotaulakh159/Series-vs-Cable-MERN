@@ -1,3 +1,5 @@
 .graph-container, .js-plotly-plot, .plot-container, .svg-container {
-  width: 100%
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
