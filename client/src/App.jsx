@@ -54,6 +54,10 @@ function calculateAllAxies(series) {
   return {xAxis, yAxis};
 }
 
+function calcAvgNumSeasons(series) {
+
+}
+
 function App() {
   /* eslint-disable-next-line no-unused-vars */
   const [series, setSeries] = useState([]);
@@ -65,6 +69,9 @@ function App() {
     return calculateAxiesFunction(data);
   }, []);
   
+  const calcAvgNumSeasonsCb = useCallback((series, calcAvgNumSeasons) => {
+    calcAvgNumSeasons(series);
+  }, []);
 
   useEffect(() => {
     (async () => {
