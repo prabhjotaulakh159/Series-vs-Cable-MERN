@@ -178,6 +178,10 @@ function App() {
         calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
         name={'Average show scores for top 10 contending companies'}
       />
+      <Graph
+        calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
+        name={'Average show scores per year<br>for streaming & cable companies'}
+      />
     </div>
   );
 }
