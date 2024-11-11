@@ -2,7 +2,6 @@ import './App.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
 import Graph from './graphs/Graph.jsx';
-import BarGraph from './graphs/BarGraph.jsx';
 import { useState, useEffect, useCallback } from 'react';
 
 const types = ['cable', 'streaming'];
@@ -21,9 +20,10 @@ function getTopContendingCompanies(companies) {
     ).map(company => company.averageScore);
 
     return {
-      'type': type,
-      'xAxis': xAxis,
-      'yAxis': yAxis
+      'name': type,
+      'x': xAxis,
+      'y': yAxis,
+      'type': 'bar'
     };
     
   });
@@ -99,8 +99,10 @@ function App() {
     <div>
       <NavBar/>
       <h1>All series: </h1>
-      <Graph calculateAxies={() => calculateAxies(series, calculateAllAxies)}/>
-      <BarGraph calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}/>
+      <Graph 
+        calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
+        name={'Average show scores for top 10 contending companies'}
+      />
     </div>
   );
 }
