@@ -55,37 +55,61 @@ function calculateAllAxies(series) {
 }
 
 function calcAvgNumSeasonsPerYear(series) {
-  const top10cableShowsWithMostNumberOfSeasons = getSeriesByCompanyType(series, 'cable');
-  const top10streamingShowsWithMostNumberOfSeasons = getSeriesByCompanyType(series, 'streaming');
+  const cableShows = getSeriesByCompanyType(series, 'cable');
+  const streamingShows = getSeriesByCompanyType(series, 'streaming');
 
   const mapYearToNumberOfSeasonsForCable = 
-    calculateTotalNumberSeasonsPerYear(top10cableShowsWithMostNumberOfSeasons);
+    calculateTotalNumberSeasonsPerYear(cableShows);
   const mapYearToNumberOfSeasonsForStreaming = 
-    calculateTotalNumberSeasonsPerYear(top10streamingShowsWithMostNumberOfSeasons);
+    calculateTotalNumberSeasonsPerYear(streamingShows);
 
-  const averageNumberOfSeasonsPerYearForCable = 
+  const mapAvgNumSeasonsToYearForCable = 
     calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasonsForCable);
-  const averageNumberOfSeasonsPerYearForStreaming = 
+  const mapAvgNumSeaonsToYearForStreaming = 
     calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasonsForStreaming);
+
+  const yearsForCable = Array.from(mapAvgNumSeasonsToYearForCable.keys());
+  const yearsForStreaming = Array.from(mapAvgNumSeaonsToYearForStreaming.keys());
+  
+  const avgSeasonsForCable = Array.from(mapAvgNumSeasonsToYearForCable.values());
+  const avgSeasonsForStreaming = Array.from(mapAvgNumSeaonsToYearForStreaming.values());
+
+  return [
+    {
+      x: yearsForCable,
+      y: avgSeasonsForCable,
+      type: 'scatter',
+      mode: 'markers',
+      name: 'Cable',
+      marker: { color: 'blue', size: 6, symbol: 'circle' },
+    },
+    {
+      x: yearsForStreaming,
+      y: avgSeasonsForStreaming,
+      type: 'scatter',
+      mode: 'markers',
+      name: 'Streaming',
+      marker: { color: 'orange', size: 6, symbol: 'circle' },
+    }
+  ];
 }
 
 function getSeriesByCompanyType(series, type) {
   return series.
     filter(show => show.companyType === type).
-    sort((a, b) => a.numberOfSeasons - b.numberOfSeasons).
-    slice(0, 10);
+    sort((a, b) => a - b);
 }
 
 function calculateTotalNumberSeasonsPerYear(shows) {
   const map = new Map();
   shows.forEach(show => {
     const year = show.year;
-    const numberOfSeaons = show.numberOfSeasons;
+    const numberOfSeasons = show.numberOfSeasons;
     if (map.has(year) === false) {
       map.set(year, { totalNumberOfSeasons: 0, numberOfShows: 0 });
     }
     const data = map.get(year);
-    data.totalNumberOfSeasons += numberOfSeaons;
+    data.totalNumberOfSeasons += numberOfSeasons;
     data.numberOfShows = data.numberOfShows + 1;
   });
   return map;
@@ -93,9 +117,9 @@ function calculateTotalNumberSeasonsPerYear(shows) {
 
 function calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasons) {
   const map = new Map();
-  Array.from(mapYearToNumberOfSeasons.keys).forEach(year => {
-    const totalSeasonsForThatYear = year.totalNumberOfSeaons;
-    const totalNumberOfShowsForThatYear = year.numberOfShows;
+  Array.from(mapYearToNumberOfSeasons.keys()).forEach(year => {
+    const totalSeasonsForThatYear = mapYearToNumberOfSeasons.get(year).totalNumberOfSeasons;
+    const totalNumberOfShowsForThatYear = mapYearToNumberOfSeasons.get(year).numberOfShows;
     map.set(year, totalSeasonsForThatYear / totalNumberOfShowsForThatYear);
   });
   return map;
@@ -111,8 +135,8 @@ function App() {
     return calculateAxiesFunction(data);
   }, []);
   
-  const calcAvgNumSeasonsCb = useCallback((series, calcAvgNumSeasons) => {
-    return calcAvgNumSeasons(series);
+  const calcAvgNumSeasonsCb = useCallback((series, calcAvgNumSeasonsPerYear) => {
+    return calcAvgNumSeasonsPerYear(series);
   }, []);
 
   useEffect(() => {
@@ -157,7 +181,7 @@ function App() {
         name={'Average show scores for top 10 contending companies'}
       />
       <Graph 
-        calculateAxies={() => calcAvgNumSeasonsCb(series, calcAvgNumSeasons)}
+        calculateAxies={() => calcAvgNumSeasonsCb(series, calcAvgNumSeasonsPerYear)}
         name={'Average number of seasons between cable vs streaming'}
       />
     </div>
