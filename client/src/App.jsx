@@ -40,6 +40,7 @@ function getTopContendingCompanies(companies) {
  * @param {Array} series - list of all series 
  * @returns - an object representing the x axis and y axis plots
  */
+/* eslint-disable-next-line no-unused-vars */
 function calculateAllAxies(series) {
   const onlyYears = series.map(show => show.year).filter(year => year);
   const uniqueYears = Array.from(new Set(onlyYears));
@@ -53,6 +54,7 @@ function calculateAllAxies(series) {
 }
 
 function App() {
+  /* eslint-disable-next-line no-unused-vars */
   const [series, setSeries] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(false);
