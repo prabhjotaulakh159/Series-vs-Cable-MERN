@@ -54,26 +54,36 @@ function calculateAllAxies(series) {
   return {xAxis, yAxis};
 }
 
-function calcAvgNumSeasons(series) {
-  const allCableCompanies = series.filter(s => s.companyType === 'cable');
-  const allStreamingCompanies = series.filter(s => s.companyType === 'streaming');
+function calcAvgNumSeasonsPerYear(series) {
+  const top10cableShowsWithMostNumberOfSeasons = getSeriesByCompanyType(series, 'cable');
+  const top10streamingShowsWithMostNumberOfSeasons = getSeriesByCompanyType(series, 'streaming');
 
-  const cablesLen = allCableCompanies.length;
-  const streamingLen = allStreamingCompanies.length;
+  const mapYearToNumberOfSeasonsForCable = 
+    calculateTotalNumberSeasonsPerYear(top10cableShowsWithMostNumberOfSeasons);
+  const mapYearToNumberOfSeasonsForStreaming = 
+    calculateTotalNumberSeasonsPerYear(top10streamingShowsWithMostNumberOfSeasons);
 
-  const averageNumSeasonsCable = allCableCompanies.map(c => c.numberOfSeasons).
-    reduce((acc, curr) => acc + curr) / cablesLen;
-
-  const averageNumSeasonsStreaming = allStreamingCompanies.map(c => c.numberOfSeasons).
-    reduce((acc, curr) => acc + curr) / streamingLen;
   
-  return [
-    { 
-      x: ['Cable', 'streaming'], 
-      y: [averageNumSeasonsCable, averageNumSeasonsStreaming], 
-      type: 'bar'
+}
+
+function getSeriesByCompanyType(series, type) {
+  return series.
+    filter(show => show.companyType === type).
+    sort((a, b) => a.numberOfSeaons - b.numberOfSeaons);
+}
+
+function calculateTotalNumberSeasonsPerYear(shows) {
+  const map = new Map();
+  shows.forEach(show => {
+    const year = show.year;
+    const numberOfSeaons = show.numberOfSeaons;
+    // if the year is already in the hashmap
+    if (map.has(year)) {
+      map.set(year, map.get(year) + numberOfSeaons);
+    } else {
+      map.set(year, numberOfSeaons);
     }
-  ];
+  });
 }
 
 function App() {
