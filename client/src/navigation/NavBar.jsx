@@ -7,7 +7,7 @@ export default function NavBar() {
   return (
     <nav>
       <div className="Logo">
-        <img src={Logo} />
+        <img src={Logo} alt="logos" />
       </div>
       <h1 id="webpageTitle">TV Networks vs Streaming platforms</h1>
       <DesktopNavBar />
