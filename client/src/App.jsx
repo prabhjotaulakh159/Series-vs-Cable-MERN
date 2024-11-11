@@ -67,8 +67,8 @@ function calculateCompanyScoresPerYear(series){
 
   const onlyYears = series.map(show => show.year).filter(year => year);
   const uniqueYears = Array.from(new Set(onlyYears));
-  let yAxis = uniqueYears.sort((a, b) => a - b);
-  yAxis = yAxis.filter( year => year < 2025);
+  let xAxis = uniqueYears.sort((a, b) => a - b);
+  xAxis = xAxis.filter( year => year < 2025);
 
   const cableSeries = series.filter( show => 
     show.companyType === 'cable' && Number(show.year) < 2025);
@@ -104,19 +104,19 @@ function calculateCompanyScoresPerYear(series){
 
   const data = [
     {
-      x: cableAverageScores,
-      y: yAxis,
+      x: xAxis,
+      y: cableAverageScores,
       type: 'scatter',
       mode: 'lines+markers',
       marker: {color: 'red'},
       name: 'Cable services'
     },
     {
-      x: streamingAverageScores,
-      y: yAxis,
+      x: xAxis,
+      y: streamingAverageScores,
       type: 'scatter',
       mode: 'lines+markers',
-      marker: {color: 'red'},
+      marker: {color: 'blue'},
       name: 'Streaming services'
     }
     
