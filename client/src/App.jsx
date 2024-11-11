@@ -55,11 +55,28 @@ function calculateAllAxies(series) {
 }
 
 function calcAvgNumSeasons(series) {
+  const allCableCompanies = series.filter(s => s.companyType === 'cable');
+  const allStreamingCompanies = series.filter(s => s.companyType === 'streaming');
 
+  const cablesLen = allCableCompanies.length;
+  const streamingLen = allStreamingCompanies.length;
+
+  const averageNumSeasonsCable = allCableCompanies.map(c => c.numberOfSeasons).
+    reduce((acc, curr) => acc + curr) / cablesLen;
+
+  const averageNumSeasonsStreaming = allStreamingCompanies.map(c => c.numberOfSeasons).
+    reduce((acc, curr) => acc + curr) / streamingLen;
+  
+  return [
+    { 
+      x: ['Cable', 'streaming'], 
+      y: [averageNumSeasonsCable, averageNumSeasonsStreaming], 
+      type: 'bar'
+    }
+  ];
 }
 
 function App() {
-  /* eslint-disable-next-line no-unused-vars */
   const [series, setSeries] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -70,7 +87,7 @@ function App() {
   }, []);
   
   const calcAvgNumSeasonsCb = useCallback((series, calcAvgNumSeasons) => {
-    calcAvgNumSeasons(series);
+    return calcAvgNumSeasons(series);
   }, []);
 
   useEffect(() => {
@@ -113,6 +130,10 @@ function App() {
       <Graph 
         calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
         name={'Average show scores for top 10 contending companies'}
+      />
+      <Graph 
+        calculateAxies={() => calcAvgNumSeasonsCb(series, calcAvgNumSeasons)}
+        name={'Average number of seasons between cable vs streaming'}
       />
     </div>
   );
