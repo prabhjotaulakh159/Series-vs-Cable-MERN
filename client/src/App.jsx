@@ -1,7 +1,10 @@
 import './App.css';
 //import Graph from './graphs/Graph.jsx';
-import { useState, useEffect } from 'react';
 import FloatingLogos from './floating-logos/FloatingLogos.jsx';
+import 'react-loading-skeleton/dist/skeleton.css';
+import NavBar from './navigation/NavBar';
+//import Graph from './graphs/Graph.jsx';
+import { useState, useEffect } from 'react';
 
 /**
  * This function is a dumby function for now. in the future,
@@ -65,6 +68,7 @@ function App() {
 
   return (
     <div>
+      <NavBar/>
       <h1>All series: </h1>
       <FloatingLogos/>
       {/**
