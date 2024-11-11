@@ -127,7 +127,6 @@ function calculateCompanyScoresPerYear(series){
 }
 
 function App() {
-  /* eslint-disable-next-line no-unused-vars */
   const [series, setSeries] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(false);
