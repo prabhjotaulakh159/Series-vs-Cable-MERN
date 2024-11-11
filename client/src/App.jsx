@@ -1,7 +1,8 @@
 import './App.css';
+import Graph from './graphs/Graph.jsx';
+import FloatingLogos from './floating-logos/FloatingLogos.jsx';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
-import Graph from './graphs/Graph.jsx';
 import { useState, useEffect, useCallback } from 'react';
 
 const types = ['cable', 'streaming'];
@@ -63,6 +64,7 @@ function App() {
   const calculateAxies = useCallback((data, calculateAxiesFunction) => {
     return calculateAxiesFunction(data);
   }, []);
+  
 
   useEffect(() => {
     (async () => {
@@ -100,7 +102,7 @@ function App() {
   return (
     <div>
       <NavBar/>
-      <h1>All series: </h1>
+      <FloatingLogos/>
       <Graph 
         calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
         name={'Average show scores for top 10 contending companies'}

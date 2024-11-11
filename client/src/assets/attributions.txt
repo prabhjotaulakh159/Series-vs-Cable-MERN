@@ -1,0 +1,5 @@
+netflix logo: https://www.svgrepo.com/svg/303341/netflix-1-logo
+amazon logo: https://www.svgrepo.com/svg/331285/amazon
+disney logo: https://www.svgrepo.com/svg/461128/disney-plus
+hulu logo: https://www.svgrepo.com/svg/303524/hulu-logo
+hbo logo: https://www.svgrepo.com/svg/516838/hbo-max

@@ -1,6 +1,7 @@
 import {useEffect, useState, useRef, lazy, Suspense} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import './Graph.css';
 
 function Graph({calculateAxies, name}) {
   const [showPlot, setShowPlot] = useState(false);
@@ -50,14 +51,13 @@ function Graph({calculateAxies, name}) {
   /* https://plotly.com/javascript/react/ */
   /* Notice the plotRef reference, this is what our observer is observing */
   return (
-    <div ref={plotRef} >
+    <div className="graph-container" ref={plotRef} >
       {showPlot && 
         <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1}/>}>
           <Plot
             data={data}
             layout={{ 
-              width: 2000, 
-              height: 1000, 
+              width: '100%',
               title: name,
               font: {size: 18}
             }}
