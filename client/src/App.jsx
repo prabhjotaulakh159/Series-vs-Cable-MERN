@@ -63,27 +63,42 @@ function calcAvgNumSeasonsPerYear(series) {
   const mapYearToNumberOfSeasonsForStreaming = 
     calculateTotalNumberSeasonsPerYear(top10streamingShowsWithMostNumberOfSeasons);
 
-  
+  const averageNumberOfSeasonsPerYearForCable = 
+    calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasonsForCable);
+  const averageNumberOfSeasonsPerYearForStreaming = 
+    calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasonsForStreaming);
 }
 
 function getSeriesByCompanyType(series, type) {
   return series.
     filter(show => show.companyType === type).
-    sort((a, b) => a.numberOfSeaons - b.numberOfSeaons);
+    sort((a, b) => a.numberOfSeasons - b.numberOfSeasons).
+    slice(0, 10);
 }
 
 function calculateTotalNumberSeasonsPerYear(shows) {
   const map = new Map();
   shows.forEach(show => {
     const year = show.year;
-    const numberOfSeaons = show.numberOfSeaons;
-    // if the year is already in the hashmap
-    if (map.has(year)) {
-      map.set(year, map.get(year) + numberOfSeaons);
-    } else {
-      map.set(year, numberOfSeaons);
+    const numberOfSeaons = show.numberOfSeasons;
+    if (map.has(year) === false) {
+      map.set(year, { totalNumberOfSeasons: 0, numberOfShows: 0 });
     }
+    const data = map.get(year);
+    data.totalNumberOfSeasons += numberOfSeaons;
+    data.numberOfShows = data.numberOfShows + 1;
   });
+  return map;
+}
+
+function calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasons) {
+  const map = new Map();
+  Array.from(mapYearToNumberOfSeasons.keys).forEach(year => {
+    const totalSeasonsForThatYear = year.totalNumberOfSeaons;
+    const totalNumberOfShowsForThatYear = year.numberOfShows;
+    map.set(year, totalSeasonsForThatYear / totalNumberOfShowsForThatYear);
+  });
+  return map;
 }
 
 function App() {
