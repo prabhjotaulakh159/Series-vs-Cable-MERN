@@ -1,0 +1,9 @@
+:root {
+  font-family: roboto;
+}
+
+@font-face {
+  font-family: roboto;
+  src: url(../public/assets/Roboto-Regular.ttf);
+  font-weight: 400;
+}
