@@ -1,40 +1,40 @@
-import {useEffect, useState, useRef, lazy, Suspense} from 'react';
+import { useEffect, useState, useRef, lazy, Suspense, memo, useCallback } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import PopUp from '../popup/PopUp';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './Graph.css';
 
-function Graph({calculateAxies, name}) {
-  const [showPopUp, setShowPopUp] = useState(false);
-  const [popUpData, setPopUpData] = useState(undefined);
+// memo the plot to avoid re-renders
+const MemoPlot = memo(lazy(() => import('react-plotly.js')));
+
+function Graph({ calculateAxies, name }) {
   const [showPlot, setShowPlot] = useState(false);
   const [data, setData] = useState([]);
-  const plotRef = useRef(null); 
-  const Plot = lazy(() => import('react-plotly.js'));
+  const plotRef = useRef(null);
+  
+  const showPopUp = useRef(false);
+  const popUpData = useRef({});
+  const timeout = useRef(null);
+
+  // this state is used to re-render the pop-up
+  // we need this because our showPopUp and popUpData are not 
+  // state variables, but refs. To have their updated value,
+  // we need to force a re-render, using this state variables.
+  // note: this will not cause the plot to be re-rendered, 
+  // as it is memoized and it's functions are in useCallbacks.
+  // only the pop-up will be re-rendered with the new data.
+  const [, setPerformPopUp] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
-
       if (entry.isIntersecting) {
-
-        console.debug('entering the viewport');
-
         const axiesData = calculateAxies();
-
-        const data = axiesData;
-
-        setData(data);
+        setData(axiesData);
         setShowPlot(true);
-        
-        observer.disconnect(); 
-      }      
-    }, 
-    {
-      root: null,
-      rootMargin: '100px', 
-      threshold: 0.1
-    });
+        observer.disconnect();
+      }
+    }, { root: null, rootMargin: '100px', threshold: 0.1 });
 
     if (plotRef.current) {
       observer.observe(plotRef.current);
@@ -43,35 +43,53 @@ function Graph({calculateAxies, name}) {
     return () => observer.disconnect();
   }, [calculateAxies]);
 
-  function onHoverOverDataPoint(e) {
-    setShowPopUp(true);
-    setPopUpData(e.points[0]);
-  }
+  const onHoverCallback = useCallback((e) => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+      timeout.current = null;
+    }
+    const point = e.points[0];
+    if (point.x !== popUpData.current.x || point.y !== popUpData.current.y) {
+      showPopUp.current = true;
+      popUpData.current = point;
+      setPerformPopUp(prev => !prev); 
+    }
+  }, []);
 
-  function onLeavingDataPoint() {
-    setShowPopUp(false);
-  }
+  const onLeaveCallback = useCallback(() => {
+    // give it some time to change the state
+    // we need this if 2 points are very close to each other
+    timeout.current = setTimeout(() => {
+      showPopUp.current = false;
+      setPerformPopUp(prev => !prev);
+    }, 200); 
+  }, []);
 
   return (
-    <div className="graph-container" ref={plotRef} >
+    <div className="graph-container" ref={plotRef}>
       {showPlot && 
-        <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1}/>}>
-          <Plot
+        <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1} />}>
+          <MemoPlot
             data={data}
-            layout={{ 
+            layout={{
               width: '100%',
               title: name,
-              font: {size: 18}
+              font: { size: 18 }
             }}
-            config ={ {displayModeBar: false}}
-            onHover={onHoverOverDataPoint}
-            onUnhover={onLeavingDataPoint}
+            config={{ displayModeBar: false }}
+            // inside useCallbacks, there should be no re-render
+            onHover={onHoverCallback} 
+            onUnhover={onLeaveCallback}
           />
         </Suspense>
       }
-      { showPopUp && <PopUp data={popUpData} chartTitle={name}/> }
+      <HoverPopUp showPopUp={showPopUp.current} popUpData={popUpData.current} chartTitle={name} />
     </div>
   );
+}
+
+function HoverPopUp({ showPopUp, popUpData, chartTitle }) {
+  return showPopUp ? <PopUp data={popUpData} chartTitle={chartTitle} /> : null;
 }
 
 export default Graph;
