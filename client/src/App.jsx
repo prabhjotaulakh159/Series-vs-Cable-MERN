@@ -217,7 +217,7 @@ function App() {
         const data = await response.json();
         const highestScore = Math.max(...data.map(show => show.score));
         data.map (show => {
-          show.score = show.score / highestScore * 10000;
+          show.score = show.score * 100 / highestScore;
         });
         setSeries(data);
 
