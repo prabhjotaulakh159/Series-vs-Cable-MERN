@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './Summary.css';
 
-function Summary({fetchSummaryData, summaryTitle}) {
+function Summary({fetchSummaryData}) {
   const [series, setSeries] = useState({});
   useEffect(() => {
     async function fetchData() {
@@ -14,7 +14,6 @@ function Summary({fetchSummaryData, summaryTitle}) {
   }, [fetchSummaryData]);
   return (
     <section className="summary-block">
-      <h2>{summaryTitle}</h2>
       {
         Object.keys(series).map(type => {
           return (

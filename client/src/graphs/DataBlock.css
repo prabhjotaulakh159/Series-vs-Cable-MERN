@@ -1,3 +1,8 @@
 .graph-block {
   padding: 25vh 0;
 }
+
+.graph-block h2 {
+  text-align: center;
+  padding: 10px;
+}
