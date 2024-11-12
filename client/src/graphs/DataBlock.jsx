@@ -2,6 +2,7 @@ import {useEffect, useState, useRef} from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Graph from './Graph.jsx';
 import Summary from './Summary.jsx';
+import './DataBlock.css';
 
 function DataBlock({calculateAxies, name, fetchSummaryData, summaryTitle}) {
   const [showPlot, setShowPlot] = useState(false);
