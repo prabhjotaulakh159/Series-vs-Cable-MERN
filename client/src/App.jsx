@@ -79,7 +79,7 @@ function calcAvgNumSeasonsPerYear(series) {
       x: yearsForCable,
       y: avgSeasonsForCable,
       type: 'scatter',
-      mode: 'markers',
+      mode: 'lines+markers',
       name: 'Cable',
       marker: { color: 'blue', size: 6, symbol: 'circle' },
     },
@@ -87,7 +87,7 @@ function calcAvgNumSeasonsPerYear(series) {
       x: yearsForStreaming,
       y: avgSeasonsForStreaming,
       type: 'scatter',
-      mode: 'markers',
+      mode: 'lines+markers',
       name: 'Streaming',
       marker: { color: 'orange', size: 6, symbol: 'circle' },
     }
@@ -97,7 +97,7 @@ function calcAvgNumSeasonsPerYear(series) {
 function getSeriesByCompanyType(series, type) {
   return series.
     filter(show => show.companyType === type).
-    sort((a, b) => a - b);
+    sort((a, b) => a.year - b.year);
 }
 
 function calculateTotalNumberSeasonsPerYear(shows) {
@@ -133,10 +133,6 @@ function App() {
 
   const calculateAxies = useCallback((data, calculateAxiesFunction) => {
     return calculateAxiesFunction(data);
-  }, []);
-  
-  const calcAvgNumSeasonsCb = useCallback((series, calcAvgNumSeasonsPerYear) => {
-    return calcAvgNumSeasonsPerYear(series);
   }, []);
 
   useEffect(() => {
@@ -181,7 +177,7 @@ function App() {
         name={'Average show scores for top 10 contending companies'}
       />
       <Graph 
-        calculateAxies={() => calcAvgNumSeasonsCb(series, calcAvgNumSeasonsPerYear)}
+        calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
         name={'Average number of seasons between cable vs streaming'}
       />
     </div>
