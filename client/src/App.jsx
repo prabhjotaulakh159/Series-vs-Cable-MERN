@@ -62,7 +62,7 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <NavBar/>
       <FloatingLogos/>
       <DataBlock 
@@ -89,7 +89,7 @@ function App() {
         }
         summaryTitle={'Highest scoring shows for cable and series'}
       />
-    </div>
+    </>
   );
 }
 
