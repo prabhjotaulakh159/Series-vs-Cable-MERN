@@ -13,4 +13,23 @@
     justify-content: center;
     transition: 0.5s;
     overflow-x: hidden;
+    text-align: center;
+    gap: 50px;
+    padding: 16px;
+}
+
+#chart-title {
+    font-family: bold;
+}
+
+.pop-up-container ul {
+    list-style: none;
+    text-align: left;
+}
+
+#list-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }

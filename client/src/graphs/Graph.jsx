@@ -53,6 +53,7 @@ function Graph({calculateAxies, name}) {
 
   function onHoverOverDataPoint(e) {
     setShowPopUp(true);
+    console.log(e);
     setPopUpData(e.points[0]);
   }
 
@@ -79,7 +80,7 @@ function Graph({calculateAxies, name}) {
           />
         </Suspense>
       }
-      { showPopUp && <PopUp data={popUpData}/> }
+      { showPopUp && <PopUp data={popUpData} chartTitle={name}/> }
     </div>
   );
 }
