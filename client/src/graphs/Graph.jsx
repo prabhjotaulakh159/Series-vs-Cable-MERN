@@ -1,5 +1,6 @@
 import {useEffect, useState, useRef, lazy, Suspense} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import PopUp from '../popup/PopUp';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './Graph.css';
 
@@ -49,8 +50,9 @@ function Graph({calculateAxies, name}) {
     return () => observer.disconnect();
   }, [calculateAxies]);
 
-  function onHoverOverDataPoint() {
+  function onHoverOverDataPoint(e) {
     setShowPopUp(true);
+    console.debug(e);
     console.debug('Entered point');
   }
 
@@ -78,6 +80,7 @@ function Graph({calculateAxies, name}) {
           />
         </Suspense>
       }
+      { showPopUp && <PopUp info={'Hello World'}/> }
     </div>
   );
 }

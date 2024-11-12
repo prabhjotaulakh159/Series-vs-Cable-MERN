@@ -1,8 +1,11 @@
 import './PopUp.css';
 
-function PopUp({info}) {
+function PopUp({year, topContender}) {
   return (
-    <h1>{info}</h1>
+    <div className="pop-up-container">
+      <p>{year}</p>
+      <p>{topContender}</p>
+    </div>
   );
 }
 
