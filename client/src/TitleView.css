@@ -1,0 +1,13 @@
+#main-title-view {
+  width: 75vw;
+  align-self: center;
+  text-align: center;
+}
+
+#main-title-view h1 {
+  font-size: xx-large;
+}
+
+#main-title-view br {
+  height: 10px;
+}

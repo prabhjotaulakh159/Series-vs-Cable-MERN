@@ -1,6 +1,6 @@
 import './App.css';
 import DataBlock from './graphs/DataBlock.jsx';
-import FloatingLogos from './floating-logos/FloatingLogos.jsx';
+import TitleView from './TitleView.jsx';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
 import { useState, useEffect, useCallback } from 'react';
@@ -62,9 +62,9 @@ function App() {
   }
 
   return (
-    <>
+    <section id="main-app">
       <NavBar/>
-      <FloatingLogos/>
+      <TitleView/>
       <DataBlock 
         calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
         name={'Average show scores for top 10 contending companies'}
@@ -89,7 +89,7 @@ function App() {
         }
         summaryTitle={'Highest scoring shows for cable and series'}
       />
-    </>
+    </section>
   );
 }
 

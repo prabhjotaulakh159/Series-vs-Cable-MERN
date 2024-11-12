@@ -22,3 +22,8 @@
 #root {
   padding-bottom: 10px;
 }
+
+#main-app {
+  display: flex;
+  flex-direction: column;
+}
