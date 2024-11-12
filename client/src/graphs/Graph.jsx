@@ -13,7 +13,7 @@ function Graph({ calculateAxies, name }) {
   const plotRef = useRef(null);
   
   const showPopUp = useRef(false);
-  const popUpData = useRef({});
+  const year = useRef({});
   const timeout = useRef(null);
 
   // this state is used to re-render the pop-up
@@ -49,9 +49,9 @@ function Graph({ calculateAxies, name }) {
       timeout.current = null;
     }
     const point = e.points[0];
-    if (point.x !== popUpData.current.x || point.y !== popUpData.current.y) {
+    if (point.x !== year.current) {
       showPopUp.current = true;
-      popUpData.current = point;
+      year.current = point.x;
       setPerformPopUp(prev => !prev); 
     }
   }, []);
@@ -83,13 +83,13 @@ function Graph({ calculateAxies, name }) {
           />
         </Suspense>
       }
-      <HoverPopUp showPopUp={showPopUp.current} popUpData={popUpData.current} chartTitle={name} />
+      <HoverPopUp showPopUp={showPopUp.current} year={year.current} chartName={name} />
     </div>
   );
 }
 
-function HoverPopUp({ showPopUp, popUpData, chartTitle }) {
-  return showPopUp ? <PopUp data={popUpData} chartTitle={chartTitle} /> : null;
+function HoverPopUp({ showPopUp, year, chartName }) {
+  return showPopUp ? <PopUp year={year} chartName={chartName} /> : null;
 }
 
 export default Graph;
