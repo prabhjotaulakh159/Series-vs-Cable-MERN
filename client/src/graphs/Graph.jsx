@@ -13,11 +13,9 @@ function Graph({calculateAxies, name}) {
   const Plot = lazy(() => import('react-plotly.js'));
 
   useEffect(() => {
-    // instantiate a new observer to observe our plot
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
 
-      // if the plot is entering the view port
       if (entry.isIntersecting) {
 
         console.debug('entering the viewport');
@@ -29,31 +27,24 @@ function Graph({calculateAxies, name}) {
         setData(data);
         setShowPlot(true);
         
-        // stop observing
         observer.disconnect(); 
       }      
     }, 
-    // these are some options for the observer
     {
       root: null,
-      // start computing the plot when 200px above the plot
       rootMargin: '100px', 
       threshold: 0.1
     });
 
-    // make it observe the plot
     if (plotRef.current) {
-      console.debug('observing !!');
       observer.observe(plotRef.current);
     }
 
-    // stop observing when leaving the component
     return () => observer.disconnect();
   }, [calculateAxies]);
 
   function onHoverOverDataPoint(e) {
     setShowPopUp(true);
-    console.log(e);
     setPopUpData(e.points[0]);
   }
 
@@ -61,8 +52,6 @@ function Graph({calculateAxies, name}) {
     setShowPopUp(false);
   }
 
-  /* https://plotly.com/javascript/react/ */
-  /* Notice the plotRef reference, this is what our observer is observing */
   return (
     <div className="graph-container" ref={plotRef} >
       {showPlot && 
