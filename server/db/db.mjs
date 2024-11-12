@@ -95,7 +95,7 @@ class DB {
       query.year = Number(year);
     }
     if (type) {
-      query.type = type;
+      query.companyType = type;
     }
     // the find method takes an object { name: name, year: year, type: type }
     // however, we only add those keys if we actually want them, meaning 
