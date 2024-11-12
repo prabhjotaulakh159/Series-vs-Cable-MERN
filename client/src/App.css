@@ -7,3 +7,19 @@
   src: url(../assets/Roboto-Regular.ttf);
   font-weight: 400;
 }
+
+.App {
+  text-align: center;
+  height: 100%;
+  padding: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100vh;
+}

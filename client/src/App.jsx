@@ -65,17 +65,29 @@ function App() {
     <div>
       <NavBar/>
       <FloatingLogos/>
-      <Graph 
+      <DataBlock 
         calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
         name={'Average show scores for top 10 contending companies'}
+        fetchSummaryData={() => 
+          fetchSummaryData(companies, series, fetchHighestRatedShowAmongCompanies)
+        }
+        summaryTitle={'Best performing shows in the top companies'}
       />
-      <Graph 
+      <DataBlock 
         calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
         name={'Average number of seasons between cable vs streaming'}
+        fetchSummaryData={() => 
+          fetchSummaryData(companies, series, fetchLongestShowForTypes)
+        }
+        summaryTitle={'Longest shows for cable and series'}
       />
-      <Graph
+      <DataBlock
         calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
         name={'Average show scores per year<br>for streaming & cable companies'}
+        fetchSummaryData={() => 
+          fetchSummaryData(companies, series, fetchCompaniesWithHighestScores)
+        }
+        summaryTitle={'Highest scoring shows for cable and series'}
       />
     </div>
   );
