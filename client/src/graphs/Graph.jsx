@@ -4,6 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import './Graph.css';
 
 function Graph({calculateAxies, name}) {
+  const [showPopUp, setShowPopUp] = useState(false);
   const [showPlot, setShowPlot] = useState(false);
   const [data, setData] = useState([]);
   const plotRef = useRef(null); 
@@ -48,6 +49,16 @@ function Graph({calculateAxies, name}) {
     return () => observer.disconnect();
   }, [calculateAxies]);
 
+  function onHoverOverDataPoint() {
+    setShowPopUp(true);
+    console.debug('Entered point');
+  }
+
+  function onLeavingDataPoint() {
+    setShowPopUp(false);
+    console.debug('Left point');
+  }
+
   /* https://plotly.com/javascript/react/ */
   /* Notice the plotRef reference, this is what our observer is observing */
   return (
@@ -62,6 +73,8 @@ function Graph({calculateAxies, name}) {
               font: {size: 18}
             }}
             config ={ {displayModeBar: false}}
+            onHover={onHoverOverDataPoint}
+            onUnhover={onLeavingDataPoint}
           />
         </Suspense>
       }
