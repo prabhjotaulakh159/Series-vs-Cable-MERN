@@ -23,6 +23,11 @@ function App() {
     return calculateAxiesFunction(data);
   }, []);
 
+  const fetchSummaryData = useCallback((companies, series, fetchData) => {
+    return fetchData(companies, series);
+  }, []);
+
+
   useEffect(() => {
     (async () => {
       setLoading(true);
