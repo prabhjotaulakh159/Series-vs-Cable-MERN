@@ -65,8 +65,10 @@ function calculateAllAxies(series) {
  */
 function calculateCompanyScoresPerYear(series){
 
-  const onlyYears = series.map(show => show.year).filter(year => year);
-  const xAxis = Array.from(new Set(series.map(show => show.year).filter(year => year))).sort((a, b) => a - b).filter( year => year < 2025);
+  const xAxis = Array.from(new Set(series.map(show => show.year).
+    filter(year => year))).
+    sort((a, b) => a - b).
+    filter( year => year < 2025);
 
   const cableSeries = series.filter( show => 
     show.companyType === 'cable' && Number(show.year) < 2025);
