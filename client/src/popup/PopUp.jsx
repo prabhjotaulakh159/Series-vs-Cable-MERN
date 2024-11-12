@@ -1,10 +1,9 @@
 import './PopUp.css';
 
-function PopUp({year, topContender}) {
+function PopUp({data}) {
   return (
     <div className="pop-up-container">
-      <p>{year}</p>
-      <p>{topContender}</p>
+      <p>{data.x}, {Math.floor(data.y)}</p>
     </div>
   );
 }

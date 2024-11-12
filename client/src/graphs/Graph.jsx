@@ -6,6 +6,7 @@ import './Graph.css';
 
 function Graph({calculateAxies, name}) {
   const [showPopUp, setShowPopUp] = useState(false);
+  const [popUpData, setPopUpData] = useState(undefined);
   const [showPlot, setShowPlot] = useState(false);
   const [data, setData] = useState([]);
   const plotRef = useRef(null); 
@@ -52,13 +53,11 @@ function Graph({calculateAxies, name}) {
 
   function onHoverOverDataPoint(e) {
     setShowPopUp(true);
-    console.debug(e);
-    console.debug('Entered point');
+    setPopUpData(e.points[0]);
   }
 
   function onLeavingDataPoint() {
     setShowPopUp(false);
-    console.debug('Left point');
   }
 
   /* https://plotly.com/javascript/react/ */
@@ -80,7 +79,7 @@ function Graph({calculateAxies, name}) {
           />
         </Suspense>
       }
-      { showPopUp && <PopUp info={'Hello World'}/> }
+      { showPopUp && <PopUp data={popUpData}/> }
     </div>
   );
 }
