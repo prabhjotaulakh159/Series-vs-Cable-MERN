@@ -38,7 +38,12 @@ function PopUp({year, chartName}) {
         chartName === 'Average show scores per year<br>for streaming & cable companies' &&
         <h2>Show with the highest score for the year {year}</h2>
       }
-      <img src={starShow?.artwork} alt=""/>
+      <h3>Title: {starShow?.name}</h3>
+      <h3>Score: {starShow?.score}</h3>
+      <h3>Seasons: {starShow?.numberOfSeasons}</h3>
+      <h3>Company Type: {starShow?.companyType}</h3>
+      <h3>Year of release: {starShow?.year}</h3>
+      <img id="artwork" src={starShow?.artwork} alt=""/>
     </section>
   );
 }
