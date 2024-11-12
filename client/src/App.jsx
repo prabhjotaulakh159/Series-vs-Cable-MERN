@@ -158,7 +158,7 @@ function calculateCompanyScoresPerYear(series){
       totalScoreForYear += show.score;
     });
     const averageScore = totalScoreForYear / cableSeriesByYear[year].length;
-    cableAverageScores.push(averageScore);
+    cableAverageScores.push(averageScore * 100);
   });
 
   const streamingAverageScores = [];
@@ -169,7 +169,7 @@ function calculateCompanyScoresPerYear(series){
       totalScoreForYear += show.score;
     });
     const averageScore = totalScoreForYear / cableSeriesByYear[year].length;
-    streamingAverageScores.push(averageScore);
+    streamingAverageScores.push(averageScore * 100);
   });
 
   const data = [
