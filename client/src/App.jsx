@@ -215,6 +215,10 @@ function App() {
           throw new Error('Response did not return 200');
         }
         const data = await response.json();
+        const highestScore = Math.max(...data.map(show => show.score));
+        data.map (show => {
+          show.score = show.score / highestScore * 10000;
+        });
         setSeries(data);
 
         const responseCompanies = await fetch('/api/companies');
