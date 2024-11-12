@@ -87,7 +87,7 @@ function calculateCompanyScoresPerYear(series){
     cableSeriesByYear[year].forEach(show => {
       totalScoreForYear += show.score;
     });
-    const averageScore = totalScoreForYear / year.length;
+    const averageScore = totalScoreForYear / cableSeriesByYear[year].length;
     cableAverageScores.push(averageScore);
   });
 
@@ -98,7 +98,7 @@ function calculateCompanyScoresPerYear(series){
     streamingSeriesByYear[year].forEach(show => {
       totalScoreForYear += show.score;
     });
-    const averageScore = totalScoreForYear / year.length;
+    const averageScore = totalScoreForYear / cableSeriesByYear[year].length;
     streamingAverageScores.push(averageScore);
   });
 
