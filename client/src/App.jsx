@@ -54,6 +54,76 @@ function calculateAllAxies(series) {
   return {xAxis, yAxis};
 }
 
+function calcAvgNumSeasonsPerYear(series) {
+  const cableShows = getSeriesByCompanyType(series, 'cable');
+  const streamingShows = getSeriesByCompanyType(series, 'streaming');
+
+  const mapYearToNumberOfSeasonsForCable = 
+    calculateTotalNumberSeasonsPerYear(cableShows);
+  const mapYearToNumberOfSeasonsForStreaming = 
+    calculateTotalNumberSeasonsPerYear(streamingShows);
+
+  const mapAvgNumSeasonsToYearForCable = 
+    calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasonsForCable);
+  const mapAvgNumSeaonsToYearForStreaming = 
+    calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasonsForStreaming);
+
+  const yearsForCable = Array.from(mapAvgNumSeasonsToYearForCable.keys());
+  const yearsForStreaming = Array.from(mapAvgNumSeaonsToYearForStreaming.keys());
+  
+  const avgSeasonsForCable = Array.from(mapAvgNumSeasonsToYearForCable.values());
+  const avgSeasonsForStreaming = Array.from(mapAvgNumSeaonsToYearForStreaming.values());
+
+  return [
+    {
+      x: yearsForCable,
+      y: avgSeasonsForCable,
+      type: 'scatter',
+      mode: 'lines+markers',
+      name: 'Cable',
+      marker: { color: 'blue', size: 6, symbol: 'circle' },
+    },
+    {
+      x: yearsForStreaming,
+      y: avgSeasonsForStreaming,
+      type: 'scatter',
+      mode: 'lines+markers',
+      name: 'Streaming',
+      marker: { color: 'orange', size: 6, symbol: 'circle' },
+    }
+  ];
+}
+
+function getSeriesByCompanyType(series, type) {
+  return series.
+    filter(show => show.companyType === type).
+    sort((a, b) => a.year - b.year);
+}
+
+function calculateTotalNumberSeasonsPerYear(shows) {
+  const map = new Map();
+  shows.forEach(show => {
+    const year = show.year;
+    const numberOfSeasons = show.numberOfSeasons;
+    if (map.has(year) === false) {
+      map.set(year, { totalNumberOfSeasons: 0, numberOfShows: 0 });
+    }
+    const data = map.get(year);
+    data.totalNumberOfSeasons += numberOfSeasons;
+    data.numberOfShows = data.numberOfShows + 1;
+  });
+  return map;
+}
+
+function calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasons) {
+  const map = new Map();
+  Array.from(mapYearToNumberOfSeasons.keys()).forEach(year => {
+    const totalSeasonsForThatYear = mapYearToNumberOfSeasons.get(year).totalNumberOfSeasons;
+    const totalNumberOfShowsForThatYear = mapYearToNumberOfSeasons.get(year).numberOfShows;
+    map.set(year, totalSeasonsForThatYear / totalNumberOfShowsForThatYear);
+  });
+  return map;
+}
 /**
  * This function is used in the line chart for the average scores per year
  * of cable versus streaming services.
@@ -135,7 +205,6 @@ function App() {
   const calculateAxies = useCallback((data, calculateAxiesFunction) => {
     return calculateAxiesFunction(data);
   }, []);
-  
 
   useEffect(() => {
     (async () => {
@@ -178,6 +247,10 @@ function App() {
         calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
         name={'Average show scores for top 10 contending companies'}
       />
+      <Graph 
+        calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
+        name={'Average number of seasons between cable vs streaming'}
+      />
       <Graph
         calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
         name={'Average show scores per year<br>for streaming & cable companies'}
@@ -185,4 +258,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
