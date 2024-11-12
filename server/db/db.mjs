@@ -95,13 +95,14 @@ class DB {
       query.year = Number(year);
     }
     if (type) {
-      query.type = type;
+      query.companyType = type;
     }
     // the find method takes an object { name: name, year: year, type: type }
     // however, we only add those keys if we actually want them, meaning 
     // they are truthy from the request query parameters. If only name is 
     // required, the object in find will simply be { name: name }, and it 
     // filter only by name
+    // { $and: [ { scores: 75, name: "Greg Powell" } ] }
     const seriesFiltered = await instance.seriesCollection.find(query).project({_id:0}).toArray();
     return seriesFiltered;
   }
