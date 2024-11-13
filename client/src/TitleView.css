@@ -1,0 +1,14 @@
+#main-title-view {
+  width: 75vw;
+  align-self: center;
+  text-align: center;
+  padding: 20px 0;
+}
+
+#main-title-view h1 {
+  font-size: xx-large;
+}
+
+#main-title-view p {
+  padding-top: 10px;
+}
