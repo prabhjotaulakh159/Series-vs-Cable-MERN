@@ -49,11 +49,9 @@ function Graph({ calculateAxies, name }) {
       timeout.current = null;
     }
     const point = e.points[0];
-    if (point.x !== year.current) {
-      showPopUp.current = true;
-      year.current = point.x;
-      setPerformPopUp(prev => !prev); 
-    }
+    showPopUp.current = true;
+    year.current = point.x;
+    setPerformPopUp(prev => !prev); 
   }, []);
 
   const onLeaveCallback = useCallback(() => {

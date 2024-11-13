@@ -1,6 +1,9 @@
 import './PopUp.css';
 
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+
+const memoMapNumberOfSeasons = new Map();
+const memoMapOfScores = new Map();
 
 function PopUp({year, chartName}) {
   const [starShow, setStarShow] = useState(undefined);
@@ -8,7 +11,21 @@ function PopUp({year, chartName}) {
 
   useEffect(() => {
     (async () => {
+      if (chartName === 'Average number of seasons between cable vs streaming' 
+          && memoMapNumberOfSeasons.has(year)) {
+        setStarShow(memoMapNumberOfSeasons.get(year));
+        console.log('got from cache');
+        return;
+      }
+      if (chartName === 'Average show scores per year<br>for streaming & cable companies'
+        && memoMapOfScores.has(year)
+      ) {
+        setStarShow(memoMapOfScores.get(year));
+        console.log('got from cache');
+        return;
+      }
       try {
+        console.log('network request made');
         const url = `/api/series?year=${year}`;
         const response = await fetch(url);
         if (!response.ok) {
@@ -20,19 +37,21 @@ function PopUp({year, chartName}) {
             json.reduce((acc, curr) => {
               return curr.numberOfSeasons > acc.numberOfSeasons ? curr : acc;
             }, json[0]);
-          setStarShow(showWithMostNumberOfSeasonsForThatYear);
+          memoMapNumberOfSeasons.set(year, showWithMostNumberOfSeasonsForThatYear);
+          setStarShow(memoMapNumberOfSeasons.get(year));
         } else if (chartName === 'Average show scores per year<br>for streaming & cable companies'){
           const showWithHighestScoreForThatYear = 
             json.reduce((acc, curr) => {
               return curr.score > acc.score ? curr : acc;
             }, json[0]);
-          setStarShow(showWithHighestScoreForThatYear);
+          memoMapOfScores.set(year, showWithHighestScoreForThatYear);
+          setStarShow(memoMapOfScores.get(year));
         }
       } catch (error) {
         setError(error.message);
       }
     })();
-  }, [chartName, year]);
+  }, [year, chartName]);
 
   return (
     <section className="pop-up-container">
