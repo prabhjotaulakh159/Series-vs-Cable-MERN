@@ -80,7 +80,7 @@ function calcAvgNumSeasonsPerYear(series) {
       y: avgSeasonsForCable,
       type: 'scatter',
       mode: 'lines+markers',
-      name: 'Cable',
+      name: 'cable',
       marker: { color: 'blue', size: 6, symbol: 'circle' },
     },
     {
@@ -88,7 +88,7 @@ function calcAvgNumSeasonsPerYear(series) {
       y: avgSeasonsForStreaming,
       type: 'scatter',
       mode: 'lines+markers',
-      name: 'Streaming',
+      name: 'streaming',
       marker: { color: 'orange', size: 6, symbol: 'circle' },
     }
   ];
@@ -179,7 +179,7 @@ function calculateCompanyScoresPerYear(series){
       type: 'scatter',
       mode: 'lines+markers',
       marker: {color: 'red'},
-      name: 'Cable services'
+      name: 'cable'
     },
     {
       x: xAxis,
@@ -187,7 +187,7 @@ function calculateCompanyScoresPerYear(series){
       type: 'scatter',
       mode: 'lines+markers',
       marker: {color: 'blue'},
-      name: 'Streaming services'
+      name: 'streaming'
     }
     
   ];

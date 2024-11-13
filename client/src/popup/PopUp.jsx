@@ -2,74 +2,68 @@ import './PopUp.css';
 
 import { useEffect, useState } from 'react';
 
-const mapSeasons = new Map();
-const mapScores = new Map();
+const mapSeasonsCable = new Map();
+const mapSeasonStreaming = new Map();
+const mapScoresCable = new Map();
+const mapScoresStreaming = new Map();
 
-function PopUp({year, chartName}) {
+function PopUp({year, type, chartName}) {
   const [starShow, setStarShow] = useState(undefined);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const isSeasonChart = chartName === 'Average number of seasons between cable vs streaming';
-  
-    function setSeasonCache(json) {
-      const showWithMostNumberOfSeasonsForThatYear = 
-        json.reduce((acc, curr) => {
-          return curr.numberOfSeasons > acc.numberOfSeasons ? curr : acc;
-        }, json[0]);
-      mapSeasons.set(year, showWithMostNumberOfSeasonsForThatYear);
-      setStarShow(mapSeasons.get(year));
+    const isScoreChart = !isSeasonChart;
+    const isCable = type?.toLowerCase().includes('cable');
+    const isStreaming = !isCable;
+
+    if (isSeasonChart && isCable && mapSeasonsCable.has(year)) {
+      setStarShow(mapSeasonsCable.get(year));
+      return;
+    } 
+
+    if (isSeasonChart && isStreaming && mapScoresStreaming.has(year)) {
+      setStarShow(mapSeasonStreaming.get(year));
+      return;
+    } 
+    
+    if (isScoreChart && isCable && mapScoresCable.has(year)) {
+      setStarShow(mapScoresCable.get(year));
+      return;
+    } 
+    
+    if (isScoreChart && isStreaming && mapScoresStreaming.has(year)) {
+      setStarShow(mapScoresStreaming.get(year));
+      return;
     }
 
-    function setScoreCache(json) {
-      const showWithHighestScoreForThatYear = 
-        json.reduce((acc, curr) => {
-          return curr.score > acc.score ? curr : acc;
-        }, json[0]);
-      mapScores.set(year, showWithHighestScoreForThatYear);
-      setStarShow(mapScores.get(year));
+    function findShowWithMax(data, field) {
+      return data.reduce((acc, curr) => {
+        return curr[field] > acc[field] ? curr : acc;
+      });
     }
 
-    async function getStreamingSeriesByYear() {
-      const url = `/api/series?year=${year}&type=streaming`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Response did not return 2xx');
-      }
-      const json = await response.json();
-      return json;
-    }
-
-    async function getCableSeriesByYear() {
-      const url = `/api/series?year=${year}&type=cable`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Response did not return 2xx');
-      }
-      const json = await response.json();
-      return json;
-    }
-
-    (async () => {
-      if (isSeasonChart && mapSeasons.has(year)) {
-        setStarShow(mapSeasons.get(year));
-      } else if (mapScores.has(year)) {
-        setStarShow(mapScores.get(year));
-      } else {
-        try {
-          const cable = await getCableSeriesByYear();
-          const streaming = await getStreamingSeriesByYear();
-          if (isSeasonChart) {
-            setSeasonCache(json);
-          } else {
-            setScoreCache(json);
-          }
-        } catch (error) {
-          setError(error.message);
+    fetch(`/api/series?type=${type.toLowerCase()}&year=${year}`).
+      then(res => res.json()).
+      then(data => {
+        const showToStore = 
+          isSeasonChart ? findShowWithMax(data, 'numberOfSeasons') : findShowWithMax(data, 'score');
+        if (isSeasonChart && isCable) {
+          mapSeasonsCable.set(year, showToStore);
+          setStarShow(mapSeasonsCable.get(year));
+        } else if (isSeasonChart && isStreaming) {
+          mapSeasonStreaming.set(year, showToStore);
+          setStarShow(mapSeasonStreaming.get(year));
+        } else if (isScoreChart && isCable) {
+          mapScoresCable.set(year, showToStore);
+          setStarShow(mapScoresCable.get(year));
+        } else if (isScoreChart && isStreaming) {
+          mapScoresStreaming.set(year, showToStore);
+          setStarShow(mapScoresStreaming.get(year));
         }
-      }
-    })();
-  }, [year, chartName]);
+      }).
+      catch(error => setError(error.message));
+  }, [year, chartName, type]);
 
   return (
     <section className="pop-up-container">

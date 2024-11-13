@@ -52,7 +52,7 @@ function Graph({ calculateAxies, name }) {
     const point = e.points[0];
     showPopUp.current = true;
     year.current = point.x;
-    type.current = point.name;
+    type.current = point.data.name;
     setPerformPopUp(prev => !prev); 
   }, []);
 
@@ -86,13 +86,15 @@ function Graph({ calculateAxies, name }) {
       <HoverPopUp 
         showPopUp={showPopUp.current} 
         year={year.current} 
-        chartName={name} />
+        type={type.current}
+        chartName={name} 
+      />
     </div>
   );
 }
 
-function HoverPopUp({ showPopUp, year, chartName }) {
-  return showPopUp ? <PopUp year={year} chartName={chartName} /> : null;
+function HoverPopUp({ showPopUp, year, type, chartName }) {
+  return showPopUp ? <PopUp year={year} type={type} chartName={chartName} /> : null;
 }
 
 export default Graph;
