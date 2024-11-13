@@ -37,6 +37,10 @@ function App() {
           throw new Error('Response did not return 200');
         }
         const data = await response.json();
+        const highestScore = Math.max(...data.map(show => show.score));
+        data.map (show => {
+          show.score = show.score * 100 / highestScore;
+        });
         setSeries(data);
 
         const responseCompanies = await fetch('/api/companies');
@@ -65,30 +69,32 @@ function App() {
     <section id="main-app">
       <NavBar/>
       <TitleView/>
-      <DataBlock 
-        calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
-        name={'Average show scores for top 10 contending companies'}
-        fetchSummaryData={() => 
-          fetchSummaryData(companies, series, fetchHighestRatedShowAmongCompanies)
-        }
-        summaryTitle={'Best performing shows in the top companies'}
-      />
-      <DataBlock 
-        calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
-        name={'Average number of seasons between cable vs streaming'}
-        fetchSummaryData={() => 
-          fetchSummaryData(companies, series, fetchLongestShowForTypes)
-        }
-        summaryTitle={'Longest shows for cable and series'}
-      />
-      <DataBlock
-        calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
-        name={'Average show scores per year<br>for streaming & cable companies'}
-        fetchSummaryData={() => 
-          fetchSummaryData(companies, series, fetchCompaniesWithHighestScores)
-        }
-        summaryTitle={'Highest scoring shows for cable and series'}
-      />
+      <section id="mainPage">
+        <DataBlock 
+          calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
+          name={'Average show scores for top 10 contending companies'}
+          fetchSummaryData={() => 
+            fetchSummaryData(companies, series, fetchHighestRatedShowAmongCompanies)
+          }
+          summaryTitle={'Best performing shows in the top companies'}
+        />
+        <DataBlock 
+          calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
+          name={'Average number of seasons between cable vs streaming'}
+          fetchSummaryData={() => 
+            fetchSummaryData(companies, series, fetchLongestShowForTypes)
+          }
+          summaryTitle={'Longest shows for cable and series'}
+        />
+        <DataBlock
+          calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
+          name={'Average show scores per year for streaming & cable companies'}
+          fetchSummaryData={() => 
+            fetchSummaryData(companies, series, fetchCompaniesWithHighestScores)
+          }
+          summaryTitle={'Highest scoring shows for cable and series'}
+        />
+      </section>
     </section>
   );
 }

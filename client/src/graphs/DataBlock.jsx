@@ -54,9 +54,11 @@ function DataBlock({calculateAxies, name, fetchSummaryData, summaryTitle}) {
     <div className="graph-block" ref={plotRef} >
       {showPlot && 
       <>
+        <h3 className="Graph-title">
+          {name}
+        </h3>
         <Graph
           data={data}
-          name={name}
         />
         <h2>{summaryTitle}</h2>
         <Summary fetchSummaryData={fetchSummaryData} name={summaryTitle}/>
