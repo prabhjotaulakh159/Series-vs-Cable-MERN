@@ -235,7 +235,7 @@ function calculateCompanyScoresPerYear(series){
       type: 'scatter',
       mode: 'lines+markers',
       marker: {color: 'red'},
-      name: 'Cable services'
+      name: 'cable'
     },
     {
       x: xAxis,
@@ -243,7 +243,7 @@ function calculateCompanyScoresPerYear(series){
       type: 'scatter',
       mode: 'lines+markers',
       marker: {color: 'blue'},
-      name: 'Streaming services'
+      name: 'streaming'
     }
     
   ];

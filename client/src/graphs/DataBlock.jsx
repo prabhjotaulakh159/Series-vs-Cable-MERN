@@ -59,6 +59,7 @@ function DataBlock({calculateAxies, name, fetchSummaryData, summaryTitle}) {
         </h3>
         <Graph
           data={data}
+          name={name}
         />
         <h2>{summaryTitle}</h2>
         <Summary fetchSummaryData={fetchSummaryData} name={summaryTitle}/>

@@ -4,6 +4,7 @@ import TitleView from './TitleView.jsx';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
 import { useState, useEffect, useCallback } from 'react';
+
 import { 
   getTopContendingCompanies, 
   calcAvgNumSeasonsPerYear, 
@@ -16,7 +17,7 @@ import {
 function App() {
   const [series, setSeries] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const calculateAxies = useCallback((data, calculateAxiesFunction) => {
@@ -56,10 +57,6 @@ function App() {
       }
     })();
   }, []); 
-
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
 
   if (error) {
     return <h1>{error}</h1>;
