@@ -71,6 +71,7 @@ function App() {
       <TitleView/>
       <section id="mainPage">
         <DataBlock 
+          id="graph1"
           calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
           name={'Average show scores for top 10 contending companies'}
           fetchSummaryData={() => 
@@ -79,6 +80,7 @@ function App() {
           summaryTitle={'Best performing shows in the top companies'}
         />
         <DataBlock 
+          id="graph2"
           calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
           name={'Average number of seasons between cable vs streaming'}
           fetchSummaryData={() => 
@@ -87,6 +89,7 @@ function App() {
           summaryTitle={'Longest shows for cable and series'}
         />
         <DataBlock
+          id="graph3"
           calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
           name={'Average show scores per year for streaming & cable companies'}
           fetchSummaryData={() => 
