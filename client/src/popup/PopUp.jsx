@@ -21,6 +21,12 @@ function PopUp({year, chartName}) {
               return curr.numberOfSeasons > acc.numberOfSeasons ? curr : acc;
             }, json[0]);
           setStarShow(showWithMostNumberOfSeasonsForThatYear);
+        } else if (chartName === 'Average show scores per year<br>for streaming & cable companies'){
+          const showWithHighestScoreForThatYear = 
+            json.reduce((acc, curr) => {
+              return curr.score > acc.score ? curr : acc;
+            }, json[0]);
+          setStarShow(showWithHighestScoreForThatYear);
         }
       } catch (error) {
         setError(error.message);
