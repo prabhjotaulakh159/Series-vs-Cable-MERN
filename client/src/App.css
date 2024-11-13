@@ -21,11 +21,17 @@
   padding: 0;
 }
 
-#root {
-  padding-bottom: 10px;
+#main-app {
+  display: flex;
+  flex-direction: column;
 }
 
-#main-app {
+body, html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
   display: flex;
   flex-direction: column;
 }

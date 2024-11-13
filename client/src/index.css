@@ -1,5 +1,25 @@
 body, * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  background: none;
+  transition: all 0.5s ease-out;
+  color: red;
+}
+
+a:hover {
+  font-style: italic;
+  padding: 0px 5px;
+  border-radius: 5px;
+}
+
+footer a:hover {
+  color: white;
+  font-style: italic;
+  padding: 0px 5px;
+  border-radius: 5px;
 }
