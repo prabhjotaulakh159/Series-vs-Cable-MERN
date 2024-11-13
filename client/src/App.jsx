@@ -34,18 +34,23 @@ function App() {
       try { 
         const response = await fetch('/api/series');
         if (!response.ok) {
-          throw new Error('Response did not return 200');
+          throw new Error(`Not a 2xx response, ${response.status}, 
+            ${response.statusText ? response.statusText : ''}`, 
+          {cause: response});
         }
         const data = await response.json();
         setSeries(data);
 
         const responseCompanies = await fetch('/api/companies');
         if (!responseCompanies.ok) {
-          throw new Error('Response did not return 200');
+          throw new Error(`Not a 2xx response, ${response.status}, 
+            ${response.statusText ? response.statusText : ''}`, 
+          {cause: response});
         }
         const companiesData = await responseCompanies.json();
         setCompanies(companiesData);
       } catch (error) {
+        console.error(error);
         setError(error.message);
       } finally {
         setLoading(false);
