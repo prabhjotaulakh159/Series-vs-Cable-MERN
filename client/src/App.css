@@ -4,6 +4,30 @@
   font-family: "Poppins", sans-serif;
 }
 
+#root{
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+}
+
+#mainPage{
+  display: block;
+  width: 75%;
+  margin-inline: 0;
+}
+
+#root{
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+}
+
+#mainPage{
+  display: block;
+  width: 75%;
+  margin-inline: 0;
+}
+
 @font-face {
   font-family: "Roboto", sans-serif;
   src: url('../assets/Roboto-Regular.ttf');
@@ -28,4 +52,8 @@
 #main-app {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  padding-bottom: 3em;
 }

@@ -15,11 +15,19 @@ function Graph({data, name}) {
         <Plot
           data={data}
           layout={{ 
-            width: '100%',
             title: name,
-            font: {size: 18}
+            font: {size: 12},
+            legend: {
+              x: 1,
+              xanchor: 'right',
+              y: 1
+            }
           }}
-          config ={ {displayModeBar: false}}
+          config ={{
+            displayModeBar: false, 
+            responsive: true 
+          }}
+          style={{width: '100%', height: '100%'}}
         />
       </Suspense>
     </div>
