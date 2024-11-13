@@ -8,9 +8,10 @@ const mapScoresCable = new Map();
 const mapScoresStreaming = new Map();
 
 function PopUp({year, type, chartName}) {
+  
   const [starShow, setStarShow] = useState(undefined);
   const [error, setError] = useState('');
-
+  
   useEffect(() => {
     const isSeasonChart = chartName === 'Average number of seasons between cable vs streaming';
     const isScoreChart = !isSeasonChart;
@@ -64,6 +65,10 @@ function PopUp({year, type, chartName}) {
       }).
       catch(error => setError(error.message));
   }, [year, chartName, type]);
+
+  if (chartName === 'Average show scores for top 10 contending companies') {
+    return;
+  }
 
   return (
     <section className="pop-up-container">
