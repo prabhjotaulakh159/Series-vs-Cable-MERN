@@ -63,6 +63,7 @@ function Graph({ data, name }) {
             responsive: true 
           }}
           // inside useCallbacks, there should be no re-render
+          onClick={onHoverCallback}
           onHover={onHoverCallback} 
           onUnhover={onLeaveCallback}
         />
@@ -72,13 +73,19 @@ function Graph({ data, name }) {
         year={year.current} 
         type={type.current}
         chartName={name} 
+        onClose={onLeaveCallback}
       />
     </div>
   );
 }
   
-function HoverPopUp({ showPopUp, year, type, chartName }) {
-  return showPopUp ? <PopUp year={year} type={type} chartName={chartName} /> : null;
+function HoverPopUp({ showPopUp, year, type, chartName, onClose }) {
+  return showPopUp ? <PopUp 
+    year={year} 
+    type={type} 
+    chartName={chartName} 
+    onClose={onClose}
+  /> : null;
 }
 
 export default Graph;

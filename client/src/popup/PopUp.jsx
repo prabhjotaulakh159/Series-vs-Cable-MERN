@@ -7,7 +7,7 @@ const mapSeasonStreaming = new Map();
 const mapScoresCable = new Map();
 const mapScoresStreaming = new Map();
 
-function PopUp({year, type, chartName}) {
+function PopUp({year, type, chartName, onClose}) {
   
   const [starShow, setStarShow] = useState(undefined);
   const [error, setError] = useState('');
@@ -80,6 +80,7 @@ function PopUp({year, type, chartName}) {
       <h3>Company Type: {starShow?.companyType}</h3>
       <h3>Year of release: {starShow?.year}</h3>
       <img id="artwork" src={starShow?.artwork} alt=""/>
+      <button onClick={onClose}>Close</button>
     </section>
   );
 }
