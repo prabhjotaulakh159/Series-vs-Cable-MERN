@@ -24,6 +24,8 @@ nav * {
   padding: 0.3em;
   border-radius: 10px;
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
 .Logo {
   flex: 0.5;
@@ -37,7 +39,7 @@ nav * {
   position: absolute;
 }
 
-.mobileNavMenu{
+.mobileNavMenu {
   display: flex;
   position: absolute;
   background-color: cornflowerblue;
@@ -46,16 +48,16 @@ nav * {
   right: 5px;
   border-radius: 10px;
   padding: 2em;
-  box-shadow: -9px 11px 26px -3px rgba(0,0,0,0.75);
+  box-shadow: -9px 11px 26px -3px rgba(0, 0, 0, 0.75);
   z-index: 1;
 }
 
-.closeMenu{
-  align-self:flex-end;
-  cursor:pointer;
+.closeMenu {
+  align-self: flex-end;
+  cursor: pointer;
 }
 
-@media (max-width: 1000px){
+@media (max-width: 1000px) {
   nav * {
     margin: 0 0.5em;
   }
@@ -90,13 +92,13 @@ nav * {
     margin-left: 1em;
   }
 
-  .filterBtn{
-    margin:1em;
+  .filterBtn {
+    margin: 1em;
   }
 }
 
-@media (max-width:400px){
-  .Logo img{
+@media (max-width: 400px) {
+  .Logo img {
     width: 4em;
   }
 }
