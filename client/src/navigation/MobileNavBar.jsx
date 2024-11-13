@@ -1,6 +1,8 @@
 import { IoMdMenu } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 export default function MobileNavBar() {
   const [showNav, setShowNav] = useState(false);
@@ -18,9 +20,27 @@ export default function MobileNavBar() {
               size="30px"
               onClick={() => setShowNav(!showNav)}
             />
-            <div className="filterBtn">Filter 1</div>
-            <div className="filterBtn">Filter 2</div>
-            <div className="filterBtn">Filter 3</div>
+            <Link 
+              to="#graph1" 
+              className="filterBtn"
+              onClick={() => setShowNav(!showNav)}
+            >
+              Filter 1
+            </Link>
+            <Link 
+              to="#graph2" 
+              className="filterBtn"
+              onClick={() => setShowNav(!showNav)}
+            >
+              Filter 2
+            </Link>
+            <Link 
+              to="#graph3" 
+              className="filterBtn"
+              onClick={() => setShowNav(!showNav)}
+            >
+              Filter 3
+            </Link>
           </div>
           : null}
       </section>
