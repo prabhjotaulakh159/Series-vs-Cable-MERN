@@ -4,7 +4,7 @@ import Graph from './Graph.jsx';
 import Summary from './Summary.jsx';
 import './DataBlock.css';
 
-function DataBlock({calculateAxies, name, fetchSummaryData, summaryTitle}) {
+function DataBlock({calculateAxies, name, fetchSummaryData, summaryTitle, id}) {
   const [showPlot, setShowPlot] = useState(false);
   const [data, setData] = useState(false);
   const plotRef = useRef(null); 
@@ -54,11 +54,14 @@ function DataBlock({calculateAxies, name, fetchSummaryData, summaryTitle}) {
     <div className="graph-block" ref={plotRef} >
       {showPlot && 
       <>
+        <h3 id={id} className="Graph-title">
+          {name}
+        </h3>
         <Graph
           data={data}
           name={name}
         />
-        <h2>{summaryTitle}</h2>
+        <h2 id={id} >{summaryTitle}</h2>
         <Summary fetchSummaryData={fetchSummaryData} name={summaryTitle}/>
       </>
       }

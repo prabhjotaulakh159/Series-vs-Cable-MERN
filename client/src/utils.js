@@ -204,6 +204,7 @@ function calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasons) {
   });
   return map;
 }
+
 /**
  * This function is used in the line chart for the average scores per year
  * of cable versus streaming services.
@@ -238,7 +239,7 @@ function calculateCompanyScoresPerYear(series){
       totalScoreForYear += show.score;
     });
     const averageScore = totalScoreForYear / cableSeriesByYear[year].length;
-    cableAverageScores.push(averageScore);
+    cableAverageScores.push(averageScore * 100);
   });
 
   const streamingAverageScores = [];
@@ -249,7 +250,7 @@ function calculateCompanyScoresPerYear(series){
       totalScoreForYear += show.score;
     });
     const averageScore = totalScoreForYear / cableSeriesByYear[year].length;
-    streamingAverageScores.push(averageScore);
+    streamingAverageScores.push(averageScore * 100);
   });
 
   const data = [
@@ -259,7 +260,7 @@ function calculateCompanyScoresPerYear(series){
       type: 'scatter',
       mode: 'lines+markers',
       marker: {color: 'red'},
-      name: 'Cable services'
+      name: 'cable'
     },
     {
       x: xAxis,
@@ -267,7 +268,7 @@ function calculateCompanyScoresPerYear(series){
       type: 'scatter',
       mode: 'lines+markers',
       marker: {color: 'blue'},
-      name: 'Streaming services'
+      name: 'streaming'
     }
     
   ];

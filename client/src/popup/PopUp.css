@@ -1,0 +1,68 @@
+.pop-up-container {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: bisque;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+    overflow-x: hidden;
+    text-align: center;
+    gap: 10px;
+    font-size: 16px;
+    padding: 16px;
+}
+
+.pop-up-container button {
+    width: 75%;
+    max-width: 120px;
+    background-color: black;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    display: none;
+}
+
+#chart-title {
+    font-family: bold;
+}
+
+#list-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#artwork {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10%;
+}
+
+
+@media(max-width: 600px) {
+    .pop-up-container {
+        max-width: none;
+    }
+
+    #artwork {
+        display: block;
+        width: 50%;
+        border-radius: 10%;
+    }
+
+    .pop-up-container button {
+        display: block;
+    }
+}
