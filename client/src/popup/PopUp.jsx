@@ -65,26 +65,10 @@ function PopUp({year, type, chartName}) {
       catch(error => setError(error.message));
   }, [year, chartName, type]);
 
-  let title;
-
-  if (chartName.includes('seasons') && type === 'cable') {
-    title = `Cable show with highest number of seasons in the year ${year}`;
-  }
-  if (chartName.includes('seasons') && type === 'streaming') {
-    title = `Streaming show with highest number of seasons in the year ${year}`;
-  }
-  if (chartName.includes('scores') && type === 'cable') {
-    title = `Cable show with highest score in the year ${year}`;
-  }
-  if (chartName.includes('scores') && type === 'streaming') {
-    title = `Streaming show with number score in the year ${year}`;
-  }
-
-
   return (
     <section className="pop-up-container">
       { error && <p>{error}</p> }
-      <h3>{title}</h3>
+      <h3>Winner for year: {year}</h3>
       <h3>Title: {starShow?.name}</h3>
       <h3>Score: {starShow?.score}</h3>
       <h3>Seasons: {starShow?.numberOfSeasons}</h3>

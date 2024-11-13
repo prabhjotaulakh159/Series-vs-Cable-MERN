@@ -102,6 +102,7 @@ class DB {
     // they are truthy from the request query parameters. If only name is 
     // required, the object in find will simply be { name: name }, and it 
     // filter only by name
+    // { $and: [ { scores: 75, name: "Greg Powell" } ] }
     const seriesFiltered = await instance.seriesCollection.find(query).project({_id:0}).toArray();
     return seriesFiltered;
   }

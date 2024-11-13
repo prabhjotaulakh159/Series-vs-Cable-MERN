@@ -3,6 +3,7 @@ nav {
   align-items: center;
   height: 5em;
   background-color: cornflowerblue;
+  width: 100%;
 }
 nav * {
   margin: 0 1.5em;
@@ -74,6 +75,11 @@ nav * {
     justify-content: center;
     align-items: center;
   }
+
+  nav {
+    height: 7em;
+  }
+  
   nav * {
     margin: unset;
   }

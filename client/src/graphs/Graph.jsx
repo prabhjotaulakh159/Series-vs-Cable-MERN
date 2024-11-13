@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, lazy, Suspense, memo, useCallback } from 'react';
+import { useState, useRef, lazy, Suspense, memo, useCallback } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import PopUp from '../popup/PopUp';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -7,11 +7,8 @@ import './Graph.css';
 // memo the plot to avoid re-renders
 const MemoPlot = memo(lazy(() => import('react-plotly.js')));
 
-function Graph({ calculateAxies, name }) {
-  const [showPlot, setShowPlot] = useState(false);
-  const [data, setData] = useState([]);
+function Graph({ data, name }) {
   const plotRef = useRef(null);
-  
   const showPopUp = useRef(false);
   const year = useRef(-1);
   const type = useRef('');
@@ -25,24 +22,6 @@ function Graph({ calculateAxies, name }) {
   // as it is memoized and it's functions are in useCallbacks.
   // only the pop-up will be re-rendered with the new data.
   const [, setPerformPopUp] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (entry.isIntersecting) {
-        const axiesData = calculateAxies();
-        setData(axiesData);
-        setShowPlot(true);
-        observer.disconnect();
-      }
-    }, { root: null, rootMargin: '100px', threshold: 0.1 });
-
-    if (plotRef.current) {
-      observer.observe(plotRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [calculateAxies]);
 
   const onHoverCallback = useCallback((e) => {
     if (timeout.current) {
@@ -67,22 +46,27 @@ function Graph({ calculateAxies, name }) {
 
   return (
     <div className="graph-container" ref={plotRef}>
-      {showPlot && 
-        <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1} />}>
-          <MemoPlot
-            data={data}
-            layout={{
-              width: '100%',
-              title: name,
-              font: { size: 18 }
-            }}
-            config={{ displayModeBar: false }}
-            // inside useCallbacks, there should be no re-render
-            onHover={onHoverCallback} 
-            onUnhover={onLeaveCallback}
-          />
-        </Suspense>
-      }
+      <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1} />}>
+        <MemoPlot
+          data={data}
+          layout={{ 
+            title: name,
+            font: {size: 12},
+            legend: {
+              x: 1,
+              xanchor: 'right',
+              y: 1
+            }
+          }}
+          config ={{
+            displayModeBar: false, 
+            responsive: true 
+          }}
+          // inside useCallbacks, there should be no re-render
+          onHover={onHoverCallback} 
+          onUnhover={onLeaveCallback}
+        />
+      </Suspense>
       <HoverPopUp 
         showPopUp={showPopUp.current} 
         year={year.current} 
@@ -92,7 +76,7 @@ function Graph({ calculateAxies, name }) {
     </div>
   );
 }
-
+  
 function HoverPopUp({ showPopUp, year, type, chartName }) {
   return showPopUp ? <PopUp year={year} type={type} chartName={chartName} /> : null;
 }
