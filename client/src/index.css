@@ -8,13 +8,19 @@ a {
   text-decoration: none;
   background: none;
   transition: all 0.5s ease-out;
-  color: red;
 }
 
 a:hover {
   font-style: italic;
   padding: 0px 5px;
   border-radius: 5px;
+}
+
+footer a {
+  color: red;
+  text-decoration: none;
+  background: none;
+  transition: all 0.5s ease-out;
 }
 
 footer a:hover {
