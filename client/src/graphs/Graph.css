@@ -1,0 +1,20 @@
+.graph-container,
+.js-plotly-plot,
+.plot-container,
+.svg-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.Graph-title{
+  font-size: 2vw;
+  text-align: center;
+  font-weight: 600;
+}
+
+@media (max-width:800px){
+  .Graph-title {
+    font-size: 4vw;
+  }
+}
