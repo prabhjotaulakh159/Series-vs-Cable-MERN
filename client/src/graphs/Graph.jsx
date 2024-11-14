@@ -47,6 +47,13 @@ function Graph({ data, name }) {
   return (
     <div className="graph-container" ref={plotRef}>
       <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1} />}>
+        <HoverPopUp 
+          showPopUp={showPopUp.current} 
+          year={year.current} 
+          type={type.current}
+          chartName={name} 
+          onClose={onLeaveCallback}
+        />
         <MemoPlot
           data={data}
           layout={{ 
@@ -68,13 +75,6 @@ function Graph({ data, name }) {
           onUnhover={onLeaveCallback}
         />
       </Suspense>
-      <HoverPopUp 
-        showPopUp={showPopUp.current} 
-        year={year.current} 
-        type={type.current}
-        chartName={name} 
-        onClose={onLeaveCallback}
-      />
     </div>
   );
 }

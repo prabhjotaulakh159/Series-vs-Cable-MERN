@@ -134,6 +134,11 @@ function getTopContendingCompanies(companies) {
   return data;
 }
 
+/**
+ * Calculates the average number of seasons per year for streaming and cable
+ * @param { Array } series - Series to calculate average # of seasons/year
+ * @return Data for the graph
+ */
 function calcAvgNumSeasonsPerYear(series) {
   const cableShows = getSeriesByCompanyType(series, 'cable');
   const streamingShows = getSeriesByCompanyType(series, 'streaming');
@@ -174,12 +179,24 @@ function calcAvgNumSeasonsPerYear(series) {
   ];
 }
 
+/**
+ * Get all the series based on company type and not in the year 2025
+ * @param { Array } series - Series to filter by type
+ * @param { String } type - Type of company to filter by
+ * @return Filtered companies
+ */
 function getSeriesByCompanyType(series, type) {
   return series.
-    filter(show => show.companyType === type).
+    filter(show => show.companyType === type && show.year !== 2025).
     sort((a, b) => a.year - b.year);
 }
 
+/**
+ * Calculates the total number of seasons per year for given shows 
+ * (cable or streaming)
+ * @param { Array} shows - Series to calculate number of seasons per year
+ * @return Map of year to # of seasons
+ */
 function calculateTotalNumberSeasonsPerYear(shows) {
   const map = new Map();
   shows.forEach(show => {
@@ -195,6 +212,12 @@ function calculateTotalNumberSeasonsPerYear(shows) {
   return map;
 }
 
+/**
+ * Calculates the average number of seasons per year for a given map 
+ * of years to total # of seasons
+ * @param { Map } mapYearToNumberOfSeasons - Map of year -> # of seasons
+ * @return Another map of years -> avg # of seasons
+ */
 function calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasons) {
   const map = new Map();
   Array.from(mapYearToNumberOfSeasons.keys()).forEach(year => {
