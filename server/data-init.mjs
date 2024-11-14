@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import API_KEY from './api.key.mjs';
+// import API_KEY from './api.key.mjs';
 import pLimit from 'p-limit';
 
 const MIN_AIR_DATE = new Date('2010-01-01');
@@ -10,6 +10,7 @@ const countries = ['can', 'usa', 'gbr'];
  * @returns {string} - represents the token valid for the whole session
  */
 async function fetchToken() {
+  const {default: API_KEY } = await import('./api.key.mjs');
   const response = await fetch('https://api4.thetvdb.com/v4/login', {
     headers: {
       'Content-Type': 'application/json',
