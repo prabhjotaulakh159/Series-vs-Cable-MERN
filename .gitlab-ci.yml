@@ -71,7 +71,7 @@ test-server:
 bundle-check:
   stage: build
   script:
-    - npm run build && npm run check
+    - npm install && npm run build && npm run check
   only:
     refs:
       - main
