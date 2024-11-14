@@ -81,9 +81,9 @@ cd server
 nodemon api.mjs
 ```
 
-## Attributions
+# Attributions
 
-### API
+## API
 The API used in this project is [The TVDB API](https://github.com/thetvdb/v4-api). The corresponding json retrieved from the API will be parsed in order to gather the necessary data needed for our project. A single json entry for a series is as follows:
 ```
 {
@@ -411,5 +411,14 @@ The company object will resemble the following:
 }
 ```
 
-### Libraries
-TBA
+## Dataset
+The datasets used for this project have all been taken from [The TV DB](https://www.thetvdb.com/)
+
+The official Swagger UI for their datasets and routes can be found at: [The TV DB Swagger UI](https://thetvdb.github.io/v4-api/#/)
+
+## Libraries
+As of now, we are using the Plotly library, as well as the Intersection Observer library to do some cool lazy rendering.
+
+### Documentations can be found at:
+- [Plotly Docs](https://plotly.com/javascript/)
+- [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)

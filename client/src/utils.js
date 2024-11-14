@@ -1,5 +1,12 @@
 const types = ['cable', 'streaming'];
 
+/**
+ * This fetches the highest rated show of the cable and streaming
+ * companies that have the highest average scores
+ * @param {Array} companies - the companies from which to filter
+ * @param {Array} series - All series in the db to filter to find the highest score
+ * @returns - A map with the winning cable and streaming series objects
+ */
 async function fetchHighestRatedShowAmongCompanies(companies, series) {
   const highestScoreCable = companies.filter(company => 
     company.type === 'cable'
@@ -39,6 +46,13 @@ async function fetchHighestRatedShowAmongCompanies(companies, series) {
   return {cable: winningCableSeries, streaming: winningStreamingSeries};
 }
 
+/**
+ * This fetches the longest show of the cable and streaming
+ * companies
+ * @param {Array} companies - unused, but needed to keep convention
+ * @param {Array} series - All series in the db to filter to find the longest one
+ * @returns - A map with the winning cable and streaming series objects
+ */
 async function fetchLongestShowForTypes(companies, series) {
   const longestStreamingShow = series.filter(show => 
     show.companyType === 'streaming'
@@ -61,6 +75,12 @@ async function fetchLongestShowForTypes(companies, series) {
   return {cable: longestCableShow, streaming: longestStreamingShow};
 }
 
+/**
+ * This fetches the highest rated show of the cable and streaming overall
+ * @param {Array} companies - unused, but needed to keep convention
+ * @param {Array} series - All series in the db to filter to find the highest score
+ * @returns - A map with the winning cable and streaming series objects
+ */
 async function fetchHighestRatedShowsOverall(companies, series) {
   const winningCableSeries = series.filter(show => 
     show.companyType === 'cable'
@@ -84,6 +104,11 @@ async function fetchHighestRatedShowsOverall(companies, series) {
 }
 
 
+/**
+ * Retrieves the top 10 companies that have the highest average scores
+ * @param {Array} companies - companies from which to filter
+ * @returns - dataset object which will be passed to our graph component
+ */
 function getTopContendingCompanies(companies) {
   const topCompanies = Array.from(
     new Set(companies.sort((a, b) => b.averageScore - a.averageScore))

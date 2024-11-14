@@ -1,6 +1,7 @@
 import './App.css';
 import DataBlock from './graphs/DataBlock.jsx';
 import TitleView from './TitleView.jsx';
+import Footer from './Footer.jsx';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
 import { useState, useEffect, useCallback } from 'react';
@@ -35,7 +36,9 @@ function App() {
       try { 
         const response = await fetch('/api/series');
         if (!response.ok) {
-          throw new Error('Response did not return 200');
+          throw new Error(`Not a 2xx response, ${response.status}, 
+            ${response.statusText ? response.statusText : ''}`, 
+          {cause: response});
         }
         const data = await response.json();
         const highestScore = Math.max(...data.map(show => show.score));
@@ -46,11 +49,14 @@ function App() {
 
         const responseCompanies = await fetch('/api/companies');
         if (!responseCompanies.ok) {
-          throw new Error('Response did not return 200');
+          throw new Error(`Not a 2xx response, ${response.status}, 
+            ${response.statusText ? response.statusText : ''}`, 
+          {cause: response});
         }
         const companiesData = await responseCompanies.json();
         setCompanies(companiesData);
       } catch (error) {
+        console.error(error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -63,39 +69,42 @@ function App() {
   }
 
   return (
-    <section id="main-app">
-      <NavBar/>
-      <TitleView/>
-      <section id="mainPage">
-        <DataBlock 
-          id="graph1"
-          calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
-          name={'Average show scores for top 10 contending companies'}
-          fetchSummaryData={() => 
-            fetchSummaryData(companies, series, fetchHighestRatedShowAmongCompanies)
-          }
-          summaryTitle={'Best performing shows in the top companies'}
-        />
-        <DataBlock 
-          id="graph2"
-          calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
-          name={'Average number of seasons between cable vs streaming'}
-          fetchSummaryData={() => 
-            fetchSummaryData(companies, series, fetchLongestShowForTypes)
-          }
-          summaryTitle={'Longest shows for cable and series'}
-        />
-        <DataBlock
-          id="graph3"
-          calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
-          name={'Average show scores per year for streaming & cable companies'}
-          fetchSummaryData={() => 
-            fetchSummaryData(companies, series, fetchCompaniesWithHighestScores)
-          }
-          summaryTitle={'Highest scoring shows for cable and series'}
-        />
+    <main>
+      <section id="main-app">
+        <NavBar/>
+        <TitleView/>
+        <section id="mainPage">
+          <DataBlock 
+            id="graph1"
+            calculateAxies={() => calculateAxies(companies, getTopContendingCompanies)}
+            name={'Average show scores for top 10 contending companies'}
+            fetchSummaryData={() => 
+              fetchSummaryData(companies, series, fetchHighestRatedShowAmongCompanies)
+            }
+            summaryTitle={'Best performing shows in the top companies'}
+          />
+          <DataBlock 
+            id="graph2"
+            calculateAxies={() => calculateAxies(series, calcAvgNumSeasonsPerYear)}
+            name={'Average number of seasons between cable vs streaming'}
+            fetchSummaryData={() => 
+              fetchSummaryData(companies, series, fetchLongestShowForTypes)
+            }
+            summaryTitle={'Longest shows for cable and series'}
+          />
+          <DataBlock
+            id="graph3"
+            calculateAxies={() => calculateAxies(series, calculateCompanyScoresPerYear)}
+            name={'Average show scores per year for streaming & cable companies'}
+            fetchSummaryData={() => 
+              fetchSummaryData(companies, series, fetchCompaniesWithHighestScores)
+            }
+            summaryTitle={'Highest scoring shows for cable and series'}
+          />
+        </section>
       </section>
-    </section>
+      <Footer/>
+    </main>
   );
 }
 
