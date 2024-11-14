@@ -176,7 +176,7 @@ function calcAvgNumSeasonsPerYear(series) {
 
 function getSeriesByCompanyType(series, type) {
   return series.
-    filter(show => show.companyType === type).
+    filter(show => show.companyType === type && show.year !== 2025).
     sort((a, b) => a.year - b.year);
 }
 
