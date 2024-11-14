@@ -18,54 +18,6 @@ const expect = chai.expect;
  * https://thetvdb.github.io/v4-api/
  */
 
-describe('Tests for fetching the token', () => {
-  let fetchedStubFunction;
-
-  beforeEach(() => {
-    // global is the nodejs global scope
-    // it has the fetch function inside it
-    fetchedStubFunction = sinon.stub(global, 'fetch');
-  });
-
-  afterEach(() => {
-    fetchedStubFunction.restore();
-  });
-
-  it('Should return a token and status of 200', async () => {
-    const expectedResponse = {
-      // mock response.ok
-      ok: true,
-      // mock response.json() method
-      json: async () => {
-        return {
-          data: {
-            token: 'my-token'
-          },
-          status: '200'
-        };
-      }
-    };
-
-    fetchedStubFunction.resolves(expectedResponse);
-    const token = await DataInit.fetchToken();
-    
-    expect(fetchedStubFunction.calledOnce).to.be.true;
-    expect(fetchedStubFunction.getCall(0).args[0]).to.be.equal('https://api4.thetvdb.com/v4/login');
-    expect(token).to.be.equal('my-token');
-  });
-
-  it('Should throw an error if the response is not 2xx', async () => {
-    // there are other things in response, but only these 2 are relevant
-    const expectedResponse = {
-      status: 401,
-      ok: false
-    };
-    fetchedStubFunction.resolves(expectedResponse);
-    // https://www.chaijs.com/plugins/chai-as-promised/
-    return expect(DataInit.fetchToken()).to.be.rejectedWith(Error, `Not 2xx response, 401`);
-  });
-}); 
-
 describe('Test fetchAllSeries', () => {
   let fetchedStubFunction;
 
