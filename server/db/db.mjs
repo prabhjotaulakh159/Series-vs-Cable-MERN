@@ -74,10 +74,7 @@ class DB {
 
   /* Deletes all companies from the database */
   async deleteManyCompanies(query) {
-    if (!instance.companiesCollection) {
-      return await instance.companiesCollection.deleteMany(query);
-    }
-    return;
+    return await instance.companiesCollection.deleteMany(query);
   }
   
   /**
@@ -98,13 +95,14 @@ class DB {
       query.year = Number(year);
     }
     if (type) {
-      query.type = type;
+      query.companyType = type;
     }
     // the find method takes an object { name: name, year: year, type: type }
     // however, we only add those keys if we actually want them, meaning 
     // they are truthy from the request query parameters. If only name is 
     // required, the object in find will simply be { name: name }, and it 
     // filter only by name
+    // { $and: [ { scores: 75, name: "Greg Powell" } ] }
     const seriesFiltered = await instance.seriesCollection.find(query).project({_id:0}).toArray();
     return seriesFiltered;
   }
@@ -119,6 +117,22 @@ class DB {
     const series = await instance.seriesCollection.findOne(query);
     delete series._id;
     return series;
+  }
+
+  /**
+   * 
+   * @param {String} type - represents the company type we want to filter by
+   * @returns - the filtered companies by type
+   */
+  async getFilteredCompanies(type) {
+    const query = {};
+    if (type) {
+      query.type = type;
+    }
+
+    const filteredCompanies = 
+      await instance.companiesCollection.find(query).project({_id:0}).toArray();
+    return filteredCompanies;
   }
 
   /**

@@ -67,4 +67,16 @@ test-server:
       - master
       - staging
   allow_failure: false
+
+bundle-check:
+  stage: build
+  script:
+    - npm install && npm run build && npm run check
+  only:
+    refs:
+      - main
+      - master
+      - staging
+  allow_failure: false
+
   
