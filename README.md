@@ -87,6 +87,27 @@ cd server
 nodemon api.mjs
 ```
 
+## Deployment instructions
+We deployed our app on Render. The steps to deploy:
+1. In the dashboard, we selected a web service
+2. Next, choose gitlab as the git provider and choose the website's repo
+3. Change the language to Node
+4. Choose staging as the branch
+5. set the root directory as .
+6. set the  build command to `cd client && npm install && npm run build && cd ../server && npm install`
+7. set the start command to `cd server && node bin/www`
+8. Choose the free level (or other, depending on budget)
+9. Set the environment variables to the following in the environment tab:
+
+```
+ATLAS_URI=[your atlas uri for mongo db]
+NODE_ENV=production
+PORT=3001
+```
+10. Hit the start button
+
+To re-deploy, simply push changes to your selected branch and the server will automatically re-deploy once those committed changes are pushed.
+
 # Attributions
 
 ## API
