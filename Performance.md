@@ -5,8 +5,6 @@
 In chrome on a Windows 11 device with intel i7 core 13th gen CPU, using the lighthouse report, we performed an analysis on a viewport of 1280x752 with fast 4G throttle and gathered some critical information about our app performance.
 
 ![alt text](images/image6.png)
-![alt text](images/image7.png)
-
 
 <!-- Also report overall impact on whatdoesmysitecost results before and after all your changes -->
 
