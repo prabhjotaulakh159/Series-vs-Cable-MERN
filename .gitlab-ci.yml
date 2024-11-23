@@ -46,11 +46,11 @@ build-frontend:
   stage: build
   script:
     - cd client && npm run build
-  # only:
-  #   refs:
-  #     - main
-  #     - master
-  #     - staging
+  only:
+    refs:
+      - main
+      - master
+      - staging
 
   artifacts:
     expire_in: 1 days
