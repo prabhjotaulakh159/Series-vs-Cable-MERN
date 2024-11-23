@@ -2,10 +2,17 @@
 
 image: node:lts-bullseye-slim
 
+stages:
+  - lint
+  - build
+  - test
+  - release
+  - deploy
+
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_TAG  && $CI_COMMIT_BRANCH == 'fixCIJobs'
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH == 'staging'
 
@@ -34,13 +41,6 @@ lint-client:
   script:
     - cd client && ./node_modules/eslint/bin/eslint.js .
   allow_failure: false
-
-stages:
-  - lint
-  - build
-  - test
-  - release
-  - deploy
 
 build-frontend:
   stage: build
