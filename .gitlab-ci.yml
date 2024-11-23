@@ -56,7 +56,7 @@ build-frontend:
     expire_in: 1 days
     when: on_success
     paths:
-      - client/build
+      - client/dist
 
 test-server:
   stage: test
@@ -91,7 +91,8 @@ build-app-archive:
   before_script:
     - npm ci --omit dev
   script:
-    - tar -czf $RELEASE_FILE --exclude='package*' --exclude='.npm' --exclude='eslint*' --exclude='./server/.env' --transform 's,^,520-project-aulakh-rossetti-winter/,' server client/dist client/public/
+    - ls
+    - tar -czf $RELEASE_FILE --exclude='package*' --exclude='.npm' --exclude='eslint*' --exclude='./server/.env' --transform 's,^,520-project-aulakh-rossetti-winter/,' server client/build/dist client/build/public/
   artifacts:
     expire_in: 1 days
     when: on_success
