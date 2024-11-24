@@ -8,7 +8,6 @@ import './Graph.css';
 const MemoPlot = memo(lazy(() => import('react-plotly.js')));
 
 function Graph({ data, name }) {
-  const plotRef = useRef(null);
   const showPopUp = useRef(false);
   const year = useRef(-1);
   const type = useRef('');
@@ -45,7 +44,7 @@ function Graph({ data, name }) {
   }, []);
 
   return (
-    <div className="graph-container" ref={plotRef}>
+    <div className="graph-container">
       <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1} />}>
         <HoverPopUp 
           showPopUp={showPopUp.current} 
@@ -54,26 +53,28 @@ function Graph({ data, name }) {
           chartName={name} 
           onClose={onLeaveCallback}
         />
-        <MemoPlot
-          data={data}
-          layout={{ 
-            title: name,
-            font: {size: 12},
-            legend: {
-              x: 1,
-              xanchor: 'right',
-              y: 1
-            }
-          }}
-          config ={{
-            displayModeBar: false, 
-            responsive: true 
-          }}
-          // inside useCallbacks, there should be no re-render
-          onClick={onHoverCallback}
-          onHover={onHoverCallback} 
-          onUnhover={onLeaveCallback}
-        />
+        <div>
+          <MemoPlot
+            data={data}
+            layout={{ 
+              font: {size: 12},
+              legend: {
+                x: 1,
+                xanchor: 'right',
+                y: 1
+              },
+              autosize: true,
+            }}
+            config ={{
+              displayModeBar: false, 
+              responsive: true 
+            }}
+            // inside useCallbacks, there should be no re-render
+            onClick={onHoverCallback}
+            onHover={onHoverCallback} 
+            onUnhover={onLeaveCallback}
+          />
+        </div>
       </Suspense>
     </div>
   );
