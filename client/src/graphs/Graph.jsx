@@ -2,7 +2,7 @@ import { useState, useRef, lazy, memo, useCallback } from 'react';
 import PopUp from '../popup/PopUp';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './Graph.css';
-import './Summary.css'
+import './Summary.css';
 
 // memo the plot to avoid re-renders
 const MemoPlot = memo(lazy(() => import('react-plotly.js')));
@@ -55,15 +55,15 @@ function Graph({ data, name }) {
       <div>
         <MemoPlot
           data={data}
-          useResizeHandler={false}
           layout={{ 
             font: {size: 12},
             legend: {
               x: 1,
               xanchor: 'right',
               y: 1
-            },
-            autosize: true,
+            },   
+            autosize: true, 
+            margin: { l: 40, r: 20, t: 40, b: 40 },    
           }}
           config ={{
             displayModeBar: false, 
