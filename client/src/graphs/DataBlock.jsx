@@ -16,8 +16,6 @@ function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id })
         const [entry] = entries;
 
         if (entry.isIntersecting) {
-          console.debug('Entering the viewport');
-
           Promise.all([calculateAxies(), fetchSummaryData()]).
             then(([axiesData, summaryData]) => {
               setData(axiesData);
@@ -41,17 +39,14 @@ function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id })
       observer.observe(plotRef.current);
     }
 
-    // Cleanup observer on unmount
     return () => observer.disconnect();
   }, [calculateAxies, fetchSummaryData]);
 
   return (
     <div className="graph-block" ref={plotRef}>
-      {showPlot && data ? 
+      {showPlot ? 
         <>
-          <h3 id={id} className="Graph-title">
-            {name}
-          </h3>
+          <h3 id={id} className="Graph-title">{name}</h3>
           <Graph data={data} name={name} />
           <h2 id={id} className="Summary-title">
             {summaryTitle}

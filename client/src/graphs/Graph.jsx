@@ -63,11 +63,11 @@ function Graph({ data, name }) {
               y: 1
             },   
             autosize: true, 
-            margin: { l: 40, r: 20, t: 40, b: 40 },    
+            height: 500 
           }}
           config ={{
             displayModeBar: false, 
-            responsive: true 
+            responsive: true, 
           }}
           // inside useCallbacks, there should be no re-render
           onClick={onHoverCallback}

@@ -73,16 +73,23 @@ function PopUp({year, type, chartName, onClose}) {
   return (
     <section className="pop-up-container">
       { error && <p>{error}</p> }
-      <div className="text-container">
-        <h3>Winner for year: {year}</h3>
-        <h3>Title: {starShow?.name}</h3>
-        <h3>Score: {starShow?.score}</h3>
-        <h3>Seasons: {starShow?.numberOfSeasons}</h3>
-        <h3>Company Type: {starShow?.companyType}</h3>
-        <h3>Year of release: {starShow?.year}</h3>
-      </div>
-      <img id="artwork" src={starShow?.artwork} alt=""/>
-      <button onClick={onClose}>Close</button>
+      { 
+        starShow ?
+          <>
+            <div className="text-container">
+              <h3>Winner for year: {year}</h3>
+              <h3>Title: {starShow?.name}</h3>
+              <h3>Score: {starShow?.score}</h3>
+              <h3>Seasons: {starShow?.numberOfSeasons}</h3>
+              <h3>Company Type: {starShow?.companyType}</h3>
+              <h3>Year of release: {starShow?.year}</h3>
+            </div>
+            <img id="artwork" src={starShow?.artwork} alt=""/>
+            <button onClick={onClose}>Close</button>
+          </>  :
+          <p>Loading...</p>
+      }
+      
     </section>
   );
 }
