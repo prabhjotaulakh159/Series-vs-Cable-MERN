@@ -1,5 +1,5 @@
 .graph-block {
-  padding-top: 25vh;
+  margin-top: 25vh;
   font-size: 1.3vw;
 }
 
@@ -28,4 +28,9 @@
   .graph-block {
     font-size: 3vw;
   }
+}
+
+.loading-text {
+  text-align: center;
+  padding-bottom: 40px;
 }

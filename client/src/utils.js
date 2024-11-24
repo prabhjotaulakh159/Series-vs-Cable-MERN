@@ -109,7 +109,7 @@ async function fetchHighestRatedShowsOverall(companies, series) {
  * @param {Array} companies - companies from which to filter
  * @returns - dataset object which will be passed to our graph component
  */
-function getTopContendingCompanies(companies) {
+async function getTopContendingCompanies(companies) {
   const topCompanies = Array.from(
     new Set(companies.sort((a, b) => b.averageScore - a.averageScore))
   ).slice(0, 10);
@@ -139,7 +139,7 @@ function getTopContendingCompanies(companies) {
  * @param { Array } series - Series to calculate average # of seasons/year
  * @return Data for the graph
  */
-function calcAvgNumSeasonsPerYear(series) {
+async function calcAvgNumSeasonsPerYear(series) {
   const cableShows = getSeriesByCompanyType(series, 'cable');
   const streamingShows = getSeriesByCompanyType(series, 'streaming');
 
@@ -237,7 +237,7 @@ function calculateAverageNumberOfSeaonsPerYear(mapYearToNumberOfSeasons) {
  * @param {Array} series - list of all series 
  * @returns  - an array with 2 objects representing the x axis and y axis plots
  */
-function calculateCompanyScoresPerYear(series){
+async function calculateCompanyScoresPerYear(series){
 
   const xAxis = Array.from(new Set(series.map(show => show.year).
     filter(year => year))).

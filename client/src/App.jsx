@@ -1,10 +1,9 @@
 import './App.css';
-import DataBlock from './graphs/DataBlock.jsx';
 import TitleView from './TitleView.jsx';
 import Footer from './Footer.jsx';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, memo } from 'react';
 
 import { 
   getTopContendingCompanies, 
@@ -14,6 +13,8 @@ import {
   fetchCompaniesWithHighestScores,
   fetchLongestShowForTypes
 } from './utils.js';
+
+const DataBlock = memo(lazy(() => import('./graphs/DataBlock.jsx')));
 
 function App() {
   const [series, setSeries] = useState([]);

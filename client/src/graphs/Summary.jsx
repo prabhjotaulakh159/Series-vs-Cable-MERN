@@ -9,7 +9,6 @@ function Summary({fetchSummaryData}) {
       const results = await fetchSummaryData();
       setSeries(results);
     }
-
     fetchData();
   }, [fetchSummaryData]);
   return (

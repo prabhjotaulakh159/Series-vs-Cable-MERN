@@ -1,69 +1,78 @@
-import {useEffect, useState, useRef} from 'react';
+import { useEffect, useState, useRef } from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
-import Graph from './Graph.jsx';
-import Summary from './Summary.jsx';
 import './DataBlock.css';
+import Skeleton from 'react-loading-skeleton';
+import Graph from './Graph.jsx';
 
-function DataBlock({calculateAxies, name, fetchSummaryData, summaryTitle, id}) {
+function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id }) {
   const [showPlot, setShowPlot] = useState(false);
-  const [data, setData] = useState(false);
-  const plotRef = useRef(null); 
+  const [data, setData] = useState(null);
+  const [summary, setSummary] = useState(null);
+  const plotRef = useRef(null);
 
   useEffect(() => {
-    // instantiate a new observer to observe our plot
-    const observer = new IntersectionObserver((entries) => {
-      const [entry] = entries;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
 
-      // if the plot is entering the view port
-      if (entry.isIntersecting) {
+        if (entry.isIntersecting) {
+          console.debug('Entering the viewport');
 
-        console.debug('entering the viewport');
+          Promise.all([calculateAxies(), fetchSummaryData()]).
+            then(([axiesData, summaryData]) => {
+              setData(axiesData);
+              setSummary(summaryData);
+              setTimeout(() => setShowPlot(true), 3000);
+            }).
+            finally(() => {
+              observer.disconnect(); 
+            });
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1,
+      }
+    );
 
-        const axiesData = calculateAxies();
-
-        const data = axiesData;
-
-        setData(data);
-        setShowPlot(true);
-        
-        // stop observing
-        observer.disconnect(); 
-      }      
-    }, 
-    // these are some options for the observer
-    {
-      root: null,
-      // start computing the plot when 200px above the plot
-      rootMargin: '100px', 
-      threshold: 0.1
-    });
-
-    // make it observe the plot
     if (plotRef.current) {
-      console.debug('observing !!');
+      console.debug('Observing the plot area');
       observer.observe(plotRef.current);
     }
 
-    // stop observing when leaving the component
+    // Cleanup observer on unmount
     return () => observer.disconnect();
-  }, [calculateAxies]);
+  }, [calculateAxies, fetchSummaryData]);
 
-  /* https://plotly.com/javascript/react/ */
-  /* Notice the plotRef reference, this is what our observer is observing */
   return (
-    <div className="graph-block" ref={plotRef} >
-      {showPlot && 
-      <>
-        <h3 id={id} className="Graph-title">
-          {name}
-        </h3>
-        <Graph
-          data={data}
-          name={name}
-        />
-        <h2 id={id} >{summaryTitle}</h2>
-        <Summary fetchSummaryData={fetchSummaryData} name={summaryTitle}/>
-      </>
+    <div className="graph-block" ref={plotRef}>
+      {showPlot && data ? 
+        <>
+          <h3 id={id} className="Graph-title">
+            {name}
+          </h3>
+          <Graph data={data} name={name} />
+          <h2 id={id} className="Summary-title">
+            {summaryTitle}
+          </h2>
+          <section className="summary-block">
+            {Object.keys(summary).map((type) => (
+              <div key={type} className="company-summary">
+                <h3>Winning show in {type}</h3>
+                <h3>{summary[type]?.name}</h3>
+                <p>Score: {summary[type]?.score}</p>
+                <p>Seasons: {summary[type]?.numberOfSeasons}</p>
+                <p>Year of release: {summary[type]?.year}</p>
+              </div>
+            ))}
+          </section>
+        </>
+        : 
+        <>
+          <h4 className="loading-text">Heavy duty number crunching...</h4>
+          <Skeleton variant="rectangular" width={1000} height={500} />
+        </>
       }
     </div>
   );

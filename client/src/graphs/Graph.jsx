@@ -1,8 +1,8 @@
-import { useState, useRef, lazy, Suspense, memo, useCallback } from 'react';
-import Skeleton from 'react-loading-skeleton';
+import { useState, useRef, lazy, memo, useCallback } from 'react';
 import PopUp from '../popup/PopUp';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './Graph.css';
+import './Summary.css'
 
 // memo the plot to avoid re-renders
 const MemoPlot = memo(lazy(() => import('react-plotly.js')));
@@ -45,37 +45,36 @@ function Graph({ data, name }) {
 
   return (
     <div className="graph-container">
-      <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1} />}>
-        <HoverPopUp 
-          showPopUp={showPopUp.current} 
-          year={year.current} 
-          type={type.current}
-          chartName={name} 
-          onClose={onLeaveCallback}
+      <HoverPopUp 
+        showPopUp={showPopUp.current} 
+        year={year.current} 
+        type={type.current}
+        chartName={name} 
+        onClose={onLeaveCallback}
+      />
+      <div>
+        <MemoPlot
+          data={data}
+          useResizeHandler={false}
+          layout={{ 
+            font: {size: 12},
+            legend: {
+              x: 1,
+              xanchor: 'right',
+              y: 1
+            },
+            autosize: true,
+          }}
+          config ={{
+            displayModeBar: false, 
+            responsive: true 
+          }}
+          // inside useCallbacks, there should be no re-render
+          onClick={onHoverCallback}
+          onHover={onHoverCallback} 
+          onUnhover={onLeaveCallback}
         />
-        <div>
-          <MemoPlot
-            data={data}
-            layout={{ 
-              font: {size: 12},
-              legend: {
-                x: 1,
-                xanchor: 'right',
-                y: 1
-              },
-              autosize: true,
-            }}
-            config ={{
-              displayModeBar: false, 
-              responsive: true 
-            }}
-            // inside useCallbacks, there should be no re-render
-            onClick={onHoverCallback}
-            onHover={onHoverCallback} 
-            onUnhover={onLeaveCallback}
-          />
-        </div>
-      </Suspense>
+      </div>
     </div>
   );
 }
