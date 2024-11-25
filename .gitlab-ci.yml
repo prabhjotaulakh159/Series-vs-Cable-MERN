@@ -45,7 +45,10 @@ lint-client:
 build-frontend:
   stage: build
   script:
-    - cd client && npm run build
+  # install needed for bundle check and critical css generation
+    - npm install 
+    - npm run build
+    - node critical.js
   only:
     refs:
       - main
@@ -71,8 +74,10 @@ test-server:
 
 bundle-check:
   stage: build
+  dependencies:
+    - build-frontend
   script:
-    - npm install && npm run build && npm run check
+    - npm run check
   only:
     refs:
       - main
