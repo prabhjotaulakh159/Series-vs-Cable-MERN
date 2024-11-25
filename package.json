@@ -13,12 +13,6 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "compression": "^1.7.5",
-    "mongodb": "^6.10.0",
     "streaming-vs-cable": "file:"
-  },
-  "devDependencies": {
-    "bundlesize2": "^0.0.31",
-    "critical": "^7.2.1"
   }
 }
