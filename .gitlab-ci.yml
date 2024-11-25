@@ -46,10 +46,9 @@ lint-client:
 build-frontend:
   stage: build
   before_script:
-    - npm install && npm run build
+    - npm install &&
   script:
-    - ls
-    - node critical.js
+    - npm run build
   # only:
   #   refs:
   #     - main
@@ -77,7 +76,7 @@ bundle-check:
   dependencies:
     - build-frontend
   script:
-    - npm run check
+    - npm install && npm run check
   only:
     refs:
       - main
