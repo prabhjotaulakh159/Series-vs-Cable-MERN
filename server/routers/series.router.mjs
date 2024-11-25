@@ -4,12 +4,40 @@ import
   validateSeriesQueryParameters, 
   getSeriesWithQueryParameters, 
   validateId,
-  getSeriesById 
+  getSeriesById,
+  getGenres
 } from '../controllers/series.controller.mjs';
 
 const seriesRouter = express.Router();
 // const seriesIdRouter = express.Router({mergeParams: true});
 
+/**
+ * @swagger
+ * /api/series/genres:
+ *   get:
+ *     summary: Retrieve unique genres
+ *     description: Get a list of all unique genres across all series.
+ *     responses:
+ *       200:
+ *         description: A list of unique genres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 uniqueGenres:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: Array of unique genres
+ *         examples:
+ *           application/json:
+ *             value:
+ *               uniqueGenres: ["Drama", "Comedy", "Thriller", "Sci-Fi"]
+ *       500:
+ *         description: Internal server error
+ */
+seriesRouter.get('/genres', getGenres);
 
 /**
  * @swagger
@@ -69,5 +97,6 @@ seriesRouter.get('/:id', getSeriesById);
  */
 seriesRouter.use('/', validateSeriesQueryParameters);
 seriesRouter.get('/', getSeriesWithQueryParameters);
+
 
 export default seriesRouter;

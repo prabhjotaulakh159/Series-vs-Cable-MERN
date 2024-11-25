@@ -110,9 +110,25 @@ async function getSeriesById(req, res, next){
   }
 }
 
+/**
+ * Fetches series from the database depending on the query parameters
+ */
+async function getGenres(req, res, next) {
+  try {
+    const genres = await db.getAllGenres();
+    console.log(genres);
+    res.status(200);
+    res.send(genres);
+  } catch (error) {
+    error.status = 500;
+    next(error);
+  }
+}
+
 export {
   validateSeriesQueryParameters,
   getSeriesWithQueryParameters,
   validateId,
-  getSeriesById
+  getSeriesById,
+  getGenres
 };

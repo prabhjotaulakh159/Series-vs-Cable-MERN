@@ -76,6 +76,15 @@ class DB {
   async deleteManyCompanies(query) {
     return await instance.companiesCollection.deleteMany(query);
   }
+
+  /* Gets all genres in the db */
+  async getAllGenres() {
+    return await instance.seriesCollection.aggregate([
+      { $unwind: '$genres' },
+      { $group: { _id: null, uniqueGenres: { $addToSet: '$genres' } } },
+      { $project: { _id: 0, uniqueGenres: 1 } }
+    ]).toArray();
+  }
   
   /**
    * Retrives series based on name, year and type
