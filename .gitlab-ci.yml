@@ -45,7 +45,7 @@ lint-client:
 
 build-frontend:
   stage: build
-  before-script:
+  before_script:
     - npm install && npm run build
   script:
     - ls
