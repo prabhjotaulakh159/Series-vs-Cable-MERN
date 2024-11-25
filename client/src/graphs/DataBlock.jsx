@@ -3,6 +3,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import './DataBlock.css';
 import Skeleton from 'react-loading-skeleton';
 import Graph from './Graph.jsx';
+import Summary from './Summary.jsx';
 
 function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id }) {
   const [showPlot, setShowPlot] = useState(false);
@@ -51,17 +52,7 @@ function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id })
           <h2 id={id} className="Summary-title">
             {summaryTitle}
           </h2>
-          <section className="summary-block">
-            {Object.keys(summary).map((type) => 
-              <div key={type} className="company-summary">
-                <h3>Winning show in {type}</h3>
-                <h3>{summary[type]?.name}</h3>
-                <p>Score: {summary[type]?.score}</p>
-                <p>Seasons: {summary[type]?.numberOfSeasons}</p>
-                <p>Year of release: {summary[type]?.year}</p>
-              </div>
-            )}
-          </section>
+          <Summary series={summary}/>
         </>
         : 
         <>
