@@ -35,7 +35,13 @@ This did cause an increase in performace. Seeing as it was one of the more major
 Lead: Bianca Rossetti
 Plotly is already a heavy library altogether, and because we only needed it later, we decided keeping it for the initial render was unnecessary. As such, we decided to use lazy imports. Once this change was implemented, it was clear the load time of our page decreased dramatically as we no longer relied the fairly heavy library for the initial load of our page.
 
+### Elimination of blocking js
+Lead: Prabhjot Aulakh
+This did improve the performance of our frontend website. when the website was initially loaded, all calculations were being made synchronously for the summary and other calculation methods. these were all converted to asynchronous and reduced the amount of render blocking javascript on our main thread!
+
 ### Use of critical css
+Lead: Bianca Rossetti
+Although our lighthouse score no longer showed "Eliminate render blocking resources", we found that it didnt really improve the score, nor did it reduce it. Depending on the device, it either had a very minor positive impact, or no impact on the lighthouse score.
 
 ### Server and browser caching
 
