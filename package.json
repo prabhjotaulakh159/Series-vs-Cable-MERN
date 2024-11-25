@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cd server && node bin/www",
     "build": "cd client && npm install && npm run build && cd ../server && npm install",
-    "check": "bundlesize"
+    "check": "bundlesize",
+    "critical": "node critical.js"
   },
   "author": "Prabhjot Aulakh, Adam Winter, Bianca Rossetti",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "streaming-vs-cable": "file:"
   },
   "devDependencies": {
-    "bundlesize2": "^0.0.31"
+    "bundlesize2": "^0.0.31",
+    "critical": "^7.2.1"
   }
 }
