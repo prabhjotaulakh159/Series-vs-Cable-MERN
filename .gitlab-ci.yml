@@ -49,12 +49,11 @@ build-frontend:
     - npm install
     - npm run build
     - node critical.js
-  only:
-    refs:
-      - main
-      - master
-      - staging
-
+  # only:
+  #   refs:
+  #     - main
+  #     - master
+  #     - staging
   artifacts:
     expire_in: 1 days
     when: on_success
