@@ -52,7 +52,7 @@ function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id })
             {summaryTitle}
           </h2>
           <section className="summary-block">
-            {Object.keys(summary).map((type) => (
+            {Object.keys(summary).map((type) => 
               <div key={type} className="company-summary">
                 <h3>Winning show in {type}</h3>
                 <h3>{summary[type]?.name}</h3>
@@ -60,7 +60,7 @@ function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id })
                 <p>Seasons: {summary[type]?.numberOfSeasons}</p>
                 <p>Year of release: {summary[type]?.year}</p>
               </div>
-            ))}
+            )}
           </section>
         </>
         : 
