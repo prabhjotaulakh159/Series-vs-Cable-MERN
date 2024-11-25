@@ -20,7 +20,7 @@ function DataBlock({ calculateAxies, name, fetchSummaryData, summaryTitle, id })
             then(([axiesData, summaryData]) => {
               setData(axiesData);
               setSummary(summaryData);
-              setTimeout(() => setShowPlot(true), 3000);
+              setShowPlot(true);
             }).
             finally(() => {
               observer.disconnect(); 
