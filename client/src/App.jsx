@@ -1,10 +1,9 @@
 import './App.css';
-import DataBlock from './graphs/DataBlock.jsx';
 import TitleView from './TitleView.jsx';
 import Footer from './Footer.jsx';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, memo } from 'react';
 
 import { 
   getTopContendingCompanies, 
@@ -14,6 +13,8 @@ import {
   fetchCompaniesWithHighestScores,
   fetchLongestShowForTypes
 } from './utils.js';
+
+const DataBlock = memo(lazy(() => import('./graphs/DataBlock.jsx')));
 
 function App() {
   const [series, setSeries] = useState([]);
@@ -34,27 +35,30 @@ function App() {
     (async () => {
       setLoading(true);
       try { 
-        const response = await fetch('/api/series');
-        if (!response.ok) {
-          throw new Error(`Not a 2xx response, ${response.status}, 
-            ${response.statusText ? response.statusText : ''}`, 
-          {cause: response});
-        }
-        const data = await response.json();
-        const highestScore = Math.max(...data.map(show => show.score));
-        data.map (show => {
+        const [series, companies] = await Promise.all([
+          fetch('/api/series').then(response => {
+            if (!response.ok) {
+              throw new Error(`Not a 2xx response, ${response.status}, 
+                ${response.statusText ? response.statusText : ''}`, 
+              {cause: response});
+            }
+            return response.json();
+          }),
+          fetch('/api/companies').then(response => {
+            if (!response.ok) {
+              throw new Error(`Not a 2xx response, ${response.status}, 
+                ${response.statusText ? response.statusText : ''}`, 
+              {cause: response});
+            }
+            return response.json();
+          })
+        ]);
+        const highestScore = Math.max(...series.map(show => show.score));
+        series.map (show => {
           show.score = show.score * 100 / highestScore;
         });
-        setSeries(data);
-
-        const responseCompanies = await fetch('/api/companies');
-        if (!responseCompanies.ok) {
-          throw new Error(`Not a 2xx response, ${response.status}, 
-            ${response.statusText ? response.statusText : ''}`, 
-          {cause: response});
-        }
-        const companiesData = await responseCompanies.json();
-        setCompanies(companiesData);
+        setSeries(series);
+        setCompanies(companies);
       } catch (error) {
         console.error(error);
         setError(error.message);
