@@ -74,7 +74,7 @@ bundle-check:
   dependencies:
     - build-frontend
   script:
-    - npm install && npm run check
+    - cd client && npm run check
   only:
     refs:
       - main
