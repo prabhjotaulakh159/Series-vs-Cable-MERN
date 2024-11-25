@@ -27,8 +27,9 @@ default:
       - server/.npm/
       - client/.npm
   # run this before every job; will hit the cache first
+  # need top level install for critical and bundle checks
   before_script:
-    - cd server && npm ci --cache .npm --prefer-offline && cd ../client && npm ci --cache .npm --prefer-offline && cd ..
+    - npm ci --cache .npm --prefer-offline && cd server && npm ci --cache .npm --prefer-offline && cd ../client && npm ci --cache .npm --prefer-offline && cd ..
 
 lint-server:
   stage: lint 
@@ -45,7 +46,8 @@ lint-client:
 build-frontend:
   stage: build
   script:
-    - cd client && npm run build
+    - npm run build
+    - node critical.js
   only:
     refs:
       - main
@@ -71,8 +73,10 @@ test-server:
 
 bundle-check:
   stage: build
+  dependencies:
+    - build-frontend
   script:
-    - npm install && npm run build && npm run check
+    - npm run check
   only:
     refs:
       - main
