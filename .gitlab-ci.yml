@@ -45,15 +45,16 @@ lint-client:
 
 build-frontend:
   stage: build
+  before-script:
+    - npm install && npm run build
   script:
-    - npm install
-    - npm run build
+    - ls
     - node critical.js
-  # only:
-  #   refs:
-  #     - main
-  #     - master
-  #     - staging
+  only:
+    refs:
+      - main
+      - master
+      - staging
   artifacts:
     expire_in: 1 days
     when: on_success
