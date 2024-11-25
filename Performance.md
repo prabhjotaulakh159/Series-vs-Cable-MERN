@@ -4,7 +4,10 @@
 
 In chrome on a Windows 11 device with intel i7 core 13th gen CPU, using the lighthouse report, we performed an analysis on a viewport of 1280x752 with fast 4G throttle and gathered some critical information about our app performance.
 
-![alt text](images/image6.png)
+### Before changes
+![Lighthouse report 1](images/image8.png)
+![Lighthouse report 2](images/image9.png)
+![WhatDoesMySiteCost report](images/image10.png)
 
 <!-- Also report overall impact on whatdoesmysitecost results before and after all your changes -->
 
@@ -12,28 +15,29 @@ In chrome on a Windows 11 device with intel i7 core 13th gen CPU, using the ligh
 
 The tool seemed to detect most of the visible performances, which make the website load visibly slower.
 
-Through lighthouse, we observed some render-blocking JS and CSS, as well as some main thread work that was taking up a lot of the load time.
+Through lighthouse, we observed some render-blocking JS and CSS, as well as some cross reference requests being made to other places, causing more DNS lookups and therefore lower performance.
 
-As for WhatDoesMySiteCost? We could not get the report to load because the page kept freezing on us. We tried on all our computers on several browsers with no success.
+Through whatdoesmysitecost, we observed the highest price point to be in Canada, at 0.22$.
 
 ## Areas to Improve
 
-We need to improve where we execute our heavy js calculations (and offload them asynchronously) as well as focus on rendering only the critical CSS first and the non-critical css later. We will also remove the imports for fonts and download them instead, as this was causing problems as well.
+Because we already worked on performance in previous milestones, there wasnt much we were able to do to improve performance. As seen above, our before performance started off as a 94 already. After discussion, we agreed to remove the @import from the css file in order to remove that extra request. We also decided to seperate the more critical CSS with non-critical css to improve performance. Lastly, we implemented server-side and browser-side caching to further improve the constant querying of the database, as our dataset is very static.
+
+In the last milestone, we also decided to use lazy imports for the graphs. More details below about the impacts of this change.
 
 ## Summary of Changes 
 
-<!-- Briefly describe each change and the impact it had on performance (be specific). If there
-was no performance improvement, explain why that might be the case -->
+### @import Removal
+Lead: Adam Winter
+This did cause an increase in performace. Seeing as it was one of the more major issues pointed out by lighthouse, with a blocking time of 260ms, removing it did improve our performance a lot.
 
-### <!-- Change 1 -->
+### Lazy imports for Plotly
+Lead: Bianca Rossetti
+Plotly is already a heavy library altogether, and because we only needed it later, we decided keeping it for the initial render was unnecessary. As such, we decided to use lazy imports. Once this change was implemented, it was clear the load time of our page decreased dramatically as we no longer relied the fairly heavy library for the initial load of our page.
 
-Lead: <!-- name of main contributor to this change -->
+### Use of critical css
 
-...
-
-### <!-- Change n -->
-
-Lead: <!-- name of main contributor to this change -->
+### Server and browser caching
 
 ## Conclusion
 
