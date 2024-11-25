@@ -6,7 +6,6 @@
   "scripts": {
     "start": "cd server && node bin/www",
     "build": "cd client && npm install && npm run build && cd ../server && npm install",
-    "check": "bundlesize",
     "critical": "node critical.js"
   },
   "author": "Prabhjot Aulakh, Adam Winter, Bianca Rossetti",
