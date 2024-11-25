@@ -6,6 +6,12 @@
   height: 100vh;
 }
 
+@media (max-width: 800px) {
+  #main-title-view {
+    height: auto;
+  }
+}
+
 #main-title-view h1 {
   font-size: xx-large;
 }

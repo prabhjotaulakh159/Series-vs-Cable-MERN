@@ -5,20 +5,6 @@
   display: block;
 }
 
-/* .graph-container {
-  width: 750px;
-  height: 500px;
-  margin: auto;
-  position: relative;
-}
-
-@media (max-width: 700px) {
-  .graph-container {
-    height: 300px;
-    width: 250px;
-  }
-} */
-
 .Graph-title{
   font-size: 2vw;
   text-align: center;
