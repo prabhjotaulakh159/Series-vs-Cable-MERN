@@ -14,11 +14,11 @@
   "type": "module",
   "dependencies": {
     "compression": "^1.7.5",
+    "critical": "^7.2.1",
     "mongodb": "^6.10.0",
     "streaming-vs-cable": "file:"
   },
   "devDependencies": {
-    "bundlesize2": "^0.0.31",
-    "critical": "^7.2.1"
+    "bundlesize2": "^0.0.31"
   }
 }
