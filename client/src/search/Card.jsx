@@ -27,7 +27,11 @@ function Card({series}) {
     {showCard &&
       <div key={series.id} className="card">
         <span>{series?.name}</span>
-        <img loading="lazy" src={series?.artwork} alt={`${series?.name} artwork`} />
+        { series?.artwork ? 
+          <img loading="lazy" src={series?.artwork} alt={`${series?.name} artwork`} /> 
+          :
+          <span>Image N/A</span>
+        }
         <span>Seasons: {series?.numberOfSeasons}</span>
         <span>Upvotes: {series?.score}</span>
         <span>Genre: {series?.genres[0]}</span>
