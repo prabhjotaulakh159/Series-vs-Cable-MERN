@@ -142,6 +142,13 @@ NODE_ENV=production PORT=3001 forever start bin/www
 sudo /opt/bitnami/ctlscript.sh restart apache
 ```
 
+You can also optionally modify your .bashrc file as follows:
+```
+export ATLAS_URI=[your atlas uri for mongo db]
+export NODE_ENV=production
+export PORT=3001
+```
+
 ### Client and Server
 
 In the `directory/vite.config.js`, add a `server` property to the defineConfig:
