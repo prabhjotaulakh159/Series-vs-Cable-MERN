@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import {validateCompanyQueryParameters, getCompaniesWithQueryParameters, 
   getCompanyById, validateCompanyId}
@@ -7,6 +8,10 @@ import {validateCompanyQueryParameters, getCompaniesWithQueryParameters,
 
 const companiesRouter = express.Router();
 
+companiesRouter.use((req, res, next) => {
+  res.header('Cache-Control', 'max-age=31536000');
+  next();
+});
 
 /**
  * @swagger

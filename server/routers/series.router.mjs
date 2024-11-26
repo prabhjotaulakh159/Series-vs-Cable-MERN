@@ -8,8 +8,11 @@ import
 } from '../controllers/series.controller.mjs';
 
 const seriesRouter = express.Router();
-// const seriesIdRouter = express.Router({mergeParams: true});
 
+seriesRouter.use((req, res, next) => {
+  res.header('Cache-Control', 'max-age=31536000');
+  next();
+});
 
 /**
  * @swagger
