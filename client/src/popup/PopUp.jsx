@@ -13,6 +13,9 @@ function PopUp({year, type, chartName, onClose}) {
   const [error, setError] = useState('');
   
   useEffect(() => {
+    if (chartName === 'Average show scores for top 10 contending companies') {
+      return;
+    }
     const isSeasonChart = chartName === 'Average number of seasons between cable vs streaming';
     const isScoreChart = !isSeasonChart;
     const isCable = type?.toLowerCase().includes('cable');
