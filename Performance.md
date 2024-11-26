@@ -9,7 +9,8 @@ In chrome on a Windows 11 device with intel i7 core 13th gen CPU, using the ligh
 ![Lighthouse report 2](images/image9.png)
 ![WhatDoesMySiteCost report](images/image10.png)
 
-<!-- Also report overall impact on whatdoesmysitecost results before and after all your changes -->
+### After changes
+
 
 ## Baseline Performance
 
@@ -91,5 +92,4 @@ assests directory to reduce network calls when the page is loading.
 
 ## Conclusion
 
-<!-- Summarize which changes had the greatest impact, note any surprising results and list 2-3 main 
-things you learned from this experience. -->
+The greatest impact really was the elimination of the @import for google fonts. In doing so, we avoided any extra DNS lookups and sped up the initial load time by avoiding that fetch while parsing the css. Making our major calculation functions async also reduced a lot of the render blocking, and executing parrallel operations (with Promise.all) for fetches also helped a lot. Something that we thought would have more impact was the critical css. However, depending on the device, it either did or didn't have a lot of impact whatsoever. It never caused any negative impacts, but even though the lighthouse showed no more render-blocking css in bright red, the score would either go up by max 2 points or remain static.
