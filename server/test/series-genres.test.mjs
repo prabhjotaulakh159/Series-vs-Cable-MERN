@@ -15,9 +15,9 @@ const assert = chai.assert;
 describe('Test getting series with and without query parameters', () => {
   before(() => {
     // these are real examples from the database i copied over
-    stubGetgetFilteredGenres.resolves({
-      'uniqueGenres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance']
-    });
+    stubGetgetFilteredGenres.resolves(
+      ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance']
+    );
   });
 
   it('Should return an array with a status of 200', async () => {
@@ -25,7 +25,7 @@ describe('Test getting series with and without query parameters', () => {
     
     expect(response.status).to.be.equal(200);
 
-    assert.isObject(response.body);
+    assert.isArray(response.body);
   });
 
   it('Should have an array of genres with the appropriate key', async () => {
@@ -35,7 +35,7 @@ describe('Test getting series with and without query parameters', () => {
 
     assert.isNotNull(genres);
 
-    expect(genres.uniqueGenres).to.deep.equal(
+    expect(genres).to.deep.equal(
       ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance']
     );  
   });
