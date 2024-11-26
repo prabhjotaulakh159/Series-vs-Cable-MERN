@@ -10,6 +10,11 @@ import
 
 const seriesRouter = express.Router();
 
+seriesRouter.use((req, res, next) => {
+  res.header('Cache-Control', 'max-age=31536000');
+  next();
+});
+
 /**
  * @swagger
  * /api/series/genres:
@@ -33,7 +38,6 @@ const seriesRouter = express.Router();
  *         description: Internal server error
  */
 seriesRouter.get('/genres', getGenres);
-
 
 /**
  * @swagger

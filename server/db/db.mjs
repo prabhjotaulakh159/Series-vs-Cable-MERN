@@ -127,9 +127,9 @@ class DB {
    * @return An object representing the id of the series to find
    */
   async getSeriesById(id){
-    const query = {id:Number(id)};
+    const query = {'id':Number(id)};
     const series = await instance.seriesCollection.findOne(query);
-    delete series._id;
+    if (series) delete series._id;
     return series;
   }
 
@@ -155,8 +155,8 @@ class DB {
    */
   async getCompanyById(id) {
     const query = { id: Number(id) };
-    const company = await instance.collection.findOne(query);
-    delete company._id;
+    const company = await instance.companiesCollection.findOne(query);
+    if (company) delete company._id;
     return company;
   }
 
