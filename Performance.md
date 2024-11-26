@@ -84,6 +84,13 @@ near instant, instead of having a slight delay that usually comes with network r
 
 Lead: Prabhjot
 
+### Downloading custom fonts and saving them in the files
+
+Lead: Adam 
+
+Instead of using an import in the css to use fonts from google, the fonts are now saved in the
+assests directory to reduce network calls when the page is loading.
+
 ## Conclusion
 
 <!-- Summarize which changes had the greatest impact, note any surprising results and list 2-3 main 
