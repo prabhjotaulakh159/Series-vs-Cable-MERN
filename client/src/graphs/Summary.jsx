@@ -6,6 +6,9 @@ function Summary({series}) {
     <section className="summary-block">
       {
         Object.keys(series).map(type => {
+          if (!series[type].score) {
+            return <h3 key={type}>No data available</h3>;
+          }
           return (
             <div key={type} className="company-summary">
               <h3>Winning show in {type}</h3>
