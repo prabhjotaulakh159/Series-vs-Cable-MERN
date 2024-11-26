@@ -13,6 +13,13 @@
   animation: slideIn 0.5s ease-out;
 }
 
+
+@media (max-width: 800px) { 
+  .dropdown {
+    padding: 5px;
+  }
+}
+
 @keyframes slideIn {
   from {
     transform: translateY(-30px);
