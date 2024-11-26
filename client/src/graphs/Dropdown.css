@@ -1,0 +1,17 @@
+/* Make the dropdown sticky below the navbar */
+.dropdown {
+  position: sticky;
+  top: 0;  /* Adjust this value to be right below your navbar */
+  left: -1px;
+  z-index: 1000;  /* Ensures the dropdown stays above other content */
+  background-color: #fff;  /* Optional: add a background color */
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-self: flex-start;  /* Optional shadow for better visibility */
+}
+
+.dropdown select {
+  width: 100%;  /* Ensure select element takes up the full width of the dropdown */
+  padding: 10px 15px;
+  font-size: 16px;
+}
