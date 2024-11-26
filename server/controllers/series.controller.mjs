@@ -118,7 +118,7 @@ async function getSeriesById(req, res, next){
       res.status(200);
       return res.json(series);
     }
-  }catch(error){
+  } catch(error){
     error.status = 500;
     next(error);
   }
