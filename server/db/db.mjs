@@ -107,7 +107,7 @@ class DB {
       query.companyType = type;
     }
     if (genre) {
-      query.genres = { $all: [genre] };
+      query.genres = { $elemMatch: { $regex: genre, $options: 'i' } };
     }
     // the find method takes an object { name: name, year: year, type: type }
     // however, we only add those keys if we actually want them, meaning 
