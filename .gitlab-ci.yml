@@ -47,11 +47,11 @@ build-frontend:
   stage: build
   script:
     - npm run build
-  # only:
-  #   refs:
-  #     - main
-  #     - master
-  #     - staging
+  only:
+    refs:
+      - main
+      - master
+      - staging
   artifacts:
     expire_in: 1 days
     when: on_success
@@ -78,11 +78,11 @@ bundle-check:
     - ls client/dist
     - ls client/dist/assets
     - cd client && npm run check
-  # only:
-  #   refs:
-  #     - main
-  #     - master
-  #     - staging
+  only:
+    refs:
+      - main
+      - master
+      - staging
   allow_failure: false
 
 build-app-archive:
