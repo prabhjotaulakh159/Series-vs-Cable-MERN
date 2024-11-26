@@ -54,6 +54,100 @@ nodemon api.mjs
 
 **nodemon will update the server as soon as a file is changed by the developer.**
 
+## Deployment
+
+### Render
+We deployed our app on Render. The steps to deploy:
+1. In the dashboard, we selected a web service
+2. Next, choose gitlab as the git provider and choose the website's repo
+3. Change the language to Node
+4. Choose staging as the branch
+5. set the root directory as .
+6. set the  build command to `cd client && npm install && npm run build && cd ../server && npm install`
+7. set the start command to `cd server && node bin/www`
+8. Choose the free level (or other, depending on budget)
+9. Set the environment variables to the following in the environment tab:
+
+```
+ATLAS_URI=[your atlas uri for mongo db]
+NODE_ENV=production
+PORT=3001
+```
+10. Hit the start button
+
+To re-deploy, simply push changes to your selected branch and the server will automatically re-deploy once those committed changes are pushed.
+
+### AWS
+_**NOTE**: The following steps assume you have a vhost set up to port 3001_
+
+To deploy on the AWS server, start by checking out into the `staging` branch and make sure you've pulled all your changes. Then, follow these instructions:
+
+1. Create a tag for your current commit and push your code to that tag:
+```
+git tag deployment-v1
+git push origin deployment-v1
+```
+
+2. On git, locate the pipeline for this tag and download and unzip the artifact from the build-app-archive job
+
+**DO THE FOLLOWING TO USE CRITICAL CSS FEATURE**
+
+3. Extract the files with the following command:
+```
+tar -xf [release-***.tar.gz]
+```
+
+4. Locate the client directory to create a simple npm package.json and install critical:
+```
+cd project-directory/client
+npm init
+npm install critical
+```
+
+5. Run the critical script from the client directory using the provided critical.mjs file:
+```
+node critical.mjs
+```
+
+6. Once this is complete, you may remove the package json files and re-compress your whole project directory:
+```
+cd client && rm package*
+cd ../..
+tar -czf project-directory project.tar.gz
+```
+
+**END OF THE OPTIONAL CODE**
+
+7. Once this is done, transfer the files over to your deployment server using your .pem key:
+```
+scp -i key.pem [tar-file-name].tar.gz bitnami@[your ip]:~
+```
+
+8. ssh into your server and extract the tar file:
+```
+tar -xf [tar-file-name].tar.gz
+```
+
+7. Export necessary environment variables, or set up a .env file with the following configurations:
+```
+ATLAS_URI=[your atlas uri for mongo db]
+NODE_ENV=production
+PORT=3001
+```
+
+8. Cd into the server directory and npm install:
+```
+cd project-directory/server
+npm install
+```
+
+9. Start the server using forever (install if not available with npm) and restart apache:
+```
+cd project-directory/server
+forever start bin/www
+sudo /opt/bitnami/ctlscript.sh restart apache
+```
+
 ### Client and Server
 
 In the `directory/vite.config.js`, add a `server` property to the defineConfig:
@@ -86,27 +180,6 @@ In another terminal (for the server):
 cd server
 nodemon api.mjs
 ```
-
-## Deployment instructions
-We deployed our app on Render. The steps to deploy:
-1. In the dashboard, we selected a web service
-2. Next, choose gitlab as the git provider and choose the website's repo
-3. Change the language to Node
-4. Choose staging as the branch
-5. set the root directory as .
-6. set the  build command to `cd client && npm install && npm run build && cd ../server && npm install`
-7. set the start command to `cd server && node bin/www`
-8. Choose the free level (or other, depending on budget)
-9. Set the environment variables to the following in the environment tab:
-
-```
-ATLAS_URI=[your atlas uri for mongo db]
-NODE_ENV=production
-PORT=3001
-```
-10. Hit the start button
-
-To re-deploy, simply push changes to your selected branch and the server will automatically re-deploy once those committed changes are pushed.
 
 # Attributions
 
