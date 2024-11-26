@@ -2,7 +2,7 @@
   "files": [
     {
       "path": "./dist/assets/index-*.js",
-      "maxSize": " 60 KB"
+      "maxSize": " 60 kB"
     },
     {
       "path": "./dist/assets/index-*.css",
