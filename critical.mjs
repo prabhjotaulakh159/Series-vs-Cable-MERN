@@ -1,7 +1,7 @@
 import {generate} from 'critical';
 
 generate({
-  base: 'client/dist/',
+  base: 'dist/',
 
   src: 'index.html',
 
@@ -10,7 +10,7 @@ generate({
     uncritical: 'assets/uncritical.css'
   },
 
-  css: ['client/dist/assets/*.css'],
+  css: ['dist/assets/*.css'],
 
   inline: true,
 
