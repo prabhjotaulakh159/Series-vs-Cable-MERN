@@ -79,11 +79,13 @@ class DB {
 
   /* Gets all genres in the db */
   async getAllGenres() {
-    return await instance.seriesCollection.aggregate([
+    const result =  await instance.seriesCollection.aggregate([
       { $unwind: '$genres' },
       { $group: { _id: null, uniqueGenres: { $addToSet: '$genres' } } },
       { $project: { _id: 0, uniqueGenres: 1 } }
     ]).toArray();
+
+    return result.length > 0 ? result[0].uniqueGenres : [];
   }
   
   /**
