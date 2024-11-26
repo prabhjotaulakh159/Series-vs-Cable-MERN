@@ -104,7 +104,10 @@ class DB {
       query.year = Number(year);
     }
     if (type) {
-      query.genres = genre;
+      query.companyType = type;
+    }
+    if (genre) {
+      query.genres = { $all: [genre] };
     }
     // the find method takes an object { name: name, year: year, type: type }
     // however, we only add those keys if we actually want them, meaning 

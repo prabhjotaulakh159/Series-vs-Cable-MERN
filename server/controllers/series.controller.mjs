@@ -11,6 +11,9 @@ function validateSeriesQueryParameters(req, res, next) {
     if ('name' in req.query) {
       validateName(req.query.name);
     }
+    if ('genre' in req.query) {
+      validateGenre(req.query.genre);
+    }
     if ('type' in req.query) {
       validateType(req.query.type);
     }
@@ -46,6 +49,17 @@ function validateName(name) {
 }
 
 /**
+ * Checks if the genre is not empty or blank
+ * @param { String } genre - Genre to validate
+ * @throws { Error } - If the validation fails
+ */
+function validateGenre(genre) {
+  if (!genre || genre?.trim() === '') {
+    throw new Error('Genre cannot be empty');
+  }
+}
+
+/**
  * Checks if the type is not empty, blank or not cable or streaming
  * @param { String } type - Type to validate
  * @throws { Error } - If the validation fails
@@ -62,7 +76,7 @@ function validateType(type) {
 async function getSeriesWithQueryParameters(req, res, next) {
   try {
     const series = await db.getFilteredSeries(req.query.name, 
-      req.query.year, req.query.type);   
+      req.query.year, req.query.type, req.query.genre);   
     res.status(200);
     res.send(series);
   } catch (error) {
