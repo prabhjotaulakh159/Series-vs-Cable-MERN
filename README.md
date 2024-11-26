@@ -8,10 +8,10 @@ In our app, users will be able to navigate charts visualizing the differences in
 
 ## Pictures of UI
 
-![Image of popup on desktop](./images/image1.png)
-![Image of popup on mobile](./images/image2.png)
-![Image of nav on mobile](./images/image3.png)
-![Image of header on desktop](./images/image4.png)
+![Image of popup on desktop](./images/popup=desktop.png)
+![Image of popup on mobile](./images/popup-mobile.png)
+![Image of nav on mobile](./images/mobile-graph.png)
+![Image of header on desktop](./images/website-desktop.png)
 ![Image of graph on desktop](./images/image5.png)
 
 ## Structure
