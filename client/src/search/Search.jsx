@@ -13,6 +13,10 @@ function Search() {
   function search(e) {
     e.preventDefault();
     setLoading(true);
+    if (!name || !year || !companyType) {
+      setError('Please ensure all 3 fields are complete');
+      return;
+    }
     fetch(`/api/series?name=${name}&year=${year}&type=${companyType}`).
       then(response => {
         if (!response.ok) throw new Error('Cannot fetch results for the moment');
@@ -33,11 +37,11 @@ function Search() {
         <div className="input-group">
           <label htmlFor="name">Name:</label>
           <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)}
-            placeholder="Filter by name" />
+            placeholder="Filter by name" required />
         </div>
         <div className="input-group">
           <label htmlFor="companyType">Type:</label>
-          <select id="companyType" value={companyType} 
+          <select id="companyType" value={companyType} required
             onChange={(e) => setcompanyType(e.target.value)}>
             <option value="">Select a company type</option>
             <option value="cable">cable</option>
@@ -47,7 +51,7 @@ function Search() {
         <div className="input-group">
           <label htmlFor="year">Year:</label>
           <input id="year" type="number" value={year} onChange={(e) => setYear(e.target.value)}
-            placeholder="Enter release year" min="2010" max="2024" />
+            placeholder="Enter release year" min="2010" max="2024" required />
         </div>
         <button type="submit" className="search-button">Search</button>
       </form>
