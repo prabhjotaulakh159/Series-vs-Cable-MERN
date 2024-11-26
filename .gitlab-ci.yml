@@ -71,7 +71,7 @@ test-server:
 
 bundle-check:
   stage: build
-  dependencies:
+  needs:
     - build-frontend
   script:
     - ls client
