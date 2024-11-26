@@ -128,13 +128,6 @@ scp -i key.pem [tar-file-name].tar.gz bitnami@[your ip]:~
 tar -xf [tar-file-name].tar.gz
 ```
 
-7. Export necessary environment variables, or set up a .env file with the following configurations:
-```
-ATLAS_URI=[your atlas uri for mongo db]
-NODE_ENV=production
-PORT=3001
-```
-
 8. Cd into the server directory and npm install:
 ```
 cd project-directory/server
@@ -144,7 +137,8 @@ npm install
 9. Start the server using forever (install if not available with npm) and restart apache:
 ```
 cd project-directory/server
-forever start bin/www
+export ATLAS_URI="your_uri"
+NODE_ENV=production PORT=3001 forever start bin/www
 sudo /opt/bitnami/ctlscript.sh restart apache
 ```
 

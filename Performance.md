@@ -10,7 +10,12 @@ In chrome on a Windows 11 device with intel i7 core 13th gen CPU, using the ligh
 ![WhatDoesMySiteCost report](images/image10.png)
 
 ### After changes
+![Lighthouse report 1](images/lighthouse-score-after.png)
+![Lighthouse report 2](images/lighthouse-review.png)
+![WhatDoesMySiteCost report](images/site-cost.png)
 
+### For mobile:
+![Lighthouse report mobile](images/lighthouse-mobile.png)
 
 ## Baseline Performance
 
