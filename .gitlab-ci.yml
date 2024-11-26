@@ -74,9 +74,6 @@ bundle-check:
   needs:
     - build-frontend
   script:
-    - ls client
-    - ls client/dist
-    - ls client/dist/assets
     - cd client && npm run check
   only:
     refs:
