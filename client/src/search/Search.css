@@ -3,6 +3,7 @@
   margin-top: 50px;
   margin: 20px auto;
   padding: 20px;
+  max-width: 1000px;
 }
 
 .search-container form {
@@ -59,33 +60,4 @@
 .nothing {
   text-align: center;
   margin-top: 10px;
-}
-
-.results {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.results .card {
-  border: 1px solid black;
-  border-radius: 4px;
-  padding: 10px;
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.results .card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 4px;
-  object-fit: cover;
-}
-
-.results .card span {
-  font-size: 14px;
 }

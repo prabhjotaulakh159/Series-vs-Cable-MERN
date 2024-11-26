@@ -1,5 +1,6 @@
 import './Search.css';
 import { useState } from 'react';
+import Card from './Card';
 
 function Search() {
   const [data, setData] = useState({});
@@ -56,15 +57,8 @@ function Search() {
       { 
         data && data.length > 0 ?
           <div className="results">
-            {data.map(series => {
-              return <div key={series.id} className="card">
-                <span>{series?.name}</span>
-                <img loading="lazy" src={series?.artwork} />
-                <span>Seasons: {series?.numberOfSeasons}</span>
-                <span>Upvotes: {series?.score}</span>
-                <span>Genre: {series?.genres[0]}</span>
-                <span>Year: {year}</span>
-              </div>;
+            {data.map((series, key) => {
+              return <Card key={key} series={series}/>;
             })}
           </div> : 
           <p className="nothing">Nothing for the moment...</p>
