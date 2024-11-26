@@ -4,6 +4,7 @@ import Footer from './Footer.jsx';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NavBar from './navigation/NavBar';
 import { useState, useEffect, useCallback, lazy, memo } from 'react';
+import Search from './search/Search.jsx';
 
 import { 
   getTopContendingCompanies, 
@@ -134,6 +135,7 @@ function App() {
               summaryTitle={'Highest scoring shows for cable and series'}
             />
           </section>
+          <Search/>
         </section>
         <Footer/>
       </main>
