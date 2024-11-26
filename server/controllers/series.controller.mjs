@@ -132,6 +132,7 @@ async function getGenres(req, res, next) {
     const genres = await db.getAllGenres();
     res.status(200);
     res.send(genres);
+    return;
   } catch (error) {
     error.status = 500;
     next(error);
