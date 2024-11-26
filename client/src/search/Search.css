@@ -1,0 +1,63 @@
+.search-container {
+  width: 100%;
+  margin-top: 50px;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 1000px;
+}
+
+.search-container form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: black;
+}
+
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-button {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: cornflowerblue;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.nothing {
+  text-align: center;
+  margin-top: 10px;
+}

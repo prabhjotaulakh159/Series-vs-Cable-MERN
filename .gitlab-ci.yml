@@ -27,6 +27,7 @@ default:
       - server/.npm/
       - client/.npm
   # run this before every job; will hit the cache first
+  # need top level install for critical and bundle checks
   before_script:
     - cd server && npm ci --cache .npm --prefer-offline && cd ../client && npm ci --cache .npm --prefer-offline && cd ..
 
@@ -45,13 +46,13 @@ lint-client:
 build-frontend:
   stage: build
   script:
-    - cd client && npm run build
+    - npm run build
   only:
     refs:
       - main
       - master
       - staging
-
+      - tags
   artifacts:
     expire_in: 1 days
     when: on_success
@@ -71,8 +72,10 @@ test-server:
 
 bundle-check:
   stage: build
+  needs:
+    - build-frontend
   script:
-    - npm install && npm run build && npm run check
+    - cd client && npm run check
   only:
     refs:
       - main
@@ -91,7 +94,7 @@ build-app-archive:
   before_script:
     - npm ci --omit dev
   script:
-    - tar -czf $RELEASE_FILE --exclude='package*' --exclude='.npm' --exclude='eslint*' --exclude='./server/.env' --transform 's,^,520-project-aulakh-rossetti-winter/,' server client/dist client/public/
+    - tar -czf $RELEASE_FILE --exclude='.npm' --exclude='eslint*' --exclude='./server/.env' --transform 's,^,520-project-aulakh-rossetti-winter/,' server client/dist client/public/ client/critical.mjs
   artifacts:
     expire_in: 1 days
     when: on_success

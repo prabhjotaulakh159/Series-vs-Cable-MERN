@@ -23,6 +23,10 @@ function TitleView() {
         real visual of what exactly is going on here, and perhaps attempt at answering 
         the question: Cable or streaming? 
       </p>
+      <p>
+        Use the little toggle to see the statistics for different (or all) genres, and use our
+        search functionality to look for your favourite shows in our database!
+      </p>
     </section>
   );
 }
