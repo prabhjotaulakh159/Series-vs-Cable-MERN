@@ -94,7 +94,7 @@ build-app-archive:
   before_script:
     - npm ci --omit dev
   script:
-    - tar -czf $RELEASE_FILE --exclude='.npm' --exclude='eslint*' --exclude='./server/.env' --transform 's,^,520-project-aulakh-rossetti-winter/,' server client/dist client/public/
+    - tar -czf $RELEASE_FILE --exclude='.npm' --exclude='eslint*' --exclude='./server/.env' --transform 's,^,520-project-aulakh-rossetti-winter/,' server client/dist client/public/ client/critical.mjs
   artifacts:
     expire_in: 1 days
     when: on_success
