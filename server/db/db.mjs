@@ -93,7 +93,7 @@ class DB {
    * @param {String} type - Type of series (cable, streaming)
    * @return An array of series based on the filters
    */
-  async getFilteredSeries(name, year, type) {
+  async getFilteredSeries(name, year, type, genre) {
     const query = {};
     if (name) {
       // https://stackoverflow.com/questions/10610131/checking-if-a-field-contains-a-string
@@ -104,7 +104,7 @@ class DB {
       query.year = Number(year);
     }
     if (type) {
-      query.companyType = type;
+      query.genres = genre;
     }
     // the find method takes an object { name: name, year: year, type: type }
     // however, we only add those keys if we actually want them, meaning 

@@ -116,7 +116,6 @@ async function getSeriesById(req, res, next){
 async function getGenres(req, res, next) {
   try {
     const genres = await db.getAllGenres();
-    console.log(genres);
     res.status(200);
     res.send(genres);
   } catch (error) {
