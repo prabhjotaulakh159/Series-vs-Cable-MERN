@@ -108,6 +108,18 @@ describe('Test getting series with and without query parameters', () => {
     assert.strictEqual(body.message, 'Name cannot be empty');
   });
 
+  it('Should return an error with status 400 because genre query parameter is empty ', async () => {
+    const response = await request(app).get(`/api/series?genre=`);
+    const body = response.body;
+
+    assert.isObject(body);
+
+    expect(response.status).to.be.equal(400);
+    expect(body).to.have.property('message');
+
+    assert.strictEqual(body.message, 'Genre cannot be empty');
+  });
+
   it('Should return an error with status 400 because year query parameter is below 2010', 
     async () => {
       const response = await request(app).get(`/api/series?year=2009`);
@@ -453,4 +465,30 @@ describe('Test getting series with and without query parameters', () => {
   after(() => {
     stubGetgetFilteredSeries.restore();
   });
+
+  
+  it('Should return an array of series of genre Horror', async () => {
+    stubGetgetFilteredSeries.resolves([
+      {
+        'id': 70327,
+        'name': 'Buffy the Vampire Slayer',
+        'score': 491166,
+        'numberOfSeasons': 8,
+        'genres': ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance'],
+        'companyId': 2178,
+        'companyType': 'streaming',
+        'artwork': 'https://artworks.thetvdb.com/banners/posters/70327-1.jpg',
+        'year': 2014
+      }
+    ]);
+    const response = await request(app).get('/api/series?genre=Horror');
+    const body = response.body;
+    expect(response.status).to.be.equal(200);
+    expect(body).to.be.an('array');
+    expect(body.length).to.be.equal(1);
+    expect(body[0]['genres']).to.deep.equal(
+      ['Horror', 'Fantasy', 'Drama', 'Comedy', 'Adventure', 'Action', 'Romance']
+    );
+  });
+
 });

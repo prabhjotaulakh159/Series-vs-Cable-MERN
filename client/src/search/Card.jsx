@@ -36,6 +36,7 @@ function Card({series}) {
         <span>Upvotes: {series?.score}</span>
         <span>Genre: {series?.genres[0]}</span>
         <span>Year: {series?.year}</span>
+        <span>Company type: {series?.companyType}</span>
       </div>
     }
   </div>;
