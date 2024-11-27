@@ -6,6 +6,9 @@ Description: This app allows users to visualize the real differences between cab
 
 In our app, users will be able to navigate charts visualizing the differences in airtime, popularity, and awards between cable and streaming services, in order to decide themselves which is better. 
 
+## Warnings
+As you browse our website, you'll notice some interesting scores. These are from theTVDB.com, and are described as "arbitrary numbers". Since some are very large, we've scaled them to be on a scale of 100 for the graphs and summary components, for better visualization. However, for the popups and search, we've kept the raw scores from the TV DB.
+
 ## Pictures of UI
 
 ![Image of popup on desktop](./images/popup=desktop.png)
@@ -128,13 +131,6 @@ scp -i key.pem [tar-file-name].tar.gz bitnami@[your ip]:~
 tar -xf [tar-file-name].tar.gz
 ```
 
-7. Export necessary environment variables, or set up a .env file with the following configurations:
-```
-ATLAS_URI=[your atlas uri for mongo db]
-NODE_ENV=production
-PORT=3001
-```
-
 8. Cd into the server directory and npm install:
 ```
 cd project-directory/server
@@ -144,8 +140,16 @@ npm install
 9. Start the server using forever (install if not available with npm) and restart apache:
 ```
 cd project-directory/server
-forever start bin/www
+export ATLAS_URI="your_uri"
+NODE_ENV=production PORT=3001 forever start bin/www
 sudo /opt/bitnami/ctlscript.sh restart apache
+```
+
+You can also optionally modify your .bashrc file as follows:
+```
+export ATLAS_URI=[your atlas uri for mongo db]
+export NODE_ENV=production
+export PORT=3001
 ```
 
 ### Client and Server
@@ -517,7 +521,7 @@ The datasets used for this project have all been taken from [The TV DB](https://
 The official Swagger UI for their datasets and routes can be found at: [The TV DB Swagger UI](https://thetvdb.github.io/v4-api/#/)
 
 ## Libraries
-As of now, we are using the Plotly library, as well as the Intersection Observer library to do some cool lazy rendering.
+We the Plotly library, as well as the Intersection Observer library to do some cool lazy rendering. For the routing of the nav bar, we also used the react router to make those buttons clickable and guide users to the respective graphs.
 
 ### Documentations can be found at:
 - [Plotly Docs](https://plotly.com/javascript/)
