@@ -7,7 +7,7 @@ Description: This app allows users to visualize the real differences between cab
 In our app, users will be able to navigate charts visualizing the differences in airtime, popularity, and awards between cable and streaming services, in order to decide themselves which is better. 
 
 ## Warnings
-As you browse our website, you'll notice some interesting scores. These are from the TB DB, and are described as "arbitrary numbers". Since some are very large, we've scaled them to be on a scale of 100 for the graphs and summary components, for better visualization. However, for the popups and search, we've kept the raw scores from the TV DB.
+As you browse our website, you'll notice some interesting scores. These are from theTVDB.com, and are described as "arbitrary numbers". Since some are very large, we've scaled them to be on a scale of 100 for the graphs and summary components, for better visualization. However, for the popups and search, we've kept the raw scores from the TV DB.
 
 ## Pictures of UI
 
