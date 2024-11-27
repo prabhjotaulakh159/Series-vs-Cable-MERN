@@ -518,7 +518,7 @@ The datasets used for this project have all been taken from [The TV DB](https://
 The official Swagger UI for their datasets and routes can be found at: [The TV DB Swagger UI](https://thetvdb.github.io/v4-api/#/)
 
 ## Libraries
-As of now, we are using the Plotly library, as well as the Intersection Observer library to do some cool lazy rendering.
+We the Plotly library, as well as the Intersection Observer library to do some cool lazy rendering. For the routing of the nav bar, we also used the react router to make those buttons clickable and guide users to the respective graphs.
 
 ### Documentations can be found at:
 - [Plotly Docs](https://plotly.com/javascript/)
