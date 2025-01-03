@@ -1,21 +1,14 @@
-import {useEffect, useState} from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './Summary.css';
 
-function Summary({fetchSummaryData}) {
-  const [series, setSeries] = useState({});
-  useEffect(() => {
-    async function fetchData() {
-      const results = await fetchSummaryData();
-      setSeries(results);
-    }
-
-    fetchData();
-  }, [fetchSummaryData]);
+function Summary({series}) {
   return (
     <section className="summary-block">
       {
         Object.keys(series).map(type => {
+          if (!series[type].score) {
+            return <h3 key={type}>No data available</h3>;
+          }
           return (
             <div key={type} className="company-summary">
               <h3>Winning show in {type}</h3>

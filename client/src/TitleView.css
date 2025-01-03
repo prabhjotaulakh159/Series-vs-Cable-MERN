@@ -3,6 +3,13 @@
   align-self: center;
   text-align: center;
   padding: 20px 0;
+  height: 100vh;
+}
+
+@media (max-width: 800px) {
+  #main-title-view {
+    height: auto;
+  }
 }
 
 #main-title-view h1 {

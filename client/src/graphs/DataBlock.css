@@ -1,5 +1,5 @@
 .graph-block {
-  padding-top: 25vh;
+  margin-top: 25vh;
   font-size: 1.3vw;
 }
 
@@ -8,7 +8,6 @@
   padding: 10px;
   font-size: 2vw;
 }
-
 
 @media (max-width: 800px) {
   .graph-block {
@@ -28,4 +27,9 @@
   .graph-block {
     font-size: 3vw;
   }
+}
+
+.loading-text {
+  text-align: center;
+  padding-bottom: 40px;
 }

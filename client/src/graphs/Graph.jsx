@@ -1,14 +1,13 @@
-import { useState, useRef, lazy, Suspense, memo, useCallback } from 'react';
-import Skeleton from 'react-loading-skeleton';
+import { useState, useRef, lazy, memo, useCallback } from 'react';
 import PopUp from '../popup/PopUp';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './Graph.css';
+import './Summary.css';
 
 // memo the plot to avoid re-renders
 const MemoPlot = memo(lazy(() => import('react-plotly.js')));
 
 function Graph({ data, name }) {
-  const plotRef = useRef(null);
   const showPopUp = useRef(false);
   const year = useRef(-1);
   const type = useRef('');
@@ -45,36 +44,37 @@ function Graph({ data, name }) {
   }, []);
 
   return (
-    <div className="graph-container" ref={plotRef}>
-      <Suspense fallback={<Skeleton variant="rectangular" width={1000} height={500} count={1} />}>
-        <HoverPopUp 
-          showPopUp={showPopUp.current} 
-          year={year.current} 
-          type={type.current}
-          chartName={name} 
-          onClose={onLeaveCallback}
-        />
+    <div className="graph-container">
+      <HoverPopUp 
+        showPopUp={showPopUp.current} 
+        year={year.current} 
+        type={type.current}
+        chartName={name} 
+        onClose={onLeaveCallback}
+      />
+      <div>
         <MemoPlot
           data={data}
           layout={{ 
-            title: name,
             font: {size: 12},
             legend: {
               x: 1,
               xanchor: 'right',
               y: 1
-            }
+            },   
+            autosize: true, 
+            height: 500 
           }}
           config ={{
             displayModeBar: false, 
-            responsive: true 
+            responsive: true, 
           }}
           // inside useCallbacks, there should be no re-render
           onClick={onHoverCallback}
           onHover={onHoverCallback} 
           onUnhover={onLeaveCallback}
         />
-      </Suspense>
+      </div>
     </div>
   );
 }

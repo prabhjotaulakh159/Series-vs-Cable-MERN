@@ -2,6 +2,13 @@
 
 image: node:lts-bullseye-slim
 
+stages:
+  - lint
+  - build
+  - test
+  - release
+  - deploy
+
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
@@ -20,8 +27,9 @@ default:
       - server/.npm/
       - client/.npm
   # run this before every job; will hit the cache first
+  # need top level install for critical and bundle checks
   before_script:
-   - cd server && npm ci --cache .npm --prefer-offline && cd ../client && npm ci --cache .npm --prefer-offline && cd ..
+    - cd server && npm ci --cache .npm --prefer-offline && cd ../client && npm ci --cache .npm --prefer-offline && cd ..
 
 lint-server:
   stage: lint 
@@ -35,27 +43,21 @@ lint-client:
     - cd client && ./node_modules/eslint/bin/eslint.js .
   allow_failure: false
 
-stages:
-  - lint
-  - build
-  - test
-  - deploy
-
 build-frontend:
   stage: build
   script:
-    - cd client && npm run build
+    - npm run build
   only:
     refs:
       - main
       - master
       - staging
-
+      - tags
   artifacts:
     expire_in: 1 days
     when: on_success
     paths:
-      - client/build
+      - client/dist
 
 test-server:
   stage: test
@@ -70,8 +72,10 @@ test-server:
 
 bundle-check:
   stage: build
+  needs:
+    - build-frontend
   script:
-    - npm install && npm run build && npm run check
+    - cd client && npm run check
   only:
     refs:
       - main
@@ -79,4 +83,20 @@ bundle-check:
       - staging
   allow_failure: false
 
-  
+build-app-archive:
+  stage: release
+  variables:
+    RELEASE_FILE: release-$CI_PROJECT_NAME-$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA.tar.gz
+  dependencies:
+    - build-frontend
+  rules:
+    - if: $CI_COMMIT_TAG
+  before_script:
+    - npm ci --omit dev
+  script:
+    - tar -czf $RELEASE_FILE --exclude='.npm' --exclude='eslint*' --exclude='./server/.env' --transform 's,^,520-project-aulakh-rossetti-winter/,' server client/dist client/critical.mjs
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - $RELEASE_FILE

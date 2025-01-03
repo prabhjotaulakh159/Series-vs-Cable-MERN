@@ -76,6 +76,17 @@ class DB {
   async deleteManyCompanies(query) {
     return await instance.companiesCollection.deleteMany(query);
   }
+
+  /* Gets all genres in the db */
+  async getAllGenres() {
+    const result =  await instance.seriesCollection.aggregate([
+      { $unwind: '$genres' },
+      { $group: { _id: null, uniqueGenres: { $addToSet: '$genres' } } },
+      { $project: { _id: 0, uniqueGenres: 1 } }
+    ]).toArray();
+
+    return result.length > 0 ? result[0].uniqueGenres : [];
+  }
   
   /**
    * Retrives series based on name, year and type
@@ -84,7 +95,7 @@ class DB {
    * @param {String} type - Type of series (cable, streaming)
    * @return An array of series based on the filters
    */
-  async getFilteredSeries(name, year, type) {
+  async getFilteredSeries(name, year, type, genre) {
     const query = {};
     if (name) {
       // https://stackoverflow.com/questions/10610131/checking-if-a-field-contains-a-string
@@ -96,6 +107,9 @@ class DB {
     }
     if (type) {
       query.companyType = type;
+    }
+    if (genre) {
+      query.genres = { $elemMatch: { $regex: genre, $options: 'i' } };
     }
     // the find method takes an object { name: name, year: year, type: type }
     // however, we only add those keys if we actually want them, meaning 
@@ -113,9 +127,9 @@ class DB {
    * @return An object representing the id of the series to find
    */
   async getSeriesById(id){
-    const query = {id:Number(id)};
+    const query = {'id':Number(id)};
     const series = await instance.seriesCollection.findOne(query);
-    delete series._id;
+    if (series) delete series._id;
     return series;
   }
 
@@ -141,8 +155,8 @@ class DB {
    */
   async getCompanyById(id) {
     const query = { id: Number(id) };
-    const company = await instance.collection.findOne(query);
-    delete company._id;
+    const company = await instance.companiesCollection.findOne(query);
+    if (company) delete company._id;
     return company;
   }
 
